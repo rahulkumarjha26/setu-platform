@@ -51,6 +51,7 @@ export default function PlacePage() {
 
   return (
     <div
+      className="mob-px-16"
       style={{
         maxWidth: 900,
         margin: "0 auto",

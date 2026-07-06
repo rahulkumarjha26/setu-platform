@@ -75,17 +75,17 @@ export default function LandingPage() {
           Every pin is a real report. Every status change is verified proof. No assumptions.
         </p>
 
-        <div className="flex items-center gap-16" style={{ marginTop: 40 }}>
+        <div className="flex items-center gap-16 mob-flex-col mob-gap-12" style={{ marginTop: 40 }}>
           <Link
             href="/atlas"
-            className="btn btn-primary"
+            className="btn btn-primary mob-w-full"
             style={{ height: 46, padding: "0 26px", fontSize: 15 }}
           >
             Explore the Atlas &rarr;
           </Link>
           <Link
             href="/report"
-            className="btn btn-outline"
+            className="btn btn-outline mob-w-full"
             style={{
               height: 46,
               padding: "0 26px",
@@ -210,6 +210,7 @@ export default function LandingPage() {
       </motion.section>
 
       <footer
+        className="mob-px-16"
         style={{
           maxWidth: 1120,
           margin: "0 auto",

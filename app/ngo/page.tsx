@@ -65,7 +65,7 @@ export default function NGOPage() {
       transition={{ duration: 0.5 }}
       style={{ minHeight: "100vh", paddingBottom: 120 }}
     >
-      <div className="container" style={{ paddingTop: 56 }}>
+      <div className="container mob-px-16" style={{ paddingTop: 56 }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 8 }}>
           <h1 className="text-h1">NGO Workspace</h1>
@@ -166,7 +166,7 @@ export default function NGOPage() {
         </div>
 
         {/* Body: Sub-nav + Kanban */}
-        <div style={{ display: "flex", gap: 32, alignItems: "flex-start" }}>
+        <div className="mob-flex-col mob-gap-12" style={{ display: "flex", gap: 32, alignItems: "flex-start" }}>
           {/* Desktop Sub-nav */}
           <nav
             className="desktop-only"

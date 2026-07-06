@@ -53,6 +53,7 @@ export default function OnboardingPage() {
         justifyContent: "center",
         padding: "48px 32px",
       }}
+      className="mob-px-16"
     >
       <Link
         href="/"

@@ -56,6 +56,7 @@ export default function DockPage() {
         padding: "40px 24px",
         gap: 48,
       }}
+      className="mob-px-16"
     >
       {/* Header */}
       <div style={{ textAlign: "center" }}>
@@ -68,8 +69,8 @@ export default function DockPage() {
       </div>
 
       {/* Large Dock Shell */}
-      <div className="card" style={{ padding: "40px 60px", display: "flex", flexDirection: "column", alignItems: "center", gap: 0, position: "relative" }}>
-        <div style={{ position: "relative", transform: "scale(1.1)", pointerEvents: "none" }}>
+      <div className="card mob-px-16" style={{ padding: "40px 60px", display: "flex", flexDirection: "column", alignItems: "center", gap: 0, position: "relative" }}>
+        <div style={{ position: "relative", transform: "scale(1.1)", pointerEvents: "none", maxWidth: "100%" }}>
           {/* Render actual dock structure for visual consistency */}
           <div className="dock" style={{ boxShadow: "var(--shadow-dock)" }}>
             {[

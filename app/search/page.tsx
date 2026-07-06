@@ -367,6 +367,7 @@ export default function SearchPage() {
         {/* Results + Map */}
         {filteredResults.length > 0 && (
           <div
+            className="mob-col-1 mob-gap-12"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",

@@ -71,7 +71,7 @@ export default function WoundJourneyPage() {
   const statusMeta = STATUS_META[wound.status];
 
   return (
-    <div style={{ maxWidth: 1120, margin: "0 auto", padding: "32px 32px 120px" }}>
+    <div className="mob-px-16" style={{ maxWidth: 1120, margin: "0 auto", padding: "32px 32px 120px" }}>
       <Link
         href={`/place/${wound.placeId}`}
         className="flex items-center gap-6 text-caption text-2"

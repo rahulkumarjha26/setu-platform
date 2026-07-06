@@ -58,6 +58,7 @@ export default function ReportPage() {
 
   return (
     <div
+      className="mob-px-16"
       style={{
         minHeight: "100vh",
         display: "flex",

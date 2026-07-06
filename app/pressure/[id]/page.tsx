@@ -96,7 +96,7 @@ export default function PressurePage() {
 
   return (
     <div style={{ minHeight: "100vh", paddingBottom: 80 }}>
-      <div className="container" style={{ paddingTop: 40 }}>
+      <div className="container mob-px-16" style={{ paddingTop: 40 }}>
         {/* Breadcrumb */}
         <nav className="breadcrumb" style={{ marginBottom: 20 }}>
           <Link href="/wound/SETU-KA-2025-00431" style={{ color: "var(--text-2)" }}>

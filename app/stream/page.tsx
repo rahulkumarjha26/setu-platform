@@ -243,7 +243,7 @@ export default function StreamPage() {
     <>
       {/* ===== TOP BAR ===== */}
       <div style={S.topBar}>
-        <div style={S.topBarInner}>
+        <div className="mob-px-16" style={S.topBarInner}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
             <div style={S.brandMark}><div style={S.brandMarkInner} /></div>
             <span className="text-serif" style={{ fontSize: 19, fontWeight: 600, color: "var(--action)" }}>
@@ -253,7 +253,7 @@ export default function StreamPage() {
               Jalgaon <ChevronDown size={12} />
             </span>
           </div>
-          <div style={{ flex: 1, maxWidth: 340, position: "relative", minWidth: 0 }}>
+          <div className="mob-hide" style={{ flex: 1, maxWidth: 340, position: "relative", minWidth: 0 }}>
             <Search size={16} style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--text-3)", pointerEvents: "none", zIndex: 1 }} />
             <input
               placeholder="Search wounds, places…"
@@ -280,11 +280,11 @@ export default function StreamPage() {
 
       {/* ===== MAIN LAYOUT ===== */}
       <div
+        className="layout-split mob-px-16"
         style={{
           maxWidth: 1120, margin: "0 auto",
           padding: "28px 28px 120px",
         }}
-        className="layout-split"
       >
         <main>
           {/* Feed head */}

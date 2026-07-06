@@ -265,11 +265,12 @@ export default function AtlasPage() {
       </AnimatePresence>
 
       {/* ===== TOP BAR ===== */}
-      <div className="atlas-overlay" style={{
+      <div className="atlas-overlay mob-px-16" style={{
         top: 0, left: 0, right: 0,
         background: "rgba(252,251,249,.88)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
         borderBottom: "1px solid var(--border)", padding: "10px 24px",
-        display: "flex", alignItems: "center", gap: 12,
+        display: "flex", alignItems: "center", gap: 8,
+        flexWrap: "wrap",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
           <div style={{ width: 26, height: 26, borderRadius: "50%", background: "var(--action)", display: "flex", alignItems: "center", justifyContent: "center" }}>

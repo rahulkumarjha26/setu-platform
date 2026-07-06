@@ -203,7 +203,7 @@ function Hero({ feed, role }: { feed: ReturnType<typeof getHomeFeed>; role: Role
 function Standing({ feed }: { feed: ReturnType<typeof getHomeFeed> }) {
   const allStats: { label: string; value: string; sub?: string }[] = [feed.headlineStat, ...(feed.supportStats || [])].slice(0, 4);
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginTop: 20 }}>
+    <div className="standing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginTop: 20 }}>
       {allStats.map((s, i) => {
         const numVal = parseInt(s.value.replace(/\D/g, "")) || 0;
         const odometer = useOdometer(numVal, 1400 + i * 200, true);
@@ -435,9 +435,9 @@ export default function HomePage() {
         @keyframes beat{0%{box-shadow:0 0 0 0 rgba(18,168,96,.5)}70%{box-shadow:0 0 0 7px rgba(18,168,96,0)}100%{box-shadow:0 0 0 0 rgba(18,168,96,0)}}
       `}</style>
 
-      <div style={{ maxWidth: 1060, margin: "0 auto", padding: "40px 32px 60px", backgroundImage: "radial-gradient(60% 40% at 80% -5%,rgba(111,211,194,.10),transparent 60%)" }}>
+      <div className="mob-px-16" style={{ maxWidth: 1060, margin: "0 auto", padding: "40px 32px 60px", backgroundImage: "radial-gradient(60% 40% at 80% -5%,rgba(111,211,194,.10),transparent 60%)" }}>
         {/* Dev role switcher */}
-        <div style={{
+        <div className="mob-hide" style={{
           position: "fixed", top: 16, right: 20, zIndex: 50,
           display: "flex", alignItems: "center", gap: 4,
           background: "rgba(14,26,22,.06)", backdropFilter: "blur(8px)",
@@ -496,7 +496,7 @@ export default function HomePage() {
         </motion.div>
 
         {/* Two-column */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 26, marginTop: 38, alignItems: "start" }}>
+        <div className="split-right-sidebar" style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 26, marginTop: 38, alignItems: "start" }}>
           {/* Main */}
           <div>
             {watchModule && (

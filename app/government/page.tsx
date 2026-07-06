@@ -8,7 +8,6 @@ import {
   CheckCircle,
   ArrowUp,
   ArrowDown,
-  Users,
 } from "lucide-react";
 import { StatusPill } from "../components/StatusPill";
 
@@ -48,7 +47,7 @@ export default function GovernmentPage() {
       transition={{ duration: 0.5 }}
       style={{ minHeight: "100vh", paddingBottom: 120 }}
     >
-      <div className="container" style={{ paddingTop: 56 }}>
+      <div className="container mob-px-16" style={{ paddingTop: 56 }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 8 }}>
           <h1 className="text-h1">Government View</h1>
@@ -94,6 +93,7 @@ export default function GovernmentPage() {
 
         {/* Main: Table + Right Panel */}
         <div
+          className="split-main-rail"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 300px",
@@ -136,8 +136,8 @@ export default function GovernmentPage() {
                         {w.days}
                       </span>
                     </td>
-                    <td className="cell-right" style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "flex-end" }}>
-                      <Users size={12} color="var(--text-3)" />
+                    <td className="cell-right">
+
                       {w.affected.toLocaleString()}
                     </td>
                     <td>

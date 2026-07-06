@@ -95,7 +95,7 @@ export default function CorporatePage() {
       transition={{ duration: 0.5 }}
       style={{ minHeight: "100vh", paddingBottom: 120 }}
     >
-      <div className="container" style={{ paddingTop: 56 }}>
+      <div className="container mob-px-16" style={{ paddingTop: 56 }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 8 }}>
           <h1 className="text-h1">Corporate Console</h1>
@@ -169,6 +169,7 @@ export default function CorporatePage() {
 
         {/* Main: Table + Right Panel */}
         <div
+          className="split-main-rail"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 280px",

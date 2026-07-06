@@ -44,7 +44,7 @@ export default function SettingsPage() {
       transition={{ duration: 0.5 }}
       style={{ minHeight: "100vh", paddingBottom: 120 }}
     >
-      <div className="container" style={{ paddingTop: 56, maxWidth: 640 }}>
+      <div className="container mob-px-16" style={{ paddingTop: 56, maxWidth: 640 }}>
         <h1 className="text-display" style={{ marginBottom: 40 }}>
           Settings
         </h1>

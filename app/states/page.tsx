@@ -11,7 +11,7 @@ export default function StatesPage() {
       transition={{ duration: 0.5 }}
       style={{ minHeight: "100vh", paddingBottom: 120 }}
     >
-      <div className="container" style={{ paddingTop: 56 }}>
+      <div className="container mob-px-16" style={{ paddingTop: 56 }}>
         <h1 className="text-display" style={{ marginBottom: 8 }}>
           System States
         </h1>

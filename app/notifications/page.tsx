@@ -292,7 +292,7 @@ export default function NotificationsPage() {
 
   return (
     <div style={{ minHeight: "100vh", paddingBottom: 80 }}>
-      <div className="container" style={{ paddingTop: 44 }}>
+      <div className="container mob-px-16" style={{ paddingTop: 44 }}>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
