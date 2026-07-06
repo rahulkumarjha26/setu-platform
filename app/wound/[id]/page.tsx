@@ -4,47 +4,23 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronDown, ChevronUp, MapPin, Plus, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import { StatusPill } from "@/app/components/StatusPill";
-import { getWound, getPlace, CATEGORY_META, STATUS_META, type StatusKey } from "@/lib/mock-data";
+import { ProofGallery } from "@/app/components/ProofGallery";
+import { VerificationEventCard } from "@/app/components/VerificationEventCard";
+import { CorroborationList } from "@/app/components/CorroborationList";
+import { FundingSection } from "@/app/components/FundingSection";
+import { AuthoritySection } from "@/app/components/AuthoritySection";
+import { ExpandedJourneyTimeline } from "@/app/components/ExpandedJourneyTimeline";
+import { RelatedWounds } from "@/app/components/RelatedWounds";
+import { WoundActionBar } from "@/app/components/WoundActionBar";
+import {
+  getWound, getPlace, CATEGORY_META,
+  getVerificationEvents, getCorroborationEntries,
+  getFunding, getTimelineEvents, getRelatedWounds, getAuthority,
+} from "@/lib/mock-data";
 
-/* Build a journey spine from the wound's status and date */
-function buildJourney(status: StatusKey, date: string): { kind: "node"; type: string; label: string; date: string; dotClass: string }[] {
-  const nodes: { kind: "node"; type: string; label: string; date: string; dotClass: string }[] = [];
-  const labelMap: Record<StatusKey, string> = {
-    "healed": "Healed",
-    "in-progress": "In Progress",
-    "routed": "Routed",
-    "assessing": "Assessing",
-    "reported": "Reported",
-    "not-achieved": "Not Achieved",
-  };
-  const dotMap: Record<string, string> = {
-    done: "spine-dot--done",
-    active: "spine-dot--active",
-    origin: "spine-dot--origin",
-  };
-  const order: StatusKey[] = ["reported", "assessing", "routed", "in-progress", "healed"];
-  const idx = order.indexOf(status);
-  if (status === "not-achieved") {
-    nodes.push({ kind: "node", type: "failed", label: "Not Achieved", date, dotClass: "spine-dot--done" });
-    nodes.push({ kind: "node", type: "active", label: "In Progress", date: "earlier", dotClass: "spine-dot--done" });
-    nodes.push({ kind: "node", type: "origin", label: "Reported", date: "earlier", dotClass: dotMap.origin });
-  } else {
-    for (let i = 0; i <= idx; i++) {
-      const s = order[i];
-      const isCurrent = i === idx;
-      nodes.unshift({
-        kind: "node",
-        type: isCurrent ? (i === 0 ? "origin" : "active") : "done",
-        label: labelMap[s],
-        date: isCurrent ? date : "earlier",
-        dotClass: isCurrent ? (i === 0 ? dotMap.origin : dotMap.active) : dotMap.done,
-      });
-    }
-  }
-  return nodes;
-}
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function WoundJourneyPage() {
   const params = useParams();
@@ -54,89 +30,79 @@ export default function WoundJourneyPage() {
   const wound = getWound(woundId);
   const place = wound ? getPlace(wound.placeId) : undefined;
 
+  const verifications = wound ? getVerificationEvents(woundId) : [];
+  const corroborations = wound ? getCorroborationEntries(woundId) : [];
+  const funding = wound ? getFunding(woundId) : undefined;
+  const timelineEvents = wound ? getTimelineEvents(woundId) : [];
+  const related = wound ? getRelatedWounds(woundId) : [];
+  const authority = wound ? getAuthority(woundId) : undefined;
+
   if (!wound) {
     return (
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "80px 32px", textAlign: "center" }}>
         <h1 className="text-h1" style={{ marginBottom: 12 }}>Wound not found</h1>
         <p className="text-body text-2" style={{ marginBottom: 24 }}>
-          The wound ID <code style={{ fontFamily: "var(--font-mono)" }}>{woundId}</code> doesn't exist in the record.
+          The wound ID <code style={{ fontFamily: "var(--font-mono)" }}>{woundId}</code> doesn&apos;t exist in the record.
         </p>
         <Link href="/atlas" className="btn btn-primary">Back to the Atlas</Link>
       </div>
     );
   }
 
-  const journeyNodes = buildJourney(wound.status, wound.date);
   const catMeta = CATEGORY_META[wound.category];
-  const statusMeta = STATUS_META[wound.status];
 
   return (
     <div className="mob-px-16" style={{ maxWidth: 1120, margin: "0 auto", padding: "32px 32px 120px" }}>
+      {/* Breadcrumb */}
       <Link
         href={`/place/${wound.placeId}`}
-        className="flex items-center gap-6 text-caption text-2"
-        style={{ marginBottom: 24, display: "inline-flex" }}
+        style={{ marginBottom: 24, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontFamily: "var(--font-mono)", color: "var(--text-3)", textDecoration: "none" }}
       >
         <ChevronLeft size={14} />
         Back to {place?.name ?? wound.place}
       </Link>
 
-      <div className="grid gap-32" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))" }}>
+      <div className="layout-split" style={{ marginTop: 8 }}>
+        {/* ─── LEFT COLUMN ─── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col gap-20"
+          transition={{ duration: 0.5, ease }}
+          className="flex flex-col"
+          style={{ gap: 24 }}
         >
-          <StatusPill status={wound.status} />
+          {/* Status + Category */}
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+            <StatusPill status={wound.status} />
+            <span className="chip" style={{ pointerEvents: "none" }}>{catMeta.label}</span>
+          </div>
 
-          <h1 className="text-h1" style={{ fontSize: "clamp(1.5rem, 1.2rem + 1.8vw, 2rem)" }}>
+          {/* Title */}
+          <h1 className="text-h1" style={{ fontSize: "clamp(1.5rem, 1.2rem + 1.8vw, 2rem)", margin: 0 }}>
             {wound.title}
           </h1>
 
-          <div
-            style={{
-              aspectRatio: "16/10",
-              background: "var(--bg-alt)",
-              borderRadius: "var(--radius-card)",
-              border: "1px solid var(--border)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: 6,
-              position: "relative",
-            }}
-          >
-            <MapPin size={28} color="var(--ghost)" />
-            <p className="text-caption text-2">{wound.place}</p>
-            <span
-              style={{
-                position: "absolute",
-                top: 10,
-                right: 10,
-                background: "var(--bg-raised)",
-                borderRadius: "var(--radius-pill)",
-                padding: "2px 10px",
-                fontSize: 11,
-                fontWeight: 500,
-                color: "var(--text-2)",
-                border: "1px solid var(--border)",
-              }}
-            >
-              {wound.lng.toFixed(2)}°, {wound.lat.toFixed(2)}°
-            </span>
+          {/* Meta row */}
+          <div className="wound-meta">
+            <span>{wound.place}</span>
+            <span>{wound.date}</span>
+            <span>ID: {wound.id}</span>
           </div>
 
-          <p className="text-body text-2" style={{ lineHeight: 1.7 }}>
+          {/* Proof Gallery */}
+          <ProofGallery images={wound.proofUrls} woundTitle={wound.title} />
+
+          {/* Body */}
+          <p className="text-body text-2" style={{ lineHeight: 1.7, margin: 0 }}>
             {wound.body}
           </p>
 
+          {/* Outcome metrics */}
           {wound.outcome && wound.outcome.length > 0 && (
             <div className="card" style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
               {wound.outcome.map((o, i) => (
                 <div key={i}>
-                  <p className="text-number" style={{ fontSize: "1.5rem", color: wound.status === "not-achieved" && i > 0 ? "var(--st-failed-mark)" : "var(--st-healed-mark)" }}>
+                  <p className="text-number" style={{ fontSize: "1.5rem", color: wound.status === "not-achieved" && i > 0 ? "var(--st-failed-mark)" : "var(--st-healed-mark)", margin: 0 }}>
                     {o[0]}
                   </p>
                   <p className="text-caption text-2" style={{ marginTop: 2 }}>{o[1]}</p>
@@ -145,31 +111,27 @@ export default function WoundJourneyPage() {
             </div>
           )}
 
-          <div className="card" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div className="flex items-center justify-between">
-              <span className="text-number" style={{ fontSize: "1.5rem" }}>
-                {wound.corroborations}
-              </span>
-              <button className="btn btn-ghost btn-sm">
-                <Plus size={14} />
-                Add your witness
-              </button>
-            </div>
-            <p className="text-caption text-2">corroborations</p>
-          </div>
+          {/* Corroborations */}
+          <CorroborationList entries={corroborations} woundId={woundId} count={wound.corroborations} />
 
+          {/* Funding */}
+          <FundingSection funding={funding} />
+
+          {/* Authority */}
+          {authority && <AuthoritySection authority={authority} />}
+
+          {/* Legality & Jurisdiction */}
           <div className="card" style={{ padding: 16 }}>
             <button
               onClick={() => setLegalityOpen(!legalityOpen)}
-              className="flex items-center justify-between"
-              style={{ width: "100%", background: "none", border: "none", cursor: "pointer" }}
+              style={{ width: "100%", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", fontFamily: "inherit" }}
             >
               <span className="text-label">Legality &amp; Jurisdiction</span>
               {legalityOpen ? <ChevronUp size={16} color="var(--text-3)" /> : <ChevronDown size={16} color="var(--text-3)" />}
             </button>
             {legalityOpen && (
               <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border)" }}>
-                <p className="text-caption text-2">
+                <p className="text-caption text-2" style={{ margin: 0 }}>
                   This wound falls under the jurisdiction of {place?.name ?? wound.place}, {place?.state ?? ""}.
                   Category: {catMeta.label}. The responsible body is determined by the nature of the
                   public asset and applicable state law.
@@ -177,33 +139,47 @@ export default function WoundJourneyPage() {
               </div>
             )}
           </div>
+
+          {/* Related Wounds */}
+          {related.length > 0 && <RelatedWounds wounds={related} currentId={woundId} />}
         </motion.div>
 
+        {/* ─── RIGHT COLUMN ─── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, delay: 0.15, ease }}
+          style={{ position: "sticky", top: 24, display: "flex", flexDirection: "column", gap: 28 }}
         >
-          <p className="text-label-up text-2" style={{ marginBottom: 20 }}>Journey</p>
+          {/* Action Bar */}
+          <WoundActionBar woundId={wound.id} woundTitle={wound.title} />
 
-          <div className="spine-wrapper" style={{ position: "relative" }}>
-            <div className="spine-rail" style={{ position: "absolute", top: 8, bottom: 8, left: 5 }} />
-            {journeyNodes.map((item, i) => (
-              <div key={i} className="spine-node">
-                <div className={`spine-dot ${item.dotClass}`} />
-                <div className="spine-body">
-                  <p className="text-label">{item.label}</p>
-                  <p className="text-caption text-2" style={{ marginTop: 2 }}>{item.date}</p>
-                </div>
+          {/* Expanded Journey Timeline */}
+          <div>
+            <p className="text-label-up text-2" style={{ marginBottom: 16 }}>Journey</p>
+            <ExpandedJourneyTimeline events={timelineEvents} woundStatus={wound.status} woundDate={wound.date} />
+          </div>
+
+          {/* Verification Timeline */}
+          {verifications.length > 0 && (
+            <div>
+              <p className="text-label-up text-2" style={{ marginBottom: 16 }}>Verifications</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {verifications.map((ev) => (
+                  <VerificationEventCard key={ev.id} event={ev} />
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
 
-          <div style={{ marginTop: 32 }}>
-            <Link href="/atlas" className="btn btn-outline btn-sm">
-              View on the Atlas <ArrowRight size={14} />
-            </Link>
-          </div>
+          {/* Atlas link */}
+          <Link
+            href="/atlas"
+            className="btn btn-outline btn-sm"
+            style={{ textDecoration: "none", display: "inline-flex", alignSelf: "flex-start" }}
+          >
+            View on the Atlas <ArrowRight size={14} />
+          </Link>
         </motion.div>
       </div>
     </div>

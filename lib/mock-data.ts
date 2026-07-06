@@ -25,6 +25,66 @@ export const CATEGORY_META: Record<CategoryKey, { label: string; icon: string }>
   elder:      { label: "Elder",      icon: "M12 21v-7M9 14h6M9 6a3 3 0 116 0c0 2-3 3-3 5" },
 };
 
+// ─── Verification Events ───
+export interface VerificationEvent {
+  id: string;
+  woundId: string;
+  verifierName: string;
+  verifierRole: string;
+  date: string;
+  notes: string;
+  outcome: "pass" | "fail" | "partial";
+  evidenceUrls: string[];
+}
+
+// ─── Corroboration Entries ───
+export interface CorroborationEntry {
+  id: string;
+  woundId: string;
+  name: string;
+  role: string;
+  time: string;
+  statement: string;
+  verified: boolean;
+}
+
+// ─── Funding / CSR Entry ───
+export interface FundingMilestone {
+  label: string;
+  status: "completed" | "in-progress" | "pending";
+  date: string;
+  amount: string;
+}
+export interface FundingEntry {
+  source: string;
+  sourceType: "corporate" | "government" | "ngo" | "community";
+  amount: string;
+  milestones: FundingMilestone[];
+}
+
+// ─── Timeline Event ───
+export interface TimelineEvent {
+  id: string;
+  woundId: string;
+  type: "status-change" | "verification" | "corroboration" | "funding" | "note";
+  date: string;
+  title: string;
+  description: string;
+  actorName?: string;
+  actorRole?: string;
+}
+
+// ─── Authority Info ───
+export interface AuthorityInfo {
+  department: string;
+  departmentId: string;
+  sla: string;
+  slaRemaining: number | null;
+  contactName: string;
+  contactDesignation: string;
+  status: "within-sla" | "overdue" | "no-response" | "resolved";
+}
+
 /* ─── Wounds ─── */
 export interface Wound {
   id: string;
@@ -43,11 +103,20 @@ export interface Wound {
   fundedBy?: string;
   routedTo?: string;
   outcome?: [string, string][];
+
+  // NEW FIELDS
+  proofUrls?: string[];
+  verifications?: string[];
+  corroboratorEntries?: string[];
+  funding?: FundingEntry[];
+  timelineEvents?: string[];
+  authority?: AuthorityInfo;
+  relatedWoundIds?: string[];
 }
 
 export const WOUNDS: Wound[] = [
   { id: "SETU-UP-0001", title: "No girls' toilet — ZP School, Bhadli", status: "assessing", category: "education", corroborations: 96, lng: 78.04, lat: 27.18, place: "Bhadli, UP", placeId: "bhadli", date: "reported 20 Jun 2026", body: "Older girls stop attending after puberty. Flagged from UDISE data and confirmed by three parents." },
-  { id: "SETU-UP-0002", title: "Arsenic in the hand-pump water", status: "in-progress", category: "water", corroborations: 120, lng: 81.83, lat: 25.43, place: "UP", placeId: "prayagraj", date: "reported 15 Jun 2026", body: "Lab tests confirm arsenic beyond safe limits in two of three village handpumps." },
+  { id: "SETU-UP-0002", title: "Arsenic in the hand-pump water", status: "in-progress", category: "water", corroborations: 120, lng: 81.83, lat: 25.43, place: "UP", placeId: "prayagraj", date: "reported 15 Jun 2026", body: "Lab tests confirm arsenic beyond safe limits in two of three village handpumps.", corroboratorEntries: ["COR-UP-0002-001"] },
   { id: "SETU-UP-0003", title: "Open drain beside the primary school", status: "reported", category: "sanitation", corroborations: 41, lng: 80.95, lat: 26.85, place: "UP", placeId: "prayagraj", date: "reported 18 Jun 2026", body: "Stagnant sewage beside the school wall. Children walk through it daily." },
   { id: "SETU-UP-0004", title: "Streetlights dark on the highway stretch", status: "routed", category: "roads", corroborations: 33, lng: 79.92, lat: 24.55, place: "UP", placeId: "prayagraj", date: "routed 10 Jun 2026", body: "Three kilometres of dark highway. Routed to the state electricity board with 33 witnesses." },
 
@@ -56,18 +125,18 @@ export const WOUNDS: Wound[] = [
   { id: "SETU-BR-0003", title: "No ANM centre within 12 km", status: "assessing", category: "health", corroborations: 64, lng: 86.98, lat: 25.59, place: "Bihar", placeId: "patna", date: "reported 01 Jun 2026", body: "Pregnant women travel 12 km for check-ups. Assessing for a mobile ANM solution." },
   { id: "SETU-BR-0004", title: "Girls' hostel toilet block collapsed", status: "reported", category: "education", corroborations: 29, lng: 83.23, lat: 24.74, place: "Bihar", placeId: "buxar", date: "reported 22 Jun 2026", body: "The toilet block of the only girls' hostel collapsed in the last rain. 40 residents share one functional toilet." },
 
-  { id: "SETU-MH-0001", title: "Handpump dry for 400 days — Ward 7", status: "healed", category: "water", corroborations: 247, lng: 75.56, lat: 21.00, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "healed Jun 2026", body: "The only pump serving 340 families had given rust for over a year. Revived through community-led aquifer recharge; water returned within nine days.", reportedBy: "citizen", healedBy: "ngo", fundedBy: "corporate", outcome: [["340", "families served"], ["+62%", "vs untreated wards"]] },
-  { id: "SETU-MH-0002", title: "Open drain overflowing near the market", status: "in-progress", category: "sanitation", corroborations: 44, lng: 73.78, lat: 19.75, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "in progress", body: "Stagnant water and mosquitoes beside the vegetable market. Scoped and matched to a local implementer.", healedBy: "ngo" },
+  { id: "SETU-MH-0001", title: "Handpump dry for 400 days — Ward 7", status: "healed", category: "water", corroborations: 247, lng: 75.56, lat: 21.00, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "healed Jun 2026", body: "The only pump serving 340 families had given rust for over a year. Revived through community-led aquifer recharge; water returned within nine days.", reportedBy: "citizen", healedBy: "ngo", fundedBy: "corporate", outcome: [["340", "families served"], ["+62%", "vs untreated wards"]], proofUrls: ["/evidence/photo-001.jpg", "/evidence/photo-002.jpg"], verifications: ["VER-MH-0001-A", "VER-MH-0001-B"], corroboratorEntries: ["COR-MH-0001-001", "COR-MH-0001-002"], relatedWoundIds: ["SETU-MH-0002", "SETU-MH-0005", "SETU-MH-0006", "SETU-MH-0008"] },
+  { id: "SETU-MH-0002", title: "Open drain overflowing near the market", status: "in-progress", category: "sanitation", corroborations: 44, lng: 73.78, lat: 19.75, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "in progress", body: "Stagnant water and mosquitoes beside the vegetable market. Scoped and matched to a local implementer.", healedBy: "ngo", relatedWoundIds: ["SETU-MH-0001", "SETU-MH-0005", "SETU-MH-0006", "SETU-MH-0008"] },
   { id: "SETU-MH-0003", title: "Toilet block built — attendance didn't rise", status: "not-achieved", category: "education", corroborations: 34, lng: 76.96, lat: 18.52, place: "Hingoli, Maharashtra", placeId: "hingoli", date: "closed Mar 2026", body: "Built and verified, but attendance did not move. Reported honestly — the lesson reshapes how the next one is scoped.", fundedBy: "corporate", healedBy: "ngo" },
   { id: "SETU-MH-0004", title: "A widower, 79, with nowhere to go", status: "reported", category: "elder", corroborations: 12, lng: 74.50, lat: 20.00, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "reported 3d ago", body: "Reported by a neighbour, not the man himself. Elder day-care is lawful to fund and rarely is. Awaiting classification." },
-  { id: "SETU-MH-0005", title: "Cables slung dangerously low — Ward 14", status: "routed", category: "roads", corroborations: 61, lng: 75.58, lat: 21.02, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "routed May 2026", body: "Low-hanging electrical cables across the lane. A government-duty wound — routed to MSEDCL with 61 witnesses attached.", reportedBy: "citizen", routedTo: "government", outcome: [["61", "witnesses"], ["14 days", "pending"]] },
-  { id: "SETU-MH-0006", title: "Overflowing septic tank — Ward 9", status: "assessing", category: "sanitation", corroborations: 18, lng: 75.54, lat: 20.98, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "overdue 41 days", body: "Past the 30-day SLA window. Shown openly on the government's record. Escalated internally." },
+  { id: "SETU-MH-0005", title: "Cables slung dangerously low — Ward 14", status: "routed", category: "roads", corroborations: 61, lng: 75.58, lat: 21.02, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "routed May 2026", body: "Low-hanging electrical cables across the lane. A government-duty wound — routed to MSEDCL with 61 witnesses attached.", reportedBy: "citizen", routedTo: "government", outcome: [["61", "witnesses"], ["14 days", "pending"]], corroboratorEntries: ["COR-MH-0005-001", "COR-MH-0005-002"], relatedWoundIds: ["SETU-MH-0001", "SETU-MH-0002", "SETU-MH-0006", "SETU-MH-0008"] },
+  { id: "SETU-MH-0006", title: "Overflowing septic tank — Ward 9", status: "assessing", category: "sanitation", corroborations: 18, lng: 75.54, lat: 20.98, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "overdue 41 days", body: "Past the 30-day SLA window. Shown openly on the government's record. Escalated internally.", relatedWoundIds: ["SETU-MH-0001", "SETU-MH-0002", "SETU-MH-0005", "SETU-MH-0008"] },
   { id: "SETU-MH-0007", title: "Blocked storm drain — Market Road", status: "healed", category: "sanitation", corroborations: 30, lng: 75.57, lat: 21.01, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "resolved Apr 2026", body: "A clear municipal duty. Resolved by the ZP works department in nine days; confirmed by the residents who reported it.", routedTo: "government" },
-  { id: "SETU-MH-0008", title: "Rooftop rainwater harvesting — 12 ZP schools", status: "in-progress", category: "water", corroborations: 52, lng: 75.56, lat: 21.00, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "started 2026", body: "A costed, legality-cleared proposal chosen from Setu's pipeline. Funds in escrow, releasing against verified milestones.", fundedBy: "corporate", healedBy: "ngo", outcome: [["12", "schools"], ["3,400", "children"]] },
+  { id: "SETU-MH-0008", title: "Rooftop rainwater harvesting — 12 ZP schools", status: "in-progress", category: "water", corroborations: 52, lng: 75.56, lat: 21.00, place: "Jalgaon, Maharashtra", placeId: "jalgaon", date: "started 2026", body: "A costed, legality-cleared proposal chosen from Setu's pipeline. Funds in escrow, releasing against verified milestones.", fundedBy: "corporate", healedBy: "ngo", outcome: [["12", "schools"], ["3,400", "children"]], proofUrls: ["/evidence/photo-003.jpg", "/evidence/photo-004.jpg"], verifications: ["VER-MH-0008-A", "VER-MH-0008-B"], corroboratorEntries: ["COR-MH-0008-001"], relatedWoundIds: ["SETU-MH-0001", "SETU-MH-0002", "SETU-MH-0005", "SETU-MH-0006"] },
   { id: "SETU-MH-0009", title: "Village RO plant — Parbhani cluster", status: "not-achieved", category: "water", corroborations: 28, lng: 76.46, lat: 19.99, place: "Parbhani, Maharashtra", placeId: "parbhani", date: "closed Mar 2026", body: "Built and verified, but usage stayed low; the village kept to its old source. Reported honestly. The lesson reshaped how we scope community buy-in.", fundedBy: "corporate", healedBy: "ngo" },
-  { id: "SETU-MH-0010", title: "Lake desilting & bund repair — Nashik Road", status: "in-progress", category: "water", corroborations: 180, lng: 73.80, lat: 19.99, place: "Nashik, Maharashtra", placeId: "nashik", date: "started Apr 2026", body: "A 35-year-dead lake being brought back. Funds held in escrow, released only against verified milestones.", fundedBy: "corporate", healedBy: "ngo", outcome: [["180", "borewells"], ["2 / 3", "milestones"]] },
+  { id: "SETU-MH-0010", title: "Lake desilting & bund repair — Nashik Road", status: "in-progress", category: "water", corroborations: 180, lng: 73.80, lat: 19.99, place: "Nashik, Maharashtra", placeId: "nashik", date: "started Apr 2026", body: "A 35-year-dead lake being brought back. Funds held in escrow, released only against verified milestones.", fundedBy: "corporate", healedBy: "ngo", outcome: [["180", "borewells"], ["2 / 3", "milestones"]], proofUrls: ["/evidence/photo-005.jpg"], verifications: ["VER-MH-0010-A"] },
 
-  { id: "SETU-KA-0001", title: "Lake revived — Kyalasanahalli model", status: "healed", category: "water", corroborations: 180, lng: 77.59, lat: 12.97, place: "Bengaluru, Karnataka", placeId: "bengaluru", date: "healed Feb 2026", body: "A 35-year-dead lake now holds water again. 180 borewells recharged. Verified by the villagers who reported it." },
+  { id: "SETU-KA-0001", title: "Lake revived — Kyalasanahalli model", status: "healed", category: "water", corroborations: 180, lng: 77.59, lat: 12.97, place: "Bengaluru, Karnataka", placeId: "bengaluru", date: "healed Feb 2026", body: "A 35-year-dead lake now holds water again. 180 borewells recharged. Verified by the villagers who reported it.", proofUrls: ["/evidence/photo-006.jpg"], verifications: ["VER-KA-0001-A", "VER-KA-0001-B"] },
   { id: "SETU-KA-0002", title: "School library with no roof", status: "in-progress", category: "education", corroborations: 52, lng: 75.71, lat: 15.32, place: "Karnataka", placeId: "bengaluru", date: "reported 10 Jun 2026", body: "Books ruined every monsoon. The library has been closed for six months." },
 
   { id: "SETU-TN-0001", title: "Fluoride in three village wells", status: "assessing", category: "water", corroborations: 73, lng: 78.66, lat: 11.12, place: "Tamil Nadu", placeId: "madurai", date: "reported 08 Jun 2026", body: "Dental fluorosis in children across three hamlets. Wells tested positive for excess fluoride." },
@@ -104,6 +173,408 @@ export function woundsByPlace(placeId: string): Wound[] {
 export function woundsByActor(actorId: string): Wound[] {
   return WOUNDS.filter(w => w.reportedBy === actorId || w.healedBy === actorId || w.fundedBy === actorId || w.routedTo === actorId);
 }
+
+// ─── Verification Events ───
+export const VERIFICATION_EVENTS: VerificationEvent[] = [
+  {
+    id: "VER-MH-0001-A",
+    woundId: "SETU-MH-0001",
+    verifierName: "Dr. Suresh Patil",
+    verifierRole: "Independent Water Auditor",
+    date: "2026-05-10",
+    notes: "Water yield measured at 1,200 L/hr — exceeds baseline of 200 L/hr. Community confirmed continuous flow for 14 consecutive days.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/photo-001.jpg", "/evidence/photo-002.jpg", "/evidence/flow-report-mh0001.pdf"],
+  },
+  {
+    id: "VER-MH-0001-B",
+    woundId: "SETU-MH-0001",
+    verifierName: "Anita Deshmukh",
+    verifierRole: "Community Verifier",
+    date: "2026-05-14",
+    notes: "Interviewed 30 families. 29/30 confirmed water availability since recharge. One household reported intermittent pressure — logged for follow-up.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/interview-log-mh0001.pdf"],
+  },
+  {
+    id: "VER-MH-0008-A",
+    woundId: "SETU-MH-0008",
+    verifierName: "Rajesh Iyer",
+    verifierRole: "Civil Engineer",
+    date: "2026-06-15",
+    notes: "First 6 schools inspected. All tanks properly installed, gutters cleaned, first-flush diverters functional. Storage capacity as specified.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/photo-003.jpg", "/evidence/inspection-report-schools-1-6.pdf"],
+  },
+  {
+    id: "VER-MH-0008-B",
+    woundId: "SETU-MH-0008",
+    verifierName: "Priya Menon",
+    verifierRole: "Education Dept. Auditor",
+    date: "2026-07-01",
+    notes: "Schools 7-12 installation in progress. Two sites have minor gutter alignment issues. Flagged for correction before next disbursement.",
+    outcome: "partial",
+    evidenceUrls: ["/evidence/photo-004.jpg", "/evidence/deficiency-note-schools-9-10.pdf"],
+  },
+  {
+    id: "VER-MH-0010-A",
+    woundId: "SETU-MH-0010",
+    verifierName: "Dr. Kiran Joshi",
+    verifierRole: "Hydrologist",
+    date: "2026-06-20",
+    notes: "Desilting verified at 85% of target depth. Bund wall reconstructed to 3.2m height (spec: 3.0m). Inlet channel clearing still in progress.",
+    outcome: "partial",
+    evidenceUrls: ["/evidence/photo-005.jpg", "/evidence/depth-survey-nashik.pdf"],
+  },
+  {
+    id: "VER-KA-0001-A",
+    woundId: "SETU-KA-0001",
+    verifierName: "M. Venkatesh",
+    verifierRole: "Independent Ecologist",
+    date: "2026-02-20",
+    notes: "Lake bed holds water at 2.8m depth (pre-monsoon). Native vegetation returning along banks. 180 borewells surveyed — 167 showed recovery.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/photo-006.jpg", "/evidence/borewell-survey-ka0001.pdf"],
+  },
+  {
+    id: "VER-KA-0001-B",
+    woundId: "SETU-KA-0001",
+    verifierName: "Lakshmi Devi",
+    verifierRole: "Community Representative",
+    date: "2026-02-25",
+    notes: "Village panchayat resolution confirms water availability. 45 farmers attested to reduced borewell depth. No complaints received.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/panchayat-resolution-ka0001.pdf"],
+  },
+  {
+    id: "VER-UP-0002-A",
+    woundId: "SETU-UP-0002",
+    verifierName: "Dr. Farhan Qureshi",
+    verifierRole: "Public Health Officer",
+    date: "2026-06-28",
+    notes: "Lab re-test confirms arsenic at 0.12 mg/L and 0.09 mg/L in two handpumps (WHO limit: 0.01 mg/L). Third pump at 0.005 mg/L — safe.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/lab-report-up0002-a.pdf", "/evidence/lab-report-up0002-b.pdf"],
+  },
+  {
+    id: "VER-BR-0001-A",
+    woundId: "SETU-BR-0001",
+    verifierName: "Dr. Nandini Singh",
+    verifierRole: "District Health Officer",
+    date: "2026-06-18",
+    notes: "Confirmed 9 deaths linked to waterborne illness. Well water samples show E. coli and coliform contamination. Community instructed to cease use.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/health-report-br0001.pdf", "/evidence/water-test-br0001.pdf"],
+  },
+  {
+    id: "VER-BR-0001-B",
+    woundId: "SETU-BR-0001",
+    verifierName: "Sanjay Tiwari",
+    verifierRole: "Civil Society Observer",
+    date: "2026-06-22",
+    notes: "Six hamlets surveyed. All 212 corroborations verified against voter ID records. 209/212 confirmed personal knowledge of the contamination.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/verification-log-br0001.pdf"],
+  },
+  {
+    id: "VER-MH-0005-A",
+    woundId: "SETU-MH-0005",
+    verifierName: "Vikram More",
+    verifierRole: "Electrical Safety Inspector",
+    date: "2026-05-25",
+    notes: "Cables at 3.8m above road level (minimum: 6.1m). Exposed joints at two locations. Imminent safety hazard confirmed.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/photo-007.jpg", "/evidence/safety-report-mh0005.pdf"],
+  },
+  {
+    id: "VER-UP-0004-A",
+    woundId: "SETU-UP-0004",
+    verifierName: "Sunil Verma",
+    verifierRole: "Road Safety Auditor",
+    date: "2026-06-12",
+    notes: "3 km stretch surveyed at night. Zero functional streetlights. 2 recent accident skid marks observed. Route serves school bus and auto traffic.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/photo-008.jpg", "/evidence/night-survey-up0004.pdf"],
+  },
+  {
+    id: "VER-MH-0003-A",
+    woundId: "SETU-MH-0003",
+    verifierName: "Meera Nair",
+    verifierRole: "Building Inspector",
+    date: "2026-02-28",
+    notes: "Toilet block constructed to specification. 8 seats (4+4), separate entry, soak pit functional. Structural quality acceptable.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/photo-009.jpg", "/evidence/inspection-report-mh0003.pdf"],
+  },
+  {
+    id: "VER-MH-0002-A",
+    woundId: "SETU-MH-0002",
+    verifierName: "Dinesh Padwal",
+    verifierRole: "Sanitation Inspector",
+    date: "2026-07-05",
+    notes: "Drain blocked with solid waste over 40m stretch. Stagnant water with mosquito breeding. Adjacent vegetable market reports odour complaints.",
+    outcome: "pass",
+    evidenceUrls: ["/evidence/photo-010.jpg", "/evidence/drain-assessment-mh0002.pdf"],
+  },
+];
+
+// ─── Corroboration Entries ───
+export const CORROBORATION_ENTRIES: CorroborationEntry[] = [
+  {
+    id: "COR-MH-0001-001",
+    woundId: "SETU-MH-0001",
+    name: "Prakash Girme",
+    role: "Shopkeeper",
+    time: "2026-05-12",
+    statement: "I have been buying bottled water for my shop for 14 months because the handpump only gives rust. My monthly expense went from ₹200 to ₹1,200.",
+    verified: true,
+  },
+  {
+    id: "COR-MH-0001-002",
+    woundId: "SETU-MH-0001",
+    name: "Sunita Aghav",
+    role: "Teacher",
+    time: "2026-05-12",
+    statement: "Half my students come to school late because they walk 2 km to the neighbouring ward for water. The ones who don't go early just go thirsty.",
+    verified: true,
+  },
+  {
+    id: "COR-MH-0005-001",
+    woundId: "SETU-MH-0005",
+    name: "Ravi Bhoir",
+    role: "Auto Driver",
+    time: "2026-05-20",
+    statement: "I drive this lane every day. The cables swing down to head level when the wind blows. I have to stop and push them up with a stick.",
+    verified: true,
+  },
+  {
+    id: "COR-MH-0005-002",
+    woundId: "SETU-MH-0005",
+    name: "Abdul Sheikh",
+    role: "Cycle Rickshaw Puller",
+    time: "2026-05-20",
+    statement: "Last Tuesday a cable caught my neck as I was cycling home. I fell off and sprained my wrist. No one from the board has come.",
+    verified: true,
+  },
+  {
+    id: "COR-MH-0008-001",
+    woundId: "SETU-MH-0008",
+    name: "Savita Nikam",
+    role: "ASHA Worker",
+    time: "2026-06-10",
+    statement: "Every school I visit, the children complain of stomach pain. They drink from open wells when the tanker is late. Clean rainwater would save them.",
+    verified: true,
+  },
+  {
+    id: "COR-UP-0002-001",
+    woundId: "SETU-UP-0002",
+    name: "Md. Irfan",
+    role: "Student, Class 10",
+    time: "2026-06-16",
+    statement: "My mother has had white patches on her skin for two years. The doctor said it is arsenic. We only drink from the handpump — there is no other source.",
+    verified: true,
+  },
+  {
+    id: "COR-BR-0001-001",
+    woundId: "SETU-BR-0001",
+    name: "Ram Prasad",
+    role: "Village Elder",
+    time: "2026-06-08",
+    statement: "Three months, nine deaths. My neighbour's son was the last — strong boy, 24 years old. He collapsed after drinking from the well. I have lived here 60 years and never seen this.",
+    verified: true,
+  },
+  {
+    id: "COR-KA-0001-001",
+    woundId: "SETU-KA-0001",
+    name: "Muniyappa",
+    role: "Farmer",
+    time: "2026-02-15",
+    statement: "My borewell was dry for five years. After the lake revival, water came back at 40 feet. I harvested rabi this year for the first time since 2021.",
+    verified: true,
+  },
+  {
+    id: "COR-UP-0004-001",
+    woundId: "SETU-UP-0004",
+    name: "Shanti Devi",
+    role: "Shopkeeper",
+    time: "2026-06-10",
+    statement: "The highway is pitch dark after 7 PM. My husband was robbed last month. I close my shop at 6 now — I lose ₹800 a day in evening business.",
+    verified: false,
+  },
+  {
+    id: "COR-MH-0002-001",
+    woundId: "SETU-MH-0002",
+    name: "Prakash Patil",
+    role: "Vegetable Vendor",
+    time: "2026-06-30",
+    statement: "The stench from the open drain drives my customers away. And the mosquitoes — my two-year-old had dengue last monsoon. I am terrified of another outbreak.",
+    verified: true,
+  },
+  {
+    id: "COR-MH-0003-001",
+    woundId: "SETU-MH-0003",
+    name: "Geeta Shinde",
+    role: "School Principal",
+    time: "2026-03-05",
+    statement: "They built a beautiful toilet block. But the girls still don't come. The toilet is not the problem — the problem is the road, the distance, the marriage pressure. We told them this.",
+    verified: true,
+  },
+  {
+    id: "COR-BR-0002-001",
+    woundId: "SETU-BR-0002",
+    name: "Kamala Devi",
+    role: "ANM Nurse",
+    time: "2026-06-14",
+    statement: "Last monsoon a pregnant woman went into labour on the boat crossing the flooded road. She lost the baby. If the road is fixed, we can reach the clinic in 20 minutes instead of 3 hours.",
+    verified: true,
+  },
+];
+
+// ─── Funding / CSR Records ───
+export const FUNDING: Record<string, FundingEntry[]> = {
+  "SETU-MH-0001": [
+    {
+      source: "Aditya Infra Ltd CSR",
+      sourceType: "corporate",
+      amount: "₹7,40,000",
+      milestones: [
+        { label: "Aquifer recharge structure", status: "completed", date: "2026-04-15", amount: "₹4,20,000" },
+        { label: "Community training & handover", status: "completed", date: "2026-05-05", amount: "₹1,20,000" },
+        { label: "Verification & reporting", status: "completed", date: "2026-05-20", amount: "₹2,00,000" },
+      ],
+    },
+  ],
+  "SETU-MH-0008": [
+    {
+      source: "Aditya Infra Ltd CSR",
+      sourceType: "corporate",
+      amount: "₹31,00,000",
+      milestones: [
+        { label: "Site assessment & design", status: "completed", date: "2026-03-01", amount: "₹2,00,000" },
+        { label: "Installation — 6 schools (Phase 1)", status: "completed", date: "2026-05-15", amount: "₹12,00,000" },
+        { label: "Installation — 6 schools (Phase 2)", status: "in-progress", date: "2026-07-15", amount: "₹12,00,000" },
+        { label: "Training & handover", status: "pending", date: "2026-08-30", amount: "₹5,00,000" },
+      ],
+    },
+  ],
+  "SETU-MH-0010": [
+    {
+      source: "Aditya Infra Ltd CSR",
+      sourceType: "corporate",
+      amount: "₹22,00,000",
+      milestones: [
+        { label: "Lake desilting — Phase 1", status: "completed", date: "2026-05-10", amount: "₹8,00,000" },
+        { label: "Bund wall reconstruction", status: "completed", date: "2026-06-15", amount: "₹7,00,000" },
+        { label: "Inlet channel restoration", status: "in-progress", date: "2026-07-20", amount: "₹5,00,000" },
+        { label: "Community handover & final verification", status: "pending", date: "2026-09-01", amount: "₹2,00,000" },
+      ],
+    },
+  ],
+};
+
+// ─── Timeline Events ───
+export const TIMELINE_EVENTS: Record<string, TimelineEvent[]> = {
+  "SETU-MH-0001": [
+    { id: "TL-MH-0001-1", woundId: "SETU-MH-0001", type: "note", date: "2026-02-10", title: "Wound reported", description: "Anjali Rao filed the report after the handpump had been dry for over a year. 340 families affected.", actorName: "Anjali Rao", actorRole: "Teacher" },
+    { id: "TL-MH-0001-2", woundId: "SETU-MH-0001", type: "corroboration", date: "2026-02-20", title: "247 corroborations gathered", description: "Community rallied — 247 residents signed the corroboration within 10 days." },
+    { id: "TL-MH-0001-3", woundId: "SETU-MH-0001", type: "status-change", date: "2026-03-01", title: "Assigned to Jeevan Setu Foundation", description: "Wound matched to NGO for community-led aquifer recharge solution." },
+    { id: "TL-MH-0001-4", woundId: "SETU-MH-0001", type: "funding", date: "2026-03-15", title: "Funding approved by Aditya Infra Ltd", description: "CSR budget of ₹7.4 lakh approved and moved to escrow." },
+    { id: "TL-MH-0001-5", woundId: "SETU-MH-0001", type: "note", date: "2026-04-20", title: "Aquifer recharge complete", description: "Recharge shafts and check dams constructed. Water table monitoring begun." },
+    { id: "TL-MH-0001-6", woundId: "SETU-MH-0001", type: "verification", date: "2026-05-10", title: "Verification — passed", description: "Dr. Suresh Patil confirmed water yield at 1,200 L/hr. Community validated." },
+    { id: "TL-MH-0001-7", woundId: "SETU-MH-0001", type: "status-change", date: "2026-06-05", title: "Marked Healed", description: "Water flowing continuously for 30+ days. Wound closed as healed." },
+  ],
+  "SETU-MH-0005": [
+    { id: "TL-MH-0005-1", woundId: "SETU-MH-0005", type: "note", date: "2026-05-15", title: "Wound reported", description: "Anjali Rao reported low-hanging cables. 61 neighbours corroborated within 48 hours.", actorName: "Anjali Rao", actorRole: "Teacher" },
+    { id: "TL-MH-0005-2", woundId: "SETU-MH-0005", type: "verification", date: "2026-05-25", title: "Safety hazard confirmed", description: "Electrical Safety Inspector Vikram More confirmed cables at 3.8m height. Imminent hazard." },
+    { id: "TL-MH-0005-3", woundId: "SETU-MH-0005", type: "status-change", date: "2026-05-28", title: "Routed to MSEDCL", description: "Wound routed to Maharashtra State Electricity Distribution Co. Ltd with all 61 witness records." },
+    { id: "TL-MH-0005-4", woundId: "SETU-MH-0005", type: "note", date: "2026-07-01", title: "SLA clock running — 34 days", description: "14 days past the 30-day SLA. Escalation memo sent to MSEDCL zonal office." },
+  ],
+  "SETU-BR-0001": [
+    { id: "TL-BR-0001-1", woundId: "SETU-BR-0001", type: "note", date: "2026-06-05", title: "Wound reported", description: "Community reported the poisoned well after nine deaths over three months in six hamlets." },
+    { id: "TL-BR-0001-2", woundId: "SETU-BR-0001", type: "corroboration", date: "2026-06-10", title: "212 corroborations — highest for any wound", description: "Record corroboration count. Every household in affected hamlets attested." },
+    { id: "TL-BR-0001-3", woundId: "SETU-BR-0001", type: "note", date: "2026-06-15", title: "Health department notified", description: "District Health Officer Dr. Nandini Singh notified. Water samples collected for testing." },
+    { id: "TL-BR-0001-4", woundId: "SETU-BR-0001", type: "verification", date: "2026-06-18", title: "Contamination confirmed", description: "Lab tests positive for E. coli and coliform. Well declared unfit for use." },
+    { id: "TL-BR-0001-5", woundId: "SETU-BR-0001", type: "status-change", date: "2026-07-01", title: "Moved to In Progress", description: "RO plant proposal submitted. Funds being arranged through matched funding." },
+  ],
+  "SETU-MH-0010": [
+    { id: "TL-MH-0010-1", woundId: "SETU-MH-0010", type: "note", date: "2026-01-20", title: "Lake identified as revival candidate", description: "35-year-dead lake in Nashik Road identified from satellite imagery and community reports." },
+    { id: "TL-MH-0010-2", woundId: "SETU-MH-0010", type: "note", date: "2026-02-10", title: "Community consultation held", description: "Gram sabha passed resolution supporting desilting. 180 families involved in planning." },
+    { id: "TL-MH-0010-3", woundId: "SETU-MH-0010", type: "note", date: "2026-02-28", title: "Feasibility study completed", description: "Hydrological survey confirmed lake can hold 35,000 cubic metres post-desilting." },
+    { id: "TL-MH-0010-4", woundId: "SETU-MH-0010", type: "funding", date: "2026-03-20", title: "Funding approved — ₹22 lakh", description: "Aditya Infra Ltd CSR approved full amount. Funds in escrow." },
+    { id: "TL-MH-0010-5", woundId: "SETU-MH-0010", type: "status-change", date: "2026-04-01", title: "Desilting began", description: "Phase 1 desilting commenced with community labour and JCB." },
+    { id: "TL-MH-0010-6", woundId: "SETU-MH-0010", type: "note", date: "2026-06-15", title: "Bund repair complete", description: "Bund wall reconstructed to 3.2m height. Phase 1 & 2 milestones complete." },
+  ],
+  "SETU-UP-0002": [
+    { id: "TL-UP-0002-1", woundId: "SETU-UP-0002", type: "note", date: "2026-05-20", title: "Lab tests requested", description: "Village reported discoloured water and skin conditions. Samples sent to Prayagraj lab." },
+    { id: "TL-UP-0002-2", woundId: "SETU-UP-0002", type: "verification", date: "2026-06-05", title: "Arsenic confirmed", description: "Two of three handpumps tested above safe arsenic limits. Public health alert issued." },
+    { id: "TL-UP-0002-3", woundId: "SETU-UP-0002", type: "corroboration", date: "2026-06-16", title: "120 corroborations gathered", description: "Community members, including students and parents, attested to health impacts." },
+    { id: "TL-UP-0002-4", woundId: "SETU-UP-0002", type: "status-change", date: "2026-06-25", title: "Moved to In Progress", description: "RO plant design approved by PHED. Installation timeline being finalised." },
+  ],
+  "SETU-KA-0001": [
+    { id: "TL-KA-0001-1", woundId: "SETU-KA-0001", type: "note", date: "2025-11-15", title: "Lake reported as dead", description: "Villagers reported the lake had been dry for 5 years. 180 borewells in the catchment were failing." },
+    { id: "TL-KA-0001-2", woundId: "SETU-KA-0001", type: "note", date: "2025-12-10", title: "Borewell survey completed", description: "180 borewells surveyed. 156 were dry or significantly depleted." },
+    { id: "TL-KA-0001-3", woundId: "SETU-KA-0001", type: "note", date: "2026-01-05", title: "Desilting began", description: "Community-led desilting with mechanised support. 8,000 cubic metres of silt removed." },
+    { id: "TL-KA-0001-4", woundId: "SETU-KA-0001", type: "note", date: "2026-02-10", title: "Monsoon recharge completed", description: "Northeast monsoon filled the lake. Water depth recorded at 2.8m." },
+    { id: "TL-KA-0001-5", woundId: "SETU-KA-0001", type: "verification", date: "2026-02-20", title: "Verification — passed", description: "Independent ecologist and community representative both confirmed revival. 167/180 borewells recharged." },
+    { id: "TL-KA-0001-6", woundId: "SETU-KA-0001", type: "status-change", date: "2026-02-28", title: "Marked Healed", description: "Lake revived after 5 years. Wound closed as healed." },
+  ],
+  "SETU-MH-0003": [
+    { id: "TL-MH-0003-1", woundId: "SETU-MH-0003", type: "note", date: "2025-12-01", title: "Toilet block construction started", description: "8-seat toilet block at Hingoli ZP school. Funded under CSR." },
+    { id: "TL-MH-0003-2", woundId: "SETU-MH-0003", type: "note", date: "2026-02-20", title: "Construction completed", description: "Toilet block built to specification. Handed over to school management." },
+    { id: "TL-MH-0003-3", woundId: "SETU-MH-0003", type: "verification", date: "2026-02-28", title: "Verification — built to standard", description: "Building inspector confirmed structural quality and compliance." },
+    { id: "TL-MH-0003-4", woundId: "SETU-MH-0003", type: "note", date: "2026-03-10", title: "Attendance data collected", description: "Pre- and post-intervention attendance analysed. No significant change recorded." },
+    { id: "TL-MH-0003-5", woundId: "SETU-MH-0003", type: "status-change", date: "2026-03-20", title: "Marked Not Achieved", description: "Outcome: built but attendance didn't rise. Lesson recorded — toilet alone does not solve root causes." },
+  ],
+};
+
+// ─── Authority Info ───
+export const AUTHORITY_INFO: Record<string, AuthorityInfo> = {
+  "SETU-MH-0005": {
+    department: "Maharashtra State Electricity Distribution Co. Ltd (MSEDCL)",
+    departmentId: "MSEDCL-JLG-014",
+    sla: "30 days",
+    slaRemaining: 16,
+    contactName: "S. R. Khairnar",
+    contactDesignation: "Executive Engineer, Jalgaon Division",
+    status: "within-sla",
+  },
+  "SETU-UP-0004": {
+    department: "Uttar Pradesh State Electricity Board",
+    departmentId: "UPSEB-PRY-022",
+    sla: "45 days",
+    slaRemaining: 28,
+    contactName: "Rajesh Gupta",
+    contactDesignation: "Superintending Engineer, Prayagraj Circle",
+    status: "within-sla",
+  },
+  "SETU-BR-0002": {
+    department: "Bihar Roads Department",
+    departmentId: "BR-RD-PAT-109",
+    sla: "60 days",
+    slaRemaining: null,
+    contactName: "R. N. Prasad",
+    contactDesignation: "Executive Engineer, Patna Division",
+    status: "overdue",
+  },
+  "SETU-GJ-0001": {
+    department: "Gujarat Water Supply & Sewerage Board",
+    departmentId: "GWSSB-AHM-037",
+    sla: "90 days",
+    slaRemaining: null,
+    contactName: "Ajay Thakkar",
+    contactDesignation: "Deputy Engineer, Ahmedabad Zone",
+    status: "no-response",
+  },
+  "SETU-MH-0002": {
+    department: "Jalgaon Municipal Corporation",
+    departmentId: "JMC-SAN-008",
+    sla: "30 days",
+    slaRemaining: 22,
+    contactName: "Shobha Dhanwate",
+    contactDesignation: "Sanitation Officer, Ward 9",
+    status: "within-sla",
+  },
+};
 
 /* ─── Places ─── */
 export interface Place {
@@ -377,3 +848,33 @@ export const PLATFORM_STATS = {
   districts: new Set(WOUNDS.map(w => w.placeId)).size,
   liveCount: 1269,
 };
+
+/* ─── Accessor Functions for New Data ─── */
+
+export function getVerificationEvents(woundId: string): VerificationEvent[] {
+  return VERIFICATION_EVENTS.filter(e => e.woundId === woundId);
+}
+
+export function getCorroborationEntries(woundId: string): CorroborationEntry[] {
+  return CORROBORATION_ENTRIES.filter(e => e.woundId === woundId);
+}
+
+export function getFunding(woundId: string): FundingEntry[] | undefined {
+  return FUNDING[woundId];
+}
+
+export function getTimelineEvents(woundId: string): TimelineEvent[] {
+  return TIMELINE_EVENTS[woundId] || [];
+}
+
+export function getRelatedWounds(woundId: string): Wound[] {
+  const wound = getWound(woundId);
+  if (!wound || !wound.relatedWoundIds) return [];
+  return wound.relatedWoundIds
+    .map(id => getWound(id))
+    .filter((w): w is Wound => w !== undefined);
+}
+
+export function getAuthority(woundId: string): AuthorityInfo | undefined {
+  return AUTHORITY_INFO[woundId];
+}
