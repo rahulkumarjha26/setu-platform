@@ -436,7 +436,7 @@ export function ReportPopup() {
                   </div>
 
                   {/* Action buttons */}
-                  <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
+                  <div className="report-actions" style={{ display: "flex", gap: 10, marginTop: 24 }}>
                     <button
                       onClick={close}
                       style={{
@@ -488,12 +488,22 @@ export function ReportPopup() {
             @media (max-width: 560px) {
               .report-popup-wrapper {
                 align-items: flex-end !important;
+                padding-bottom: 0 !important;
               }
               .report-popup-card {
                 width: 100% !important;
                 max-width: 100% !important;
                 border-radius: 26px 26px 0 0 !important;
                 padding: 24px 20px calc(24px + env(safe-area-inset-bottom)) !important;
+                max-height: 90vh !important;
+                overflow-y: auto !important;
+                margin-bottom: 0 !important;
+              }
+              .report-popup-card .report-actions {
+                flex-direction: column !important;
+              }
+              .report-popup-card .report-actions button {
+                width: 100% !important;
               }
             }
 
