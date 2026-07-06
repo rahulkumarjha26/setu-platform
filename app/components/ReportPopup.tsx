@@ -484,26 +484,15 @@ export function ReportPopup() {
           </div>{/* /report-popup-wrapper */}
 
           <style jsx>{`
-            /* Mobile: bottom sheet instead of centered */
+            /* Mobile: centered like desktop */
             @media (max-width: 560px) {
-              .report-popup-wrapper {
-                align-items: flex-end !important;
-                padding-bottom: 0 !important;
-              }
               .report-popup-card {
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 26px 26px 0 0 !important;
-                padding: 24px 20px calc(24px + env(safe-area-inset-bottom)) !important;
+                width: calc(100% - 32px) !important;
+                max-width: 400px !important;
+                border-radius: 28px !important;
+                padding: 28px !important;
                 max-height: 90vh !important;
                 overflow-y: auto !important;
-                margin-bottom: 0 !important;
-              }
-              .report-popup-card .report-actions {
-                flex-direction: column !important;
-              }
-              .report-popup-card .report-actions button {
-                width: 100% !important;
               }
             }
 
