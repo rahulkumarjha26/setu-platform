@@ -342,14 +342,21 @@
 /* TABS */
 .tabs {
   display: flex;
-  gap: 32px;
+  gap: 24px;
   border-bottom: 1px solid #E4EBE7;
   margin-top: 52px;
   position: sticky;
-  top: 107px;
+  top: 60px;
   background: #FCFEFD;
   z-index: 10;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  overscroll-behavior: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+@media (max-width: 680px) {
+  .tabs { top: 0; gap: 20px; margin-top: 32px; }
 }
 .tab {
   padding: 16px 2px;
