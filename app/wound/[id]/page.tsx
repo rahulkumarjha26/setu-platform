@@ -62,7 +62,7 @@ export default function WoundJourneyPage() {
         Back to {place?.name ?? wound.place}
       </Link>
 
-      <div className="layout-split" style={{ marginTop: 8 }}>
+      <div className="layout-split wound-layout" style={{ marginTop: 8 }}>
         {/* ─── LEFT COLUMN ─── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -149,6 +149,7 @@ export default function WoundJourneyPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15, ease }}
+          className="wound-right"
           style={{ position: "sticky", top: 24, display: "flex", flexDirection: "column", gap: 28 }}
         >
           {/* Action Bar */}

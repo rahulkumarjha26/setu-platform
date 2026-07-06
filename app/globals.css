@@ -420,6 +420,15 @@ table.data-table tr:hover td{background:var(--bg-muted)}
 .milestone-segment.active{background:var(--action)}
 .milestone-segment.empty{background:var(--bg-muted)}
 .corroboration-quote{font-style:italic;color:var(--text-2);font-size:14px;line-height:1.55;padding-left:12px;border-left:2px solid var(--border)}
+
+/* ─── WOUND PAGE MOBILE ─── */
+@media(max-width:640px){
+  .wound-layout{grid-template-columns:1fr!important}
+  .wound-layout .wound-right{position:static!important}
+  .gallery-scroll>button{width:220px!important}
+  .wound-layout .flex-col.gap-24{gap:16px!important}
+  .wound-layout .flex-col.gap-28{gap:20px!important}
+}
 .stagger>*:nth-child(1){animation-delay:0s}
 .stagger>*:nth-child(2){animation-delay:.06s}
 .stagger>*:nth-child(3){animation-delay:.12s}
