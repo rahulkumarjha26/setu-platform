@@ -335,7 +335,7 @@ export default function AtlasPage() {
         .atlas-beat { width: 8px; height: 8px; border-radius: 50%; background: #2F9E5E; animation: atlas-beat 1.8s ease-out infinite; }
         @keyframes atlas-beat { 0% { box-shadow: 0 0 0 0 rgba(47,158,94,.5); } 70% { box-shadow: 0 0 0 8px rgba(47,158,94,0); } 100% { box-shadow: 0 0 0 0 rgba(47,158,94,0); } }
         @media (max-width: 560px) {
-          .atlas-legend { left: 50% !important; transform: translateX(-50%) !important; bottom: 160px !important; }
+          .atlas-legend { left: 16px !important; transform: none !important; bottom: 200px !important; }
         }
       `}</style>
     </div>
