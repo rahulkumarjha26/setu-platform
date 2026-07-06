@@ -85,6 +85,45 @@ export interface AuthorityInfo {
   status: "within-sla" | "overdue" | "no-response" | "resolved";
 }
 
+// ─── CSR / Compliance Dashboard Types ───
+export interface CSRCompany {
+  id: string;
+  name: string;
+  logoBg: string;
+  industry: string;
+  financialYear: string;
+  csrObligation: number; // in INR Cr
+  csrSpent: number;
+  csrUnspent: number;
+  csrDeadline: string;
+  projectsActive: number;
+  projectsCompleted: number;
+  complianceScore: number; // 0-100
+  totalImpact: { lives: number; woundsHealed: number; statesReached: number };
+}
+
+export interface CSREscrow {
+  id: string;
+  companyId: string;
+  projectName: string;
+  totalAmount: number;
+  disbursed: number;
+  held: number;
+  pending: number;
+  nextRelease: string;
+  status: "active" | "completed" | "paused";
+}
+
+export interface CSRComplianceReport {
+  year: string;
+  filed: boolean;
+  dueDate: string;
+  filedDate?: string;
+  status: "filed" | "overdue" | "pending";
+  accuracyScore: number;
+  notes?: string;
+}
+
 /* ─── Wounds ─── */
 export interface Wound {
   id: string;
@@ -576,6 +615,197 @@ export const AUTHORITY_INFO: Record<string, AuthorityInfo> = {
   },
 };
 
+// ─── CSR Companies ───
+export const CSR_COMPANIES: CSRCompany[] = [
+  {
+    id: "CSR-TATA",
+    name: "Tata CSR Foundation",
+    logoBg: "#1A237E",
+    industry: "Conglomerate",
+    financialYear: "2025-26",
+    csrObligation: 450,
+    csrSpent: 412,
+    csrUnspent: 38,
+    csrDeadline: "31 Mar 2026",
+    projectsActive: 14,
+    projectsCompleted: 36,
+    complianceScore: 94,
+    totalImpact: { lives: 128000, woundsHealed: 42, statesReached: 18 },
+  },
+  {
+    id: "CSR-ABG",
+    name: "Aditya Birla Group",
+    logoBg: "#B71C1C",
+    industry: "Conglomerate",
+    financialYear: "2025-26",
+    csrObligation: 320,
+    csrSpent: 298,
+    csrUnspent: 22,
+    csrDeadline: "31 Mar 2026",
+    projectsActive: 11,
+    projectsCompleted: 28,
+    complianceScore: 91,
+    totalImpact: { lives: 94000, woundsHealed: 31, statesReached: 14 },
+  },
+  {
+    id: "CSR-INFY",
+    name: "Infosys Foundation",
+    logoBg: "#1B5E20",
+    industry: "IT & Technology",
+    financialYear: "2025-26",
+    csrObligation: 185,
+    csrSpent: 172,
+    csrUnspent: 13,
+    csrDeadline: "31 Mar 2026",
+    projectsActive: 8,
+    projectsCompleted: 22,
+    complianceScore: 97,
+    totalImpact: { lives: 76000, woundsHealed: 26, statesReached: 12 },
+  },
+  {
+    id: "CSR-RIL",
+    name: "Reliance Foundation",
+    logoBg: "#E65100",
+    industry: "Energy & Telecom",
+    financialYear: "2025-26",
+    csrObligation: 680,
+    csrSpent: 645,
+    csrUnspent: 35,
+    csrDeadline: "31 Mar 2026",
+    projectsActive: 22,
+    projectsCompleted: 48,
+    complianceScore: 89,
+    totalImpact: { lives: 214000, woundsHealed: 55, statesReached: 24 },
+  },
+];
+
+// ─── CSR Escrow Records ───
+export const CSR_ESCROWS: CSREscrow[] = [
+  {
+    id: "ESC-TATA-001",
+    companyId: "CSR-TATA",
+    projectName: "Water Conservation — 50 Lakes Revival, Rajasthan",
+    totalAmount: 48000000,
+    disbursed: 32000000,
+    held: 12000000,
+    pending: 4000000,
+    nextRelease: "15 Aug 2026",
+    status: "active",
+  },
+  {
+    id: "ESC-TATA-002",
+    companyId: "CSR-TATA",
+    projectName: "Smart Toilets — 200 ZP Schools, Maharashtra",
+    totalAmount: 35000000,
+    disbursed: 35000000,
+    held: 0,
+    pending: 0,
+    nextRelease: "—",
+    status: "completed",
+  },
+  {
+    id: "ESC-TATA-003",
+    companyId: "CSR-TATA",
+    projectName: "Digital Literacy — Rural Karnataka",
+    totalAmount: 12500000,
+    disbursed: 5000000,
+    held: 5500000,
+    pending: 2000000,
+    nextRelease: "01 Sep 2026",
+    status: "active",
+  },
+  {
+    id: "ESC-ABG-001",
+    companyId: "CSR-ABG",
+    projectName: "Waste-to-Wealth — Segregation Plants, MP",
+    totalAmount: 28000000,
+    disbursed: 18000000,
+    held: 6000000,
+    pending: 4000000,
+    nextRelease: "10 Oct 2026",
+    status: "active",
+  },
+  {
+    id: "ESC-ABG-002",
+    companyId: "CSR-ABG",
+    projectName: "Anganwadi Nutrition Kit Distribution, Odisha",
+    totalAmount: 8500000,
+    disbursed: 3000000,
+    held: 3500000,
+    pending: 2000000,
+    nextRelease: "20 Aug 2026",
+    status: "active",
+  },
+  {
+    id: "ESC-INFY-001",
+    companyId: "CSR-INFY",
+    projectName: "STEM Labs — 150 Government High Schools",
+    totalAmount: 22000000,
+    disbursed: 16000000,
+    held: 4000000,
+    pending: 2000000,
+    nextRelease: "05 Sep 2026",
+    status: "active",
+  },
+  {
+    id: "ESC-INFY-002",
+    companyId: "CSR-INFY",
+    projectName: "Community RO Plants — Drought-Hit Villages",
+    totalAmount: 9500000,
+    disbursed: 2000000,
+    held: 5500000,
+    pending: 2000000,
+    nextRelease: "Pending Review",
+    status: "paused",
+  },
+  {
+    id: "ESC-RIL-001",
+    companyId: "CSR-RIL",
+    projectName: "Solar Micro-Grid — 25 Villages, Gujarat",
+    totalAmount: 62000000,
+    disbursed: 38000000,
+    held: 16000000,
+    pending: 8000000,
+    nextRelease: "01 Dec 2026",
+    status: "active",
+  },
+  {
+    id: "ESC-RIL-002",
+    companyId: "CSR-RIL",
+    projectName: "Health Mobile Vans — Tribal Corridor",
+    totalAmount: 18500000,
+    disbursed: 12000000,
+    held: 4500000,
+    pending: 2000000,
+    nextRelease: "15 Sep 2026",
+    status: "active",
+  },
+];
+
+// ─── CSR Compliance Reports ───
+export const CSR_COMPLIANCE: Record<string, CSRComplianceReport[]> = {
+  "CSR-TATA": [
+    { year: "2023-24", filed: true, dueDate: "31 Dec 2024", filedDate: "28 Dec 2024", status: "filed", accuracyScore: 96, notes: "Annual Report filed on time. All projects verified." },
+    { year: "2024-25", filed: true, dueDate: "31 Dec 2025", filedDate: "22 Dec 2025", status: "filed", accuracyScore: 98, notes: "CSR-1 form submitted. 3 projects audited externally." },
+    { year: "2025-26", filed: false, dueDate: "31 Dec 2026", filedDate: undefined, status: "pending", accuracyScore: 0, notes: "In progress — funds still being disbursed." },
+  ],
+  "CSR-ABG": [
+    { year: "2023-24", filed: true, dueDate: "31 Dec 2024", filedDate: "30 Dec 2024", status: "filed", accuracyScore: 92, notes: "Filed with minor compliance notes on documentation." },
+    { year: "2024-25", filed: true, dueDate: "31 Dec 2025", filedDate: "15 Jan 2026", status: "filed", accuracyScore: 90, notes: "Filed 15 days late. Accuracy impacted by reporting gaps in 2 projects." },
+    { year: "2025-26", filed: false, dueDate: "31 Dec 2026", filedDate: undefined, status: "pending", accuracyScore: 0, notes: "Awaiting final disbursement data." },
+  ],
+  "CSR-INFY": [
+    { year: "2023-24", filed: true, dueDate: "31 Dec 2024", filedDate: "20 Dec 2024", status: "filed", accuracyScore: 99, notes: "All projects verified. Exemplary compliance record." },
+    { year: "2024-25", filed: true, dueDate: "31 Dec 2025", filedDate: "18 Dec 2025", status: "filed", accuracyScore: 97, notes: "Audited by KPMG. One minor discrepancy corrected." },
+    { year: "2025-26", filed: false, dueDate: "31 Dec 2026", filedDate: undefined, status: "pending", accuracyScore: 0, notes: "On track for early submission." },
+  ],
+  "CSR-RIL": [
+    { year: "2023-24", filed: true, dueDate: "31 Dec 2024", filedDate: "31 Dec 2024", status: "filed", accuracyScore: 88, notes: "Filed on deadline. Accuracy impacted by scale of operations." },
+    { year: "2024-25", filed: true, dueDate: "31 Dec 2025", filedDate: "05 Jan 2026", status: "filed", accuracyScore: 85, notes: "Filed 5 days late. 2 projects had incomplete documentation." },
+    { year: "2025-26", filed: false, dueDate: "31 Dec 2026", filedDate: undefined, status: "pending", accuracyScore: 0, notes: "Large portfolio — consolidation in progress." },
+  ],
+};
+
 /* ─── Places ─── */
 export interface Place {
   id: string;
@@ -877,4 +1107,17 @@ export function getRelatedWounds(woundId: string): Wound[] {
 
 export function getAuthority(woundId: string): AuthorityInfo | undefined {
   return AUTHORITY_INFO[woundId];
+}
+
+// ─── CSR Accessor Functions ───
+export function getCSRCompany(id: string): CSRCompany | undefined {
+  return CSR_COMPANIES.find(c => c.id === id);
+}
+
+export function getCSREscrows(companyId: string): CSREscrow[] {
+  return CSR_ESCROWS.filter(e => e.companyId === companyId);
+}
+
+export function getCSRCompliance(companyId: string): CSRComplianceReport[] {
+  return CSR_COMPLIANCE[companyId] || [];
 }
