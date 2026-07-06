@@ -314,7 +314,7 @@ export default function AtlasPage() {
       </div>
 
       {/* Legend */}
-      <div className="atlas-overlay" style={{
+      <div className="atlas-overlay atlas-legend" style={{
         left: 20, bottom: 130,
         background: "rgba(252,251,249,.92)", backdropFilter: "blur(8px)",
         border: "1px solid var(--border)", borderRadius: 16, padding: "14px 16px",
@@ -334,6 +334,9 @@ export default function AtlasPage() {
         .atlas-overlay > * { pointer-events: auto; }
         .atlas-beat { width: 8px; height: 8px; border-radius: 50%; background: #2F9E5E; animation: atlas-beat 1.8s ease-out infinite; }
         @keyframes atlas-beat { 0% { box-shadow: 0 0 0 0 rgba(47,158,94,.5); } 70% { box-shadow: 0 0 0 8px rgba(47,158,94,0); } 100% { box-shadow: 0 0 0 0 rgba(47,158,94,0); } }
+        @media (max-width: 560px) {
+          .atlas-legend { left: 50% !important; transform: translateX(-50%) !important; bottom: 160px !important; }
+        }
       `}</style>
     </div>
   );
