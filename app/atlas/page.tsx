@@ -313,30 +313,11 @@ export default function AtlasPage() {
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="atlas-overlay atlas-legend" style={{
-        left: 20, bottom: 130,
-        background: "rgba(252,251,249,.92)", backdropFilter: "blur(8px)",
-        border: "1px solid var(--border)", borderRadius: 16, padding: "14px 16px",
-        boxShadow: "0 2px 10px rgba(14,26,22,.06)", maxWidth: 200,
-      }}>
-        <h4 className="text-label-up" style={{ color: "var(--text-3)", marginBottom: 10, letterSpacing: ".06em", fontSize: 11 }}>By status</h4>
-        {STATUS_LIST.map(key => (
-          <div key={key} style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 7, fontSize: 12, color: "var(--text-2)" }}>
-            <span style={{ width: 12, height: 12, borderRadius: "50%", background: STATUS_META[key].mark, flexShrink: 0, border: "2px solid #fff", boxShadow: "0 1px 2px rgba(0,0,0,.15)" }} />
-            {STATUS_META[key].label}
-          </div>
-        ))}
-      </div>
-
       <style jsx>{`
         .atlas-overlay { position: absolute; z-index: 10; pointer-events: none; }
         .atlas-overlay > * { pointer-events: auto; }
         .atlas-beat { width: 8px; height: 8px; border-radius: 50%; background: #2F9E5E; animation: atlas-beat 1.8s ease-out infinite; }
         @keyframes atlas-beat { 0% { box-shadow: 0 0 0 0 rgba(47,158,94,.5); } 70% { box-shadow: 0 0 0 8px rgba(47,158,94,0); } 100% { box-shadow: 0 0 0 0 rgba(47,158,94,0); } }
-        @media (max-width: 560px) {
-          .atlas-legend { left: 16px !important; transform: none !important; bottom: 200px !important; }
-        }
       `}</style>
     </div>
   );
