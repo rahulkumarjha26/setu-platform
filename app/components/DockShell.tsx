@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe, ListFilter, Plus, User, Search, Bell, LayoutDashboard, Settings } from "lucide-react";
+import { Globe, ListFilter, Plus, User, Search, Bell, LayoutDashboard, Settings, BarChart3, Handshake } from "lucide-react";
 import { motion } from "framer-motion";
 import { useReportPopup } from "./ReportPopupContext";
 import { NOTIFICATIONS } from "@/lib/mock-data";
@@ -17,9 +17,11 @@ const CONSOLE_ROUTE: Record<string, string> = {
 
 const LENSES: { id: string; href: string; Icon: typeof LayoutDashboard; label: string }[] = [
   { id: "console", href: "", Icon: LayoutDashboard, label: "Console" },
+  { id: "analytics", href: "/analytics", Icon: BarChart3, label: "Analytics" },
   { id: "atlas", href: "/atlas", Icon: Globe, label: "Atlas" },
   { id: "stream", href: "/stream", Icon: ListFilter, label: "Stream" },
   { id: "search", href: "/search", Icon: Search, label: "Search" },
+  { id: "funder-matching", href: "/funder-matching", Icon: Handshake, label: "Funder" },
   { id: "notifications", href: "/notifications", Icon: Bell, label: "Notifications" },
 ];
 
