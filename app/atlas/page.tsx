@@ -42,6 +42,13 @@ export default function AtlasPage() {
     return () => clearInterval(iv);
   }, []);
 
+  // Show the first wound as an example on mount
+  useEffect(() => {
+    if (WOUNDS.length > 0) {
+      setSelectedWound(WOUNDS[0]);
+    }
+  }, []);
+
   const filteredData = useMemo(() => {
     if (metric === "need") {
       return {
@@ -146,9 +153,9 @@ export default function AtlasPage() {
           data={filteredData}
           clusterMaxZoom={12}
           clusterRadius={50}
-          clusterColors={["var(--c-p-700)", "var(--c-p-500)", "var(--st-healed-mark)"]}
+          clusterColors={["#12564F", "#2B857C", "#2F9E5E"]}
           clusterThresholds={[8, 20]}
-          pointColor="var(--c-p-700)"
+          pointColor="#12564F"
           pointRadius={14}
           onPointClick={handlePointClick}
           onClusterClick={(_id, coords) => {
