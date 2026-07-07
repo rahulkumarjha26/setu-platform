@@ -2,49 +2,37 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe, ListFilter, Plus, User, Search, Bell, LayoutDashboard } from "lucide-react";
+import { Globe, ListFilter, Plus, User, Search, Bell, LayoutDashboard, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { useReportPopup } from "./ReportPopupContext";
 import { NOTIFICATIONS } from "@/lib/mock-data";
 import { useRole } from "./RoleContext";
 
-const ROLE_LENSES: Record<string, { id: string; href: string; Icon: typeof LayoutDashboard; label: string }[]> = {
-  citizen: [
-    { id: "home", href: "/home", Icon: LayoutDashboard, label: "Home" },
-    { id: "atlas", href: "/atlas", Icon: Globe, label: "Atlas" },
-    { id: "stream", href: "/stream", Icon: ListFilter, label: "Stream" },
-    { id: "search", href: "/search", Icon: Search, label: "Search" },
-    { id: "notifications", href: "/notifications", Icon: Bell, label: "Notifications" },
-  ],
-  ngo: [
-    { id: "home", href: "/home", Icon: LayoutDashboard, label: "Home" },
-    { id: "ngo", href: "/ngo", Icon: LayoutDashboard, label: "NGO" },
-    { id: "atlas", href: "/atlas", Icon: Globe, label: "Atlas" },
-    { id: "stream", href: "/stream", Icon: ListFilter, label: "Stream" },
-    { id: "notifications", href: "/notifications", Icon: Bell, label: "Notifications" },
-  ],
-  corporate: [
-    { id: "console", href: "/corporate", Icon: LayoutDashboard, label: "Console" },
-    { id: "atlas", href: "/atlas", Icon: Globe, label: "Atlas" },
-    { id: "stream", href: "/stream", Icon: ListFilter, label: "Stream" },
-    { id: "search", href: "/search", Icon: Search, label: "Search" },
-    { id: "notifications", href: "/notifications", Icon: Bell, label: "Notifications" },
-  ],
-  government: [
-    { id: "home", href: "/home", Icon: LayoutDashboard, label: "Home" },
-    { id: "government", href: "/government", Icon: LayoutDashboard, label: "Government" },
-    { id: "atlas", href: "/atlas", Icon: Globe, label: "Atlas" },
-    { id: "stream", href: "/stream", Icon: ListFilter, label: "Stream" },
-    { id: "notifications", href: "/notifications", Icon: Bell, label: "Notifications" },
-  ],
+const CONSOLE_ROUTE: Record<string, string> = {
+  citizen: "/home",
+  ngo: "/ngo",
+  corporate: "/corporate",
+  government: "/government",
 };
+
+const LENSES: { id: string; href: string; Icon: typeof LayoutDashboard; label: string }[] = [
+  { id: "console", href: "", Icon: LayoutDashboard, label: "Console" },
+  { id: "atlas", href: "/atlas", Icon: Globe, label: "Atlas" },
+  { id: "stream", href: "/stream", Icon: ListFilter, label: "Stream" },
+  { id: "search", href: "/search", Icon: Search, label: "Search" },
+  { id: "notifications", href: "/notifications", Icon: Bell, label: "Notifications" },
+];
 
 export function DockShell() {
   const pathname = usePathname();
   const { open } = useReportPopup();
   const { role } = useRole();
   const unreadCount = NOTIFICATIONS.filter(n => !n.read).length;
-  const lenses = ROLE_LENSES[role] ?? ROLE_LENSES.citizen;
+  const lenses = LENSES.map((lens) =>
+    lens.id === "console"
+      ? { ...lens, href: CONSOLE_ROUTE[role] ?? "/home" }
+      : lens
+  );
 
   return (
     <div className="dock-container">
@@ -89,6 +77,14 @@ export function DockShell() {
           aria-current={pathname === "/profile" ? "page" : undefined}
         >
           <User size={20} />
+        </Link>
+        <Link
+          href="/settings"
+          className={`dock-btn${pathname === "/settings" ? " is-active" : ""}`}
+          aria-label="Settings"
+          aria-current={pathname === "/settings" ? "page" : undefined}
+        >
+          <Settings size={20} />
         </Link>
       </motion.nav>
     </div>
