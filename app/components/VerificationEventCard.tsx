@@ -4,6 +4,18 @@ import { motion } from "framer-motion";
 import { CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import type { VerificationEvent } from "@/lib/mock-data";
 
+const BROKEN_IMAGE_PLACEHOLDER =
+  "data:image/svg+xml," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+    '<rect width="100" height="100" fill="#f4f4f5" rx="6"/>' +
+    '<g transform="translate(50,50)" fill="none" stroke="#a1a1aa" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">' +
+    '<path d="M-16,-7 L-10,-7 L-8,-12 L8,-12 L10,-7 L16,-7 C19,-7 21,-5 21,-2 L21,10 C21,13 19,15 16,15 L-16,15 C-19,15 -21,13 -21,10 L-21,-2 C-21,-5 -19,-7 -16,-7 Z"/>' +
+    '<circle cx="0" cy="4" r="6"/>' +
+    "</g>" +
+    "</svg>",
+  );
+
 interface VerificationEventCardProps {
   event: VerificationEvent;
 }
@@ -152,6 +164,7 @@ export function VerificationEventCard({ event }: VerificationEventCardProps) {
               <img
                 src={url}
                 alt={`Evidence ${idx + 1}`}
+                onError={(e) => { e.currentTarget.src = BROKEN_IMAGE_PLACEHOLDER; }}
                 style={{
                   width: "100%",
                   height: "100%",

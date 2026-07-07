@@ -4,129 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCheck } from "lucide-react";
+import { NOTIFICATIONS } from "@/lib/mock-data";
+import type { Notification } from "@/lib/mock-data";
 
 const TABS = ["All", "Following", "Nearby"] as const;
-
-interface NotificationItem {
-  id: string;
-  type: "new-report" | "progress" | "healed" | "routed" | "not-achieved" | "corroboration" | "nearby";
-  message: string;
-  time: string;
-  group: "Today" | "This Week" | "Earlier";
-  woundSlug: string;
-  read: boolean;
-}
-
-const NOTIFICATIONS: NotificationItem[] = [
-  {
-    id: "n1",
-    type: "progress",
-    message: "Your reported handpump moved to In Progress",
-    time: "2h ago",
-    group: "Today",
-    woundSlug: "SETU-RJ-0182",
-    read: false,
-  },
-  {
-    id: "n2",
-    type: "healed",
-    message: "A wound near you was healed \u2014 Jayanagar, Bangalore",
-    time: "5h ago",
-    group: "Today",
-    woundSlug: "SETU-KA-1250",
-    read: false,
-  },
-  {
-    id: "n3",
-    type: "corroboration",
-    message: "Corroboration threshold met \u2014 your report is now verified",
-    time: "7h ago",
-    group: "Today",
-    woundSlug: "SETU-DL-0567",
-    read: false,
-  },
-  {
-    id: "n4",
-    type: "new-report",
-    message: "New report near you \u2014 Broken streetlight, Ward 7",
-    time: "9h ago",
-    group: "Today",
-    woundSlug: "SETU-DL-0580",
-    read: true,
-  },
-  {
-    id: "n5",
-    type: "not-achieved",
-    message: "Your wound was marked Not Achieved \u2014 here\u2019s why",
-    time: "Yesterday",
-    group: "Today",
-    woundSlug: "SETU-UP-0321",
-    read: true,
-  },
-  {
-    id: "n6",
-    type: "routed",
-    message: "Streetlight outage routed to NDMC \u2014 tracking ref DL-0567",
-    time: "Yesterday",
-    group: "Today",
-    woundSlug: "SETU-DL-0567",
-    read: true,
-  },
-  {
-    id: "n7",
-    type: "healed",
-    message: "Pipeline replacement in T Nagar completed \u2014 84 corroborations",
-    time: "Mon, 3:30 PM",
-    group: "This Week",
-    woundSlug: "SETU-TN-0450",
-    read: true,
-  },
-  {
-    id: "n8",
-    type: "new-report",
-    message: "New classified wounds need your verification: 4 in Delhi NCR",
-    time: "Mon, 10:15 AM",
-    group: "This Week",
-    woundSlug: "SETU-DL-0580",
-    read: true,
-  },
-  {
-    id: "n9",
-    type: "routed",
-    message: "Lake encroachment survey routed to Karnataka Lake Authority",
-    time: "Sun, 2:00 PM",
-    group: "This Week",
-    woundSlug: "SETU-KA-0431",
-    read: true,
-  },
-  {
-    id: "n10",
-    type: "corroboration",
-    message: "Pothole cluster on Ring Road \u2014 corroborated by 63 citizens",
-    time: "Sat, 9:22 AM",
-    group: "This Week",
-    woundSlug: "SETU-KA-1210",
-    read: true,
-  },
-  {
-    id: "n11",
-    type: "nearby",
-    message: "3 new wounds reported in your area: Koramangala, Bengaluru",
-    time: "18 Jun",
-    group: "Earlier",
-    woundSlug: "SETU-KA-1224",
-    read: true,
-  },
-  {
-    id: "n12",
-    type: "healed",
-    message: "Mithi River debris clearing completed \u2014 112 corroborations",
-    time: "14 Jun",
-    group: "Earlier",
-    woundSlug: "SETU-MH-0891",
-    read: true,
-  },
-];
 
 const TYPE_CONFIG = {
   "new-report": {
@@ -159,6 +40,24 @@ const TYPE_CONFIG = {
     bg: "var(--st-failed-wash)",
     label: "Not achieved",
   },
+  status: {
+    glyph: "\u25B2",
+    color: "var(--st-active-mark)",
+    bg: "var(--st-active-wash)",
+    label: "Status update",
+  },
+  failed: {
+    glyph: "\u2014",
+    color: "var(--st-failed-mark)",
+    bg: "var(--st-failed-wash)",
+    label: "Not achieved",
+  },
+  verifier: {
+    glyph: "\u25C6",
+    color: "var(--st-assess-mark)",
+    bg: "var(--st-assess-wash)",
+    label: "Verifier",
+  },
   corroboration: {
     glyph: "\u25C6",
     color: "var(--st-assess-mark)",
@@ -180,11 +79,11 @@ export default function NotificationsPage() {
     (_n) => activeTab === "All" // all tabs show all for now
   );
 
-  const todayItems = filtered.filter((n) => n.group === "Today");
-  const weekItems = filtered.filter((n) => n.group === "This Week");
-  const earlierItems = filtered.filter((n) => n.group === "Earlier");
+  const todayItems = filtered.filter((n) => n.group === "today");
+  const weekItems = filtered.filter((n) => n.group === "week");
+  const earlierItems = filtered.filter((n) => n.group === "earlier");
 
-  const renderGroup = (items: NotificationItem[], groupName: string) => {
+  const renderGroup = (items: Notification[], groupName: string) => {
     if (items.length === 0) return null;
     return (
       <div key={groupName} style={{ marginBottom: groupName !== "Earlier" ? 32 : 0 }}>
@@ -203,7 +102,7 @@ export default function NotificationsPage() {
             transition={{ delay: 0.02 * i, duration: 0.25 }}
           >
             <Link
-              href={`/wound/${item.woundSlug}`}
+              href={`/wound/${item.woundId}`}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -268,7 +167,7 @@ export default function NotificationsPage() {
                     fontWeight: item.read ? 400 : 500,
                   }}
                 >
-                  {item.message}
+                  {item.text}
                 </p>
               </div>
 

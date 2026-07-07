@@ -5,27 +5,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronRight, ArrowUpRight } from "lucide-react";
 import { StatusPill } from "@/app/components/StatusPill";
-
-const METRICS = [
-  { label: "Wounds", value: "84", delta: { val: "+12%", cls: "delta-up" } },
-  { label: "Healed", value: "12", delta: { val: "+4%", cls: "delta-up" } },
-  { label: "Verified", value: "96%", delta: { val: "flat", cls: "delta-flat" } },
-  { label: "Avg to heal", value: "18d", delta: { val: "-3d", cls: "delta-down" } },
-];
+import { getPlace, woundsByPlace } from "@/lib/mock-data";
 
 const COVERAGE = [
   { name: "Water", source: "CGWB", done: true },
   { name: "Schools", source: "UDISE", done: true },
   { name: "Elder care", source: null, done: false },
-];
-
-const WOUNDS = [
-  { id: "SETU-MH-0001", status: "healed" as const, title: "Broken handpump repaired", place: "Ward 7, Buxar", corr: 31 },
-  { id: "SETU-MH-0002", status: "in-progress" as const, title: "Road crater near bus stand", place: "Main Rd, Buxar", corr: 24 },
-  { id: "SETU-MH-0003", status: "reported" as const, title: "Open drain behind PHC", place: "Itarhi, Buxar", corr: 8 },
-  { id: "SETU-MH-0004", status: "routed" as const, title: "School boundary wall collapse", place: "Simri, Buxar", corr: 19 },
-  { id: "SETU-MH-0005", status: "in-progress" as const, title: "Anganwadi roof leak", place: "Chausa, Buxar", corr: 15 },
-  { id: "SETU-MH-0006", status: "assessing" as const, title: "Missing streetlight transformer", place: "Dumraon, Buxar", corr: 6 },
 ];
 
 const CHART_POINTS = [
@@ -47,7 +32,21 @@ const MONTHS = ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "
 export default function PlacePage() {
   const params = useParams();
   const placeId = (params?.id as string) || "buxar";
-  const displayName = placeId.charAt(0).toUpperCase() + placeId.slice(1);
+  const place = getPlace(placeId);
+  const displayName = place?.name || (placeId.charAt(0).toUpperCase() + placeId.slice(1));
+  const wounds = woundsByPlace(placeId);
+
+  const total = wounds.length;
+  const healed = wounds.filter((w) => w.status === "healed").length;
+  const inProgress = wounds.filter((w) => w.status === "in-progress").length;
+  const open = wounds.filter((w) => w.status === "reported" || w.status === "assessing").length;
+
+  const METRICS = [
+    { label: "Wounds", value: String(total), delta: { val: "\u2014", cls: "delta-flat" } },
+    { label: "Healed", value: String(healed), delta: { val: "\u2014", cls: "delta-flat" } },
+    { label: "In Progress", value: String(inProgress), delta: { val: "\u2014", cls: "delta-flat" } },
+    { label: "Open", value: String(open), delta: { val: "\u2014", cls: "delta-flat" } },
+  ];
 
   return (
     <div
@@ -61,7 +60,7 @@ export default function PlacePage() {
       <nav className="breadcrumb" style={{ marginBottom: 24 }}>
         <Link href="/atlas">India</Link>
         <ChevronRight size={12} />
-        <Link href="/atlas">Bihar</Link>
+        <Link href="/atlas">{place?.state || "State"}</Link>
         <ChevronRight size={12} />
         <span style={{ color: "var(--text)" }}>{displayName}</span>
       </nav>
@@ -72,7 +71,7 @@ export default function PlacePage() {
           className="pill pill--active"
           style={{ height: 24, fontSize: 11 }}
         >
-          2nd-worst in state · arsenic
+          {place?.rank || "Active district"}{place?.focus ? ` · ${place.focus}` : ""}
         </span>
       </div>
 
@@ -211,7 +210,7 @@ export default function PlacePage() {
       </div>
 
       <div className="flex flex-col gap-4">
-        {WOUNDS.map((w, i) => (
+        {wounds.map((w, i) => (
           <Link
             key={i}
             href={`/wound/${w.id}`}
@@ -235,7 +234,7 @@ export default function PlacePage() {
               </div>
             </div>
             <span className="text-mono text-2" style={{ whiteSpace: "nowrap", fontSize: 13 }}>
-              {w.corr} corr.
+              {w.corroborations} corr.
             </span>
           </Link>
         ))}
