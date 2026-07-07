@@ -406,13 +406,13 @@ export default function NGOPage() {
     <div className="flex flex-col" style={{ gap: 24 }}>
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          display: "flex",
+          flexWrap: "wrap",
           gap: 16,
         }}
       >
         {PIPELINE_COLS.map((col) => (
-          <div key={col.title}>
+          <div key={col.title} style={{ flex: "1 1 240px", minWidth: 240 }}>
             <h3
               className="text-label-up text-3"
               style={{

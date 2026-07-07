@@ -16,13 +16,13 @@ export const STATUS_META: Record<StatusKey, { label: string; glyph: string; pill
   "not-achieved":  { label: "Not Achieved",   glyph: "—", pillCls: "pill--failed",   mark: "#C25A1E" },
 };
 
-export const CATEGORY_META: Record<CategoryKey, { label: string; icon: string }> = {
-  water:      { label: "Water",      icon: "M12 2s6 7 6 11a6 6 0 01-12 0c0-4 6-11 6-11z" },
-  sanitation: { label: "Sanitation", icon: "M4 10h16M6 10V6a2 2 0 012-2h8a2 2 0 012 2v4M8 10v10M16 10v10" },
-  roads:      { label: "Roads",      icon: "M4 22L9 2M20 22l-5-20M12 6v2M12 12v2M12 18v2" },
-  education:  { label: "Education",  icon: "M22 10L12 5 2 10l10 5 10-5zM6 12v5c0 1 3 3 6 3s6-2 6-3v-5" },
-  health:     { label: "Health",     icon: "M3 12h4l2-6 4 12 2-6h6" },
-  elder:      { label: "Elder",      icon: "M12 21v-7M9 14h6M9 6a3 3 0 116 0c0 2-3 3-3 5" },
+export const CATEGORY_META: Record<CategoryKey, { label: string; icon: string; color: string }> = {
+  water:      { label: "Water",      icon: "M12 2s6 7 6 11a6 6 0 01-12 0c0-4 6-11 6-11z", color: "var(--c-p-400)" },
+  sanitation: { label: "Sanitation", icon: "M4 10h16M6 10V6a2 2 0 012-2h8a2 2 0 012 2v4M8 10v10M16 10v10", color: "var(--st-gov-mark)" },
+  roads:      { label: "Roads",      icon: "M4 22L9 2M20 22l-5-20M12 6v2M12 12v2M12 18v2", color: "var(--st-assess-mark)" },
+  education:  { label: "Education",  icon: "M22 10L12 5 2 10l10 5 10-5zM6 12v5c0 1 3 3 6 3s6-2 6-3v-5", color: "var(--st-healed-mark)" },
+  health:     { label: "Health",     icon: "M3 12h4l2-6 4 12 2-6h6", color: "var(--st-failed-mark)" },
+  elder:      { label: "Elder",      icon: "M12 21v-7M9 14h6M9 6a3 3 0 116 0c0 2-3 3-3 5", color: "var(--st-open-mark)" },
 };
 
 // ─── Verification Events ───

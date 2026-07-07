@@ -101,15 +101,6 @@ const WOUNDS: WoundItem[] = [
   { name: "Illegal dumping near lake", ward: "Ulsoor", category: "sanitation", days: 2, affected: 340, status: "reported", slaBreach: false },
 ];
 
-const CATEGORY_COLOR: Record<CategoryKey, string> = {
-  water: "var(--c-p-400)",
-  sanitation: "var(--st-gov-mark)",
-  roads: "var(--st-assess-mark)",
-  education: "var(--st-healed-mark)",
-  health: "var(--st-failed-mark)",
-  elder: "var(--st-open-mark)",
-};
-
 const REMEDIATION_ITEMS: RemediationItem[] = [
   { label: "Fix 40 taps — Zone A, Ward 7", completed: 12, total: 40, deadline: "15 Aug 2026", assignee: "Anita Sharma" },
   { label: "Desilt 6 drains — Ward 4 & 5", completed: 4, total: 6, deadline: "22 Aug 2026", assignee: "Field Crew A" },
@@ -313,7 +304,7 @@ export default function GovernmentPage() {
                   <td>
                     <span
                       className="text-caption"
-                      style={{ color: CATEGORY_COLOR[w.category], fontWeight: 500 }}
+                      style={{ color: CATEGORY_META[w.category].color, fontWeight: 500 }}
                     >
                       {CATEGORY_META[w.category].label}
                     </span>
@@ -1094,7 +1085,7 @@ export default function GovernmentPage() {
                   height: "100%",
                   width: `${resolutionRate}%`,
                   borderRadius: 6,
-                  background: `linear-gradient(90deg, var(--c-p-600) 0%, var(--st-healed-mark) 100%)`,
+                  background: "var(--c-p-600)",
                   transition: "width 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
                   position: "relative",
                 }}
