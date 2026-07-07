@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import { ReportPopupProvider } from "./ReportPopupContext";
+import { RoleProvider } from "./RoleContext";
 
 function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -24,8 +25,10 @@ function PageTransition({ children }: { children: ReactNode }) {
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <ReportPopupProvider>
-      <PageTransition>{children}</PageTransition>
-    </ReportPopupProvider>
+    <RoleProvider>
+      <ReportPopupProvider>
+        <PageTransition>{children}</PageTransition>
+      </ReportPopupProvider>
+    </RoleProvider>
   );
 }

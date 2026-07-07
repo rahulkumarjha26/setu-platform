@@ -339,7 +339,7 @@ export default function ReportPage() {
                   your name or number.
                 </p>
 
-                <Link href="/wound/1" className="btn btn-primary" style={{ width: "100%", height: 48 }}>
+                <Link href="/wound/SETU-MH-0001" className="btn btn-primary" style={{ width: "100%", height: 48 }}>
                   Post my wound
                 </Link>
               </div>

@@ -20,12 +20,12 @@ const COVERAGE = [
 ];
 
 const WOUNDS = [
-  { status: "healed" as const, title: "Broken handpump repaired", place: "Ward 7, Buxar", corr: 31 },
-  { status: "in-progress" as const, title: "Road crater near bus stand", place: "Main Rd, Buxar", corr: 24 },
-  { status: "reported" as const, title: "Open drain behind PHC", place: "Itarhi, Buxar", corr: 8 },
-  { status: "routed" as const, title: "School boundary wall collapse", place: "Simri, Buxar", corr: 19 },
-  { status: "in-progress" as const, title: "Anganwadi roof leak", place: "Chausa, Buxar", corr: 15 },
-  { status: "assessing" as const, title: "Missing streetlight transformer", place: "Dumraon, Buxar", corr: 6 },
+  { id: "SETU-MH-0001", status: "healed" as const, title: "Broken handpump repaired", place: "Ward 7, Buxar", corr: 31 },
+  { id: "SETU-MH-0002", status: "in-progress" as const, title: "Road crater near bus stand", place: "Main Rd, Buxar", corr: 24 },
+  { id: "SETU-MH-0003", status: "reported" as const, title: "Open drain behind PHC", place: "Itarhi, Buxar", corr: 8 },
+  { id: "SETU-MH-0004", status: "routed" as const, title: "School boundary wall collapse", place: "Simri, Buxar", corr: 19 },
+  { id: "SETU-MH-0005", status: "in-progress" as const, title: "Anganwadi roof leak", place: "Chausa, Buxar", corr: 15 },
+  { id: "SETU-MH-0006", status: "assessing" as const, title: "Missing streetlight transformer", place: "Dumraon, Buxar", corr: 6 },
 ];
 
 const CHART_POINTS = [
@@ -214,7 +214,7 @@ export default function PlacePage() {
         {WOUNDS.map((w, i) => (
           <Link
             key={i}
-            href={i === 0 ? "/wound/1" : "#"}
+            href={`/wound/${w.id}`}
             className="card"
             style={{
               textDecoration: "none",
