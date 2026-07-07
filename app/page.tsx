@@ -65,7 +65,7 @@ export default function LandingPage() {
         className="container"
         style={{ paddingTop: 80, paddingBottom: 48 }}
       >
-        <h1 className="text-display" style={{ maxWidth: 720, color: "var(--text)" }}>
+        <h1 className="text-display" style={{ maxWidth: 720, color: "var(--text)", overflowWrap: "break-word" }}>
           A nation, counted
           <br />
           one wound at a time.
@@ -106,7 +106,7 @@ export default function LandingPage() {
           hidden: {},
           visible: { transition: { staggerChildren: 0.12 } },
         }}
-        className="container"
+        className="container mob-flex-col"
         style={{ paddingTop: 32, paddingBottom: 48, display: "flex", gap: 64, flexWrap: "wrap" }}
       >
         {STATS.map((stat) => (
@@ -151,6 +151,7 @@ export default function LandingPage() {
             padding: 12,
             position: "relative",
             overflow: "hidden",
+            justifyContent: "center",
           }}
         >
           {COVERAGE_GRID.map((row, ri) =>
@@ -217,6 +218,7 @@ export default function LandingPage() {
           width: "100%",
           padding: "24px 32px",
           borderTop: "1px solid var(--border)",
+          marginBottom: 80,
         }}
       >
         <span

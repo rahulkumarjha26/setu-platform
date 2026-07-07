@@ -239,7 +239,7 @@ export default function SearchPage() {
   }));
 
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: 80 }}>
+    <div style={{ minHeight: "100vh", paddingBottom: 96 }}>
       <div className="container" style={{ paddingTop: 44 }}>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -275,7 +275,8 @@ export default function SearchPage() {
               onChange={(e) => setQuery(e.target.value)}
               style={{
                 paddingLeft: 44,
-                height: 50,
+                paddingRight: 18,
+                height: 44,
                 borderRadius: "var(--radius-pill)",
                 fontSize: 15,
               }}
@@ -285,12 +286,15 @@ export default function SearchPage() {
 
         {/* Facet chip bar */}
         <div
-          className="flex items-center flex-wrap"
+          className="flex items-center"
           style={{
             gap: 8,
             marginBottom: 24,
             overflowX: "auto",
             paddingBottom: 4,
+            flexWrap: "nowrap",
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
           }}
         >
           {FACETS.map((facet) => {
@@ -380,6 +384,7 @@ export default function SearchPage() {
               style={{
                 display: view === "list" ? "flex" : "none",
                 flexDirection: "column",
+                gap: 16,
               }}
             >
               {filteredResults.map((result, i) => (
@@ -388,6 +393,7 @@ export default function SearchPage() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.03 * i, duration: 0.3 }}
+                  style={{ display: "flex" }}
                 >
                   <Link
                     href={`/wound/${result.id}`}
@@ -395,10 +401,12 @@ export default function SearchPage() {
                       display: "flex",
                       flexDirection: "column",
                       gap: 8,
-                      padding: "18px 0",
-                      borderBottom: "1px solid var(--border)",
+                      padding: 18,
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-card)",
                       textDecoration: "none",
                       color: "inherit",
+                      width: "100%",
                     }}
                   >
                     <div className="flex items-center gap-10">
