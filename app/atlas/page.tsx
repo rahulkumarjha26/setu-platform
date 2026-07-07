@@ -123,9 +123,9 @@ export default function AtlasPage() {
           data={clusterData}
           clusterMaxZoom={12}
           clusterRadius={50}
-          clusterColors={["#12564F", "#2B857C", "#2F9E5E"]}
+          clusterColors={["var(--c-p-700)", "#2B857C", "#2F9E5E"]}
           clusterThresholds={[8, 20]}
-          pointColor="#12564F"
+          pointColor="var(--c-p-700)"
           pointRadius={14}
           onPointClick={handlePointClick}
           onClusterClick={(_id, coords) => {
@@ -191,7 +191,7 @@ export default function AtlasPage() {
                   className="text-serif"
                   style={{
                     fontSize: 17, fontWeight: 500, letterSpacing: "-.01em",
-                    lineHeight: 1.3, marginBottom: 8, color: "#0E1A16",
+                    lineHeight: 1.3, marginBottom: 8, color: "var(--text)",
                   }}
                 >
                   {selectedWound.title}
@@ -199,7 +199,7 @@ export default function AtlasPage() {
 
                 <div
                   style={{
-                    fontFamily: "'Geist Mono', 'SF Mono', monospace",
+                    fontFamily: "var(--font-mono)",
                     fontSize: 11, color: "#9AA09A",
                     display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap",
                     marginBottom: 14,
@@ -217,9 +217,9 @@ export default function AtlasPage() {
                     {selectedWound.outcome.map((o, i) => (
                       <div key={i}>
                         <div style={{
-                          fontFamily: "'Geist', 'Inter', sans-serif",
+                          fontFamily: "var(--font-ui)",
                           fontWeight: 700, fontSize: 18,
-                          letterSpacing: "-.02em", color: "#0B7A44",
+                          letterSpacing: "-.02em", color: "var(--st-healed)",
                           lineHeight: 1,
                         }}>
                           {o[0]}
@@ -235,9 +235,9 @@ export default function AtlasPage() {
                     onClick={() => setMeToo(!meToo)}
                     style={{
                       flex: 1, height: 38, borderRadius: 9999,
-                      border: meToo ? "1px solid #0C6B5E" : "1px solid #E4EBE7",
-                      background: meToo ? "#EAF6F3" : "#FCFEFD",
-                      color: meToo ? "#0C6B5E" : "#3D4A44",
+                      border: meToo ? "1px solid var(--action)" : "1px solid #E4EBE7",
+                      background: meToo ? "var(--st-active-wash)" : "#FCFEFD",
+                      color: meToo ? "var(--action)" : "#3D4A44",
                       fontWeight: 600, fontSize: 13, fontFamily: "inherit",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       gap: 6, cursor: "pointer", transition: "all .15s",
@@ -249,7 +249,7 @@ export default function AtlasPage() {
                     href={`/wound/${selectedWound.id}`}
                     style={{
                       height: 38, padding: "0 16px", borderRadius: 9999,
-                      border: "none", background: "#0C6B5E", color: "#fff",
+                      border: "none", background: "var(--action)", color: "#fff",
                       fontWeight: 600, fontSize: 13, fontFamily: "inherit",
                       display: "flex", alignItems: "center", gap: 6,
                       cursor: "pointer", textDecoration: "none",

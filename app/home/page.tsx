@@ -10,9 +10,9 @@ import { useReportPopup } from "../components/ReportPopupContext";
 
 /* ─── Design tokens (matching the inspiration) ─── */
 const T = {
-  petrol: "#0C6B5E", emerald: "#12A860", emeraldFg: "#0B7A44", amber: "#F0851E",
-  blue: "#2F7CE6", white: "#FFF", ink: "#0E1A16", ink2: "#3D4A44", ink3: "#6B7770",
-  fog: "#E4EBE7", mist: "#F1F5F3", petrol50: "#EAF6F3", emerald50: "#E7F6EE",
+  petrol: "var(--action)", emerald: "var(--st-healed-mark)", emeraldFg: "var(--st-healed)", amber: "#F0851E",
+  blue: "#2F7CE6", white: "#FFF", ink: "var(--text)", ink2: "#3D4A44", ink3: "#6B7770",
+  fog: "#E4EBE7", mist: "#F1F5F3", petrol50: "var(--st-active-wash)", emerald50: "var(--st-healed-wash)",
   blue50: "#E8F1FD", amberGlow: "rgba(240,133,30,.45)",
   spring: [0.34, 1.56, 0.64, 1] as [number, number, number, number],
   serif: "Fraunces, Georgia, serif", mono: "Geist Mono, monospace",
@@ -143,7 +143,7 @@ function Hero({ feed, role }: { feed: ReturnType<typeof getHomeFeed>; role: Role
       <div style={{ padding: "38px 40px", position: "relative", zIndex: 1 }}>
         <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: T.amber, marginBottom: 18 }}>{heroCfg.kick}</div>
         <div style={{
-          fontFamily: "Geist, Inter, sans-serif", fontWeight: 700,
+          fontFamily: "var(--font-ui)", fontWeight: 700,
           fontSize: "clamp(3.4rem, 2rem + 5vw, 5rem)",
           letterSpacing: "-.04em", lineHeight: 0.9, color: T.emeraldFg,
           fontVariantNumeric: "tabular-nums",
@@ -174,13 +174,13 @@ function Hero({ feed, role }: { feed: ReturnType<typeof getHomeFeed>; role: Role
       </div>
 
       <div style={{
-        position: "relative", background: "linear-gradient(165deg,#0B3B36,#0C6B5E 130%)",
+        position: "relative", background: "linear-gradient(165deg,#0B3B36,var(--action) 130%)",
         overflow: "hidden", minHeight: 300,
       }}>
         <div style={{ position: "absolute", width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle,rgba(111,211,194,.35),transparent 70%)", top: "10%", right: -40 }} />
         <div style={{ position: "absolute", top: 26, left: 28, zIndex: 2 }}>
           <div style={{ color: "#fff", fontFamily: T.mono, fontSize: 11, letterSpacing: ".06em", textTransform: "uppercase", opacity: 0.65 }}>{heroCfg.chartLabel}</div>
-          <div style={{ color: "#fff", fontFamily: "Geist, Inter, sans-serif", fontWeight: 600, fontSize: 28, fontVariantNumeric: "tabular-nums", marginTop: 4 }}>
+          <div style={{ color: "#fff", fontFamily: "var(--font-ui)", fontWeight: 600, fontSize: 28, fontVariantNumeric: "tabular-nums", marginTop: 4 }}>
             {chartN.toLocaleString("en-IN")} <span style={{ fontSize: 15, opacity: 0.6, fontWeight: 500 }}>{heroCfg.chartUnit}</span>
           </div>
         </div>
@@ -217,7 +217,7 @@ function Standing({ feed }: { feed: ReturnType<typeof getHomeFeed> }) {
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-4px) scale(1.015)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 20px 40px -22px rgba(14,26,22,.3)"; (e.currentTarget as HTMLElement).style.borderColor = "#6FD3C2"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.boxShadow = ""; (e.currentTarget as HTMLElement).style.borderColor = ""; }}
           >
-            <div style={{ fontFamily: "Geist, Inter, sans-serif", fontWeight: 700, fontSize: 32, letterSpacing: "-.03em", fontVariantNumeric: "tabular-nums", lineHeight: 1, color: T.ink }}>
+            <div style={{ fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: 32, letterSpacing: "-.03em", fontVariantNumeric: "tabular-nums", lineHeight: 1, color: T.ink }}>
               {s.value.startsWith("₹") ? s.value : s.value.includes("%") ? s.value :
                 s.value.includes("Cr") ? s.value :
                 (s.sub ? `${odometer.toLocaleString("en-IN")}${s.sub}` : odometer.toLocaleString("en-IN"))}
@@ -324,14 +324,14 @@ function LiveFeed({ items, role }: { items: ActivityEvent[]; role: RoleKey }) {
   const [stream, setStream] = useState<{ text: string; time: string; color: string; isNew: boolean }[]>([]);
   const { open } = useReportPopup();
 
-  const seedColors = ["#12A860", "#2F7CE6", "#F0851E"];
+  const seedColors = ["var(--st-healed-mark)", "#2F7CE6", "#F0851E"];
   const seedItems = items.slice(0, 4).map((item, i) => ({
     text: item.text, time: item.time, color: seedColors[i % 3], isNew: false,
   }));
   const streamPool = [
     { text: "A neighbour just corroborated your report", time: "now", color: "#F0851E" },
-    { text: "A wound near you was marked healed", time: "now", color: "#12A860" },
-    { text: "Your report was viewed by an NGO", time: "now", color: "#0C6B5E" },
+    { text: "A wound near you was marked healed", time: "now", color: "var(--st-healed-mark)" },
+    { text: "Your report was viewed by an NGO", time: "now", color: "var(--action)" },
     { text: "A verifier is en route to your wound", time: "now", color: "#2F7CE6" },
     { text: "Someone just filed a corroboration near you", time: "now", color: "#F0851E" },
   ];
@@ -469,7 +469,7 @@ export default function HomePage() {
               height: 26, padding: "0 11px", borderRadius: 999,
               fontSize: 11.5, fontWeight: 500, fontFamily: "inherit",
               color: role === r.key ? "#fff" : "#6B7770",
-              background: role === r.key ? "#0E1A16" : "transparent",
+              background: role === r.key ? "var(--text)" : "transparent",
               border: "none", cursor: "pointer", transition: "all .15s", whiteSpace: "nowrap",
             }}>
               {r.label}

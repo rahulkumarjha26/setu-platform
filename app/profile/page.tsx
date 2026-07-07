@@ -11,7 +11,7 @@ import s from "./profile.module.css";
 const MetaIcon = ({ d }: { d: string }) => (
   <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="#6B7770" strokeWidth={1.8}><path d={d} /></svg>
 );
-const CheckIcon = ({ c = "#12A860", w = 15 }: { c?: string; w?: number }) => (
+const CheckIcon = ({ c = "var(--st-healed-mark)", w = 15 }: { c?: string; w?: number }) => (
   <svg viewBox="0 0 24 24" width={w} height={w} fill="none" stroke={c} strokeWidth={2.6}><path d="M20 6L9 17l-5-5" /></svg>
 );
 const ShapeIcon = ({ shape }: { shape: string }) => {
