@@ -463,8 +463,8 @@ export default function HomePage() {
           <div style={{ display: "flex", alignItems: "center", gap: 9, fontSize: 13, color: T.ink3, marginBottom: 12 }}>
             <span style={{ fontWeight: 600, color: T.ink2 }}>{a.roleLabel}</span>
             <span style={{ width: 3, height: 3, borderRadius: "50%", background: T.fog }} />
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: T.emeraldFg, fontWeight: 600 }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: T.emerald, animation: "beat 2s infinite" }} />
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: T.emerald50, color: T.emeraldFg, fontWeight: 600, fontSize: 11, padding: "3px 12px 3px 9px", borderRadius: 999, letterSpacing: ".03em", textTransform: "uppercase" }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: T.emerald, animation: "beat 2s infinite" }} />
               live
             </span>
           </div>
@@ -501,9 +501,8 @@ export default function HomePage() {
           <div>
             {watchModule && (
               <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: T.spring, delay: 0.3 }}>
-                <h2 style={{ fontFamily: T.serif, fontSize: 19, fontWeight: 600, letterSpacing: "-.01em", marginBottom: 16, display: "flex", alignItems: "center", gap: 10, color: T.ink }}>
+                <h2 style={{ fontFamily: T.serif, fontSize: 19, fontWeight: 600, letterSpacing: "-.01em", marginBottom: 16, color: T.ink }}>
                   {watchModule.title}
-                  <span style={{ fontFamily: T.mono, fontSize: 12, color: T.ink3, fontWeight: 400 }}>{watchModule.items.length}</span>
                 </h2>
                 {(watchModule.items as Wound[]).map(w => <WatchCard key={w.id} wound={w} fills={fills} />)}
               </motion.div>
