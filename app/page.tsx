@@ -218,7 +218,7 @@ export default function LandingPage() {
                 top: `calc(${(c.row + 0.35) / 6} * 100%)`,
                 left: `calc(${(c.col + 0.4) / 6} * 100%)`,
                 background: "var(--action)",
-                color: "#fff",
+                color: "var(--c-white)",
                 borderRadius: "var(--radius-pill)",
                 padding: "3px 10px",
                 fontSize: 12,
