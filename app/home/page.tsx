@@ -199,34 +199,39 @@ function Hero({ feed, role }: { feed: ReturnType<typeof getHomeFeed>; role: Role
   );
 }
 
+/* ─── Stat card ─── */
+function StatCard({ label, value, sub, index }: { label: string; value: string; sub?: string; index: number }) {
+  const numVal = parseInt(value.replace(/\D/g, "")) || 0;
+  const odometer = useOdometer(numVal, 1400 + index * 200, true);
+  return (
+    <div style={{
+      background: T.white, border: `1px solid ${T.fog}`, borderRadius: 18,
+      padding: "22px 24px", position: "relative", overflow: "hidden",
+      transition: "transform .45s cubic-bezier(.34,1.56,.64,1), box-shadow .45s cubic-bezier(.34,1.56,.64,1), border-color .3s",
+      cursor: "default",
+    }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-4px) scale(1.015)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 20px 40px -22px rgba(14,26,22,.3)"; (e.currentTarget as HTMLElement).style.borderColor = "#6FD3C2"; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.boxShadow = ""; (e.currentTarget as HTMLElement).style.borderColor = ""; }}
+    >
+      <div style={{ fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: 32, letterSpacing: "-.03em", fontVariantNumeric: "tabular-nums", lineHeight: 1, color: T.ink }}>
+        {value.startsWith("₹") ? value : value.includes("%") ? value :
+          value.includes("Cr") ? value :
+          (sub ? `${odometer.toLocaleString("en-IN")}${sub}` : odometer.toLocaleString("en-IN"))}
+      </div>
+      <div style={{ fontSize: 12, color: T.ink3, marginTop: 8, lineHeight: 1.35 }}>{label}</div>
+      <Sparkline color="#6FD3C2" opacity={0.5} />
+    </div>
+  );
+}
+
 /* ─── Standing cards ─── */
 function Standing({ feed }: { feed: ReturnType<typeof getHomeFeed> }) {
   const allStats: { label: string; value: string; sub?: string }[] = [feed.headlineStat, ...(feed.supportStats || [])].slice(0, 4);
   return (
     <div className="standing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginTop: 20 }}>
-      {allStats.map((s, i) => {
-        const numVal = parseInt(s.value.replace(/\D/g, "")) || 0;
-        const odometer = useOdometer(numVal, 1400 + i * 200, true);
-        return (
-          <div key={i} style={{
-            background: T.white, border: `1px solid ${T.fog}`, borderRadius: 18,
-            padding: "22px 24px", position: "relative", overflow: "hidden",
-            transition: "transform .45s cubic-bezier(.34,1.56,.64,1), box-shadow .45s cubic-bezier(.34,1.56,.64,1), border-color .3s",
-            cursor: "default",
-          }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-4px) scale(1.015)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 20px 40px -22px rgba(14,26,22,.3)"; (e.currentTarget as HTMLElement).style.borderColor = "#6FD3C2"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.boxShadow = ""; (e.currentTarget as HTMLElement).style.borderColor = ""; }}
-          >
-            <div style={{ fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: 32, letterSpacing: "-.03em", fontVariantNumeric: "tabular-nums", lineHeight: 1, color: T.ink }}>
-              {s.value.startsWith("₹") ? s.value : s.value.includes("%") ? s.value :
-                s.value.includes("Cr") ? s.value :
-                (s.sub ? `${odometer.toLocaleString("en-IN")}${s.sub}` : odometer.toLocaleString("en-IN"))}
-            </div>
-            <div style={{ fontSize: 12, color: T.ink3, marginTop: 8, lineHeight: 1.35 }}>{s.label}</div>
-            <Sparkline color="#6FD3C2" opacity={0.5} />
-          </div>
-        );
-      })}
+      {allStats.map((s, i) => (
+        <StatCard key={i} label={s.label} value={s.value} sub={s.sub} index={i} />
+      ))}
     </div>
   );
 }

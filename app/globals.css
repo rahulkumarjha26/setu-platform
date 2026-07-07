@@ -335,14 +335,14 @@ table.data-table tr:hover td{background:var(--bg-muted)}
   .standing-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
 }
 
-/* Split layout with right sidebar */
-@media (max-width: 640px) {
+/* Split layout with right sidebar — collapse at 900px to match .desktop-only */
+@media (max-width: 900px) {
   .split-right-sidebar { grid-template-columns: 1fr !important; }
   .split-right-sidebar > aside.desktop-only { display: none !important; }
 }
 
-/* Generic split: main + sidebar collapse on mobile */
-@media (max-width: 640px) {
+/* Generic split: main + sidebar — collapse at 900px to match .desktop-only */
+@media (max-width: 900px) {
   .split-main-rail { grid-template-columns: 1fr !important; }
   .split-main-rail > .desktop-only { display: none !important; }
 }
