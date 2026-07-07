@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin, CheckCircle, Building2 } from "lucide-react";
 
+
 const COVERAGE_GRID = [
   [1, 1, 1, 1, 0, 0],
   [1, 1, 0.4, 0, 0, 0],
@@ -48,7 +49,17 @@ function getCellOpacity(val: number) {
 export default function LandingPage() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <header className="container" style={{ paddingTop: 32, paddingBottom: 0 }}>
+      <header
+        className="container"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingTop: 16,
+          paddingBottom: 16,
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
         <Link
           href="/"
           className="text-serif text-petrol"
@@ -56,6 +67,18 @@ export default function LandingPage() {
         >
           सेतु · SETU
         </Link>
+        <div className="flex items-center" style={{ gap: 20 }}>
+          <Link href="/atlas" className="text-body text-2" style={{ fontWeight: 500 }}>
+            Atlas
+          </Link>
+          <Link
+            href="/report"
+            className="btn btn-primary"
+            style={{ height: 36, padding: "0 18px", fontSize: 14 }}
+          >
+            Report a wound
+          </Link>
+        </div>
       </header>
 
       <motion.section

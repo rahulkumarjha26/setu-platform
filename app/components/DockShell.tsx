@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe, ListFilter, Plus, User, Search, Bell, LayoutDashboard, Activity, Route } from "lucide-react";
+import { Globe, ListFilter, Plus, User, Search, Bell, LayoutDashboard } from "lucide-react";
 import { motion } from "framer-motion";
 import { useReportPopup } from "./ReportPopupContext";
 import { NOTIFICATIONS } from "@/lib/mock-data";
@@ -10,9 +10,7 @@ import { NOTIFICATIONS } from "@/lib/mock-data";
 const lenses = [
   { id: "home", href: "/home", Icon: LayoutDashboard, label: "Home" },
   { id: "atlas", href: "/atlas", Icon: Globe, label: "Atlas" },
-  { id: "pulse", href: "/pulse", Icon: Activity, label: "Pulse" },
   { id: "stream", href: "/stream", Icon: ListFilter, label: "Stream" },
-  { id: "flow", href: "/flow", Icon: Route, label: "Flow" },
   { id: "search", href: "/search", Icon: Search, label: "Search" },
   { id: "notifications", href: "/notifications", Icon: Bell, label: "Notifications" },
 ];
