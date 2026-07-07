@@ -163,7 +163,7 @@ export default function VerifierPage() {
                   position: "absolute",
                   inset: 0,
                   backgroundImage:
-                    "linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px)",
+                    "linear-gradient(color-mix(in srgb, var(--bg-raised) 4%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--bg-raised) 4%, transparent) 1px, transparent 1px)",
                   backgroundSize: "40px 40px",
                 }}
               />
@@ -176,11 +176,11 @@ export default function VerifierPage() {
                   transform: "translate(-50%, -50%)",
                   width: 60,
                   height: 60,
-                  borderColor: "rgba(255,255,255,.25)",
+                  borderColor: "color-mix(in srgb, var(--bg-raised) 25%, transparent)",
                 }}
               >
-                <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 1, background: "rgba(255,255,255,.2)" }} />
-                <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "rgba(255,255,255,.2)" }} />
+                <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 1, background: "color-mix(in srgb, var(--bg-raised) 20%, transparent)" }} />
+                <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "color-mix(in srgb, var(--bg-raised) 20%, transparent)" }} />
               </div>
 
               {/* GPS */}
@@ -190,8 +190,8 @@ export default function VerifierPage() {
                   position: "absolute",
                   bottom: 12,
                   left: 12,
-                  background: "rgba(0,0,0,.6)",
-                  color: "#fff",
+                  background: "color-mix(in srgb, var(--c-carbon) 60%, transparent)",
+                  color: "var(--bg-raised)",
                   padding: "4px 12px",
                   borderRadius: "var(--radius-pill)",
                   fontSize: 11,
@@ -209,7 +209,7 @@ export default function VerifierPage() {
                   position: "absolute",
                   bottom: 12,
                   right: 12,
-                  background: "rgba(0,0,0,.6)",
+                  background: "color-mix(in srgb, var(--c-carbon) 60%, transparent)",
                   color: "var(--st-healed-mark)",
                   padding: "4px 12px",
                   borderRadius: "var(--radius-pill)",
@@ -258,7 +258,7 @@ export default function VerifierPage() {
                       height: 72,
                       borderRadius: "50%",
                       border: "4px solid var(--bg-raised)",
-                      boxShadow: "0 0 0 4px var(--report), 0 8px 24px rgba(194,90,30,.3)",
+                      boxShadow: "0 0 0 4px var(--report), 0 8px 24px color-mix(in srgb, var(--report) 30%, transparent)",
                       background: "var(--report)",
                       cursor: photoCount >= 3 ? "not-allowed" : "pointer",
                       display: "flex",
@@ -268,7 +268,7 @@ export default function VerifierPage() {
                       transition: "transform 0.1s",
                     }}
                   >
-                    <Camera size={28} color="#fff" />
+                    <Camera size={28} color="var(--bg-raised)" />
                   </button>
                 </div>
 
@@ -335,7 +335,7 @@ export default function VerifierPage() {
                           flexShrink: 0,
                         }}
                       >
-                        {checkedMilestones.has(i) && <Check size={12} color="#fff" />}
+                        {checkedMilestones.has(i) && <Check size={12} color="var(--bg-raised)" />}
                       </div>
                       {m}
                     </button>

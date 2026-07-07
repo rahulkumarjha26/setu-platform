@@ -9,7 +9,7 @@ import s from "./profile.module.css";
 
 /* ─── SVG icons ─── */
 const MetaIcon = ({ d }: { d: string }) => (
-  <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="#6B7770" strokeWidth={1.8}><path d={d} /></svg>
+  <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="var(--text-2)" strokeWidth={1.8}><path d={d} /></svg>
 );
 const CheckIcon = ({ c = "var(--st-healed-mark)", w = 15 }: { c?: string; w?: number }) => (
   <svg viewBox="0 0 24 24" width={w} height={w} fill="none" stroke={c} strokeWidth={2.6}><path d="M20 6L9 17l-5-5" /></svg>
@@ -24,7 +24,7 @@ const ShapeIcon = ({ shape }: { shape: string }) => {
   };
   return <svg viewBox="0 0 16 16" width={11} height={11} fill="currentColor"><path d={paths[shape] || paths.healed} /></svg>;
 };
-const EditIcon = ({ c = "#fff", w = 16 }: { c?: string; w?: number }) => (
+const EditIcon = ({ c = "var(--c-white)", w = 16 }: { c?: string; w?: number }) => (
   <svg viewBox="0 0 24 24" width={w} height={w} fill="none" stroke={c} strokeWidth={2}><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
 );
 const ShareIcon = () => (
@@ -34,13 +34,13 @@ const CloseIcon = () => (
   <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth={2}><path d="M18 6L6 18M6 6l12 12" /></svg>
 );
 const InfoSvg = () => (
-  <svg viewBox="0 0 24 24" width={17} height={17} fill="none" stroke="#A63E1C" strokeWidth={2.2}><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
+  <svg viewBox="0 0 24 24" width={17} height={17} fill="none" stroke="var(--report)" strokeWidth={2.2}><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
 );
 const ChevSvg = () => (
-  <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#6B7770" strokeWidth={2}><path d="M6 9l6 6 6-6" /></svg>
+  <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="var(--text-2)" strokeWidth={2}><path d="M6 9l6 6 6-6" /></svg>
 );
 const ArrowSvg = () => (
-  <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="#6B7770" strokeWidth={2}><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+  <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--text-2)" strokeWidth={2}><path d="M5 12h14M13 6l6 6-6 6" /></svg>
 );
 const CheckStroke = "M20 6L9 17l-5-5";
 
@@ -286,7 +286,7 @@ function ProfileContent({ role, overrides, onOpenEdit }: {
             </div>
             <div className={s.actions}>
               <button className={s.btnMsg} onClick={onOpenEdit}>
-                <EditIcon c="#fff" w={17} /> Edit profile
+                <EditIcon c="var(--c-white)" w={17} /> Edit profile
               </button>
               <button className={s.btnFollow} onClick={handleShare}>
                 <ShareIcon />{shared ? "Link copied" : "Share"}
@@ -334,7 +334,7 @@ function ProfileContent({ role, overrides, onOpenEdit }: {
               <div className={s.icardCap}>{a.impact.win.cap}</div>
             </div>
             <div className={s.icard}>
-              <div className={s.icardHead} style={{ color: "#3D4A44" }}>
+              <div className={s.icardHead} style={{ color: "var(--text-2)" }}>
                 <InfoSvg />{a.impact.other.ih}
               </div>
               <div className={s.icardBig}>{a.impact.other.big}</div>

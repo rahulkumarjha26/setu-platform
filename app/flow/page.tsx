@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { WOUNDS, VERIFICATION_EVENTS, FUNDING, STATUS_META, CATEGORY_META } from "@/lib/mock-data";
 import type { Wound, StatusKey } from "@/lib/mock-data";
-import { ArrowRight, CheckCircle2, Clock, AlertTriangle, Target, Users, Zap, Filter, RefreshCw } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock, AlertTriangle, Target, Users, Zap, RefreshCw } from "lucide-react";
 import Link from "next/link";
 
 /* ─── Helpers ─── */
@@ -192,7 +192,7 @@ function PipelineView() {
                 }}
               >
                 {pct > 8 && (
-                  <span className="text-caption" style={{ color: "#fff", fontSize: 11, fontWeight: 600 }}>
+                  <span className="text-caption" style={{ color: "var(--text-invert)", fontSize: 11, fontWeight: 600 }}>
                     {wounds.length}
                   </span>
                 )}
@@ -450,7 +450,7 @@ function EntityView() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: si * 0.08 }}
         >
-          <div className="flex items-center" style={{ gap: 12, marginBottom: 16 }}>
+          <div className="flex items-center" style={{ gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10,
               background: section.iconBg, opacity: 0.15, display: "flex",
@@ -458,7 +458,7 @@ function EntityView() {
             }}>
               <section.icon size={16} color={section.iconBg} />
             </div>
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, minWidth: 200 }}>
               <div className="flex items-center" style={{ gap: 10 }}>
                 <h3 className="text-label-up" style={{ margin: 0 }}>{section.label}</h3>
                 <span className="text-caption text-3">{section.wounds.length} wounds</span>
