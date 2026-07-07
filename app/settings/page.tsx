@@ -8,7 +8,6 @@ import {
   Globe,
   Bell,
   Shield,
-  FolderDown,
   UserCheck,
   LogOut,
 } from "lucide-react";

@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Globe, Activity, ListFilter, TrendingUp, Plus, Radio } from "lucide-react";
-import { DockShell } from "../components/DockShell";
 
 const LEGEND = [
   {
@@ -69,7 +68,7 @@ export default function DockPage() {
       </div>
 
       {/* Large Dock Shell */}
-      <div className="card mob-px-16" style={{ padding: "40px 60px", display: "flex", flexDirection: "column", alignItems: "center", gap: 0, position: "relative" }}>
+      <div className="card mob-px-16" style={{ padding: "40px 60px", display: "flex", flexDirection: "column", alignItems: "center", gap: 0, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "relative", transform: "scale(1.1)", pointerEvents: "none", maxWidth: "100%" }}>
           {/* Render actual dock structure for visual consistency */}
           <div className="dock" style={{ boxShadow: "var(--shadow-dock)" }}>

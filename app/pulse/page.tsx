@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Activity, TrendingUp, Users, MapPin, CheckCircle,
-  Clock, ArrowUp, ArrowDown, Zap
+  ArrowUp, Zap
 } from "lucide-react";
 import Link from "next/link";
 
