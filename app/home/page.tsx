@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, RefreshCw } from "lucide-react";
 import { type RoleKey, type StatusKey, type Wound, ACTORS, CATEGORY_META } from "@/lib/mock-data";
 import { getHomeFeed, type ActivityEvent } from "@/lib/dashboard";
 import { useReportPopup } from "../components/ReportPopupContext";
@@ -368,6 +368,25 @@ function LiveFeed({ items, role }: { items: ActivityEvent[]; role: RoleKey }) {
             </div>
           </div>
         ))}
+        {/* Quick-access links to Pulse and Flow */}
+        <div className="flex items-center" style={{ gap: 6, marginTop: 16, flexWrap: "wrap" }}>
+          <Link
+            href="/pulse"
+            className="chip"
+            style={{ textDecoration: "none", fontSize: 12, gap: 4 }}
+          >
+            <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--st-healed-mark)", display: "inline-block" }} />
+            Pulse
+          </Link>
+          <Link
+            href="/flow"
+            className="chip"
+            style={{ textDecoration: "none", fontSize: 12, gap: 4 }}
+          >
+            <RefreshCw size={11} />
+            Flow
+          </Link>
+        </div>
       </div>
       <button
         onClick={open}

@@ -103,23 +103,23 @@ export default function FlowPage() {
       >
         <div className="card card-metric" style={{ padding: 20 }}>
           <p className="text-caption text-2" style={{ margin: 0, marginBottom: 4 }}>Total wounds</p>
-          <span className="text-number" style={{ fontSize: "var(--fs-h3)" }}>{WOUNDS.length}</span>
+          <span className="text-number">{WOUNDS.length}</span>
         </div>
         <div className="card card-metric" style={{ padding: 20 }}>
           <p className="text-caption text-2" style={{ margin: 0, marginBottom: 4 }}>In pipeline</p>
-          <span className="text-number" style={{ fontSize: "var(--fs-h3)" }}>
+          <span className="text-number">
             {WOUNDS.filter(w => w.status !== "healed" && w.status !== "not-achieved").length}
           </span>
         </div>
         <div className="card card-metric" style={{ padding: 20 }}>
           <p className="text-caption text-2" style={{ margin: 0, marginBottom: 4 }}>Witnesses</p>
-          <span className="text-number" style={{ fontSize: "var(--fs-h3)" }}>
+          <span className="text-number">
             {totalCorroborations().toLocaleString("en-IN")}
           </span>
         </div>
         <div className="card card-metric" style={{ padding: 20 }}>
           <p className="text-caption text-2" style={{ margin: 0, marginBottom: 4 }}>In escrow</p>
-          <span className="text-number" style={{ fontSize: "var(--fs-h3)" }}>{activeEscrowAmount()}</span>
+          <span className="text-number">{activeEscrowAmount()}</span>
         </div>
       </motion.div>
 

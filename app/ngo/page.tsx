@@ -993,7 +993,7 @@ export default function NGOPage() {
           style={{
             marginBottom: 24,
             padding: "24px 28px",
-            background: "linear-gradient(135deg, var(--c-p-50) 0%, var(--c-g-50) 100%)",
+            background: "linear-gradient(135deg, var(--c-p-50) 0%, var(--st-healed-wash) 100%)",
             border: "1px solid var(--c-p-200)",
             borderRadius: "var(--radius-card)",
             overflow: "hidden",
