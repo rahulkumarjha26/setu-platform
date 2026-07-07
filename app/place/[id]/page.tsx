@@ -57,22 +57,24 @@ export default function PlacePage() {
         padding: "32px 32px 120px",
       }}
     >
-      <nav className="breadcrumb" style={{ marginBottom: 24 }}>
-        <Link href="/atlas">India</Link>
-        <ChevronRight size={12} />
-        <Link href="/atlas">{place?.state || "State"}</Link>
-        <ChevronRight size={12} />
-        <span style={{ color: "var(--text)" }}>{displayName}</span>
-      </nav>
+      <div style={{ background: "var(--bg-raised)", borderRadius: "var(--radius-card)", padding: 24, marginBottom: 24 }}>
+        <nav className="breadcrumb" style={{ marginBottom: 16 }}>
+          <Link href="/atlas">India</Link>
+          <ChevronRight size={12} />
+          <Link href="/atlas">{place?.state || "State"}</Link>
+          <ChevronRight size={12} />
+          <span style={{ color: "var(--text)" }}>{displayName}</span>
+        </nav>
 
-      <div className="flex flex-wrap items-center gap-12" style={{ marginBottom: 16 }}>
-        <h1 className="text-display">{displayName}</h1>
-        <span
-          className="pill pill--active"
-          style={{ height: 24, fontSize: 11 }}
-        >
-          {place?.rank || "Active district"}{place?.focus ? ` · ${place.focus}` : ""}
-        </span>
+        <div className="flex flex-wrap items-center gap-12">
+          <h1 className="text-display">{displayName}</h1>
+          <span
+            className="pill pill--active"
+            style={{ height: 24, fontSize: 11 }}
+          >
+            {place?.rank || "Active district"}{place?.focus ? ` · ${place.focus}` : ""}
+          </span>
+        </div>
       </div>
 
       <motion.div
@@ -82,7 +84,7 @@ export default function PlacePage() {
           hidden: {},
           visible: { transition: { staggerChildren: 0.1 } },
         }}
-        className="grid grid-4 gap-12"
+        className="grid grid-4 mob-col-2 gap-12"
         style={{ marginBottom: 32 }}
       >
         {METRICS.map((m) => (

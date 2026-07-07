@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useMotionValue, useSpring, useTransform, animate } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import {
   ChevronRight,
   Building2,
@@ -385,8 +385,6 @@ export default function PressurePage() {
                   style={
                     item.dot === "in-progress"
                       ? { boxShadow: "0 0 0 4px rgba(18,86,79,.12)" }
-                      : item.dot === "origin"
-                      ? { boxShadow: "0 0 0 4px rgba(92,107,122,.1)" }
                       : undefined
                   }
                 />
