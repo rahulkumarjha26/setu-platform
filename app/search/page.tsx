@@ -159,7 +159,7 @@ function MapPanel({ pins, count }: { pins: Pin[]; count: number }) {
             key={i}
             style={{
               borderRadius: 3,
-              background: cell.tint > 0 ? `rgba(18,86,79,${cell.tint})` : "var(--nodata)",
+              background: cell.tint > 0 ? `color-mix(in srgb, var(--color-primary) ${Math.round(cell.tint * 100)}%, transparent)` : "var(--nodata)",
               position: "relative",
             }}
           >
@@ -455,15 +455,16 @@ export default function SearchPage() {
             </div>
 
             {/* Mobile map */}
-            <div
-              className="mobile-only"
-              style={{
-                flexDirection: "column",
-                display: view === "map" ? "flex" : "none",
-              }}
-            >
-              <MapPanel pins={mapPins} count={filteredResults.length} />
-            </div>
+            {view === "map" && (
+              <div
+                className="mobile-only"
+                style={{
+                  flexDirection: "column",
+                }}
+              >
+                <MapPanel pins={mapPins} count={filteredResults.length} />
+              </div>
+            )}
           </div>
         )}
       </div>
