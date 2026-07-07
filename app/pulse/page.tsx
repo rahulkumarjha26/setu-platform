@@ -7,9 +7,9 @@ import {
   ArrowUp, Zap
 } from "lucide-react";
 import Link from "next/link";
+import { PLATFORM_STATS } from "@/lib/mock-data";
 
 const PULSE_DATA = {
-  wounds: { total: 12847, open: 3421, assessing: 1256, routed: 893, inProgress: 2147, healed: 4210, failed: 920 },
   activity: [
     { time: "2m ago", text: "New wound reported in Ward 7, Jalgaon — broken handpump", type: "reported" as const },
     { time: "5m ago", text: "Verifier assigned to SETU-MH-0008 — Lake desilting milestone 2", type: "assigned" as const },
@@ -69,14 +69,14 @@ export default function PulsePage() {
         <div className="grid-responsive" style={{ marginBottom: 36 }}>
           <div className="card" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <p className="text-caption text-2">Total wounds</p>
-            <span className="text-number">{PULSE_DATA.wounds.total.toLocaleString("en-IN")}</span>
+            <span className="text-number">{PLATFORM_STATS.totalWounds.toLocaleString("en-IN")}</span>
             <span className="delta delta-up" style={{ alignSelf: "flex-start" }}>
               <ArrowUp size={10} />{PULSE_DATA.growth.wounds}
             </span>
           </div>
           <div className="card" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <p className="text-caption text-2">Healed</p>
-            <span className="text-number" style={{ color: "var(--st-healed-mark)" }}>{PULSE_DATA.wounds.healed.toLocaleString("en-IN")}</span>
+            <span className="text-number" style={{ color: "var(--st-healed-mark)" }}>{PLATFORM_STATS.healed.toLocaleString("en-IN")}</span>
             <span className="delta delta-up" style={{ alignSelf: "flex-start" }}>
               <ArrowUp size={10} />{PULSE_DATA.growth.verifications}
             </span>
@@ -128,11 +128,11 @@ export default function PulsePage() {
             <div className="card" style={{ padding: 20 }}>
               <h3 className="text-label-up text-3" style={{ marginBottom: 16 }}>Wound breakdown</h3>
               {[
-                { label: "Open", value: PULSE_DATA.wounds.open, color: "var(--st-open-mark)" },
-                { label: "Assessing", value: PULSE_DATA.wounds.assessing, color: "var(--st-assess-mark)" },
-                { label: "Routed", value: PULSE_DATA.wounds.routed, color: "var(--st-gov-mark)" },
-                { label: "In Progress", value: PULSE_DATA.wounds.inProgress, color: "var(--st-active-mark)" },
-                { label: "Healed", value: PULSE_DATA.wounds.healed, color: "var(--st-healed-mark)" },
+                { label: "Open", value: PLATFORM_STATS.reported, color: "var(--st-open-mark)" },
+                { label: "Assessing", value: PLATFORM_STATS.assessing, color: "var(--st-assess-mark)" },
+                { label: "Routed", value: PLATFORM_STATS.routed, color: "var(--st-gov-mark)" },
+                { label: "In Progress", value: PLATFORM_STATS.inProgress, color: "var(--st-active-mark)" },
+                { label: "Healed", value: PLATFORM_STATS.healed, color: "var(--st-healed-mark)" },
               ].map((item) => (
                 <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
                   <span style={{ width: 10, height: 10, borderRadius: "50%", background: item.color, flexShrink: 0 }} />

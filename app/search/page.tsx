@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Search,
-  ChevronDown,
   MapPin,
   Bookmark,
   List,
@@ -18,7 +17,7 @@ interface SearchResult {
   title: string;
   place: string;
   budget: string;
-  status: "assessing" | "in-progress" | "in-progress" | "reported" | "healed";
+  status: "assessing" | "in-progress" | "reported" | "healed";
   description: string;
   lat: number;
   lng: number;
@@ -29,7 +28,7 @@ const SEARCH_RESULTS: SearchResult[] = [
     id: "SETU-KA-0431",
     title: "Keep girls enrolled in water-stressed schools",
     place: "Chitradurga district, Karnataka",
-    budget: "\u20B912,40,000",
+    budget: "₹12,40,000",
     status: "assessing",
     description: "12 schools in taluk with no running water, dropout rate at 34%",
     lat: 6,
@@ -39,7 +38,7 @@ const SEARCH_RESULTS: SearchResult[] = [
     id: "SETU-RJ-0188",
     title: "Rainwater harvesting in 12 drought schools",
     place: "Barmer district, Rajasthan",
-    budget: "\u20B98,75,000",
+    budget: "₹8,75,000",
     status: "in-progress",
     description: "Rooftop harvesting for 12 schools serving 4,800 children",
     lat: 2,
@@ -49,7 +48,7 @@ const SEARCH_RESULTS: SearchResult[] = [
     id: "SETU-MH-0901",
     title: "Sanitary pad units for 60 rural schools",
     place: "Gadchiroli district, Maharashtra",
-    budget: "\u20B95,20,000",
+    budget: "₹5,20,000",
     status: "in-progress",
     description: "Vending machines and disposal incinerators across 60 schools",
     lat: 3,
@@ -59,7 +58,7 @@ const SEARCH_RESULTS: SearchResult[] = [
     id: "SETU-UP-0325",
     title: "Girls' hostel water connection at govt school",
     place: "Bahraich district, Uttar Pradesh",
-    budget: "\u20B93,10,000",
+    budget: "₹3,10,000",
     status: "reported",
     description: "Hostel for 120 tribal girls, handpump broke 6 months ago",
     lat: 4,
@@ -69,7 +68,7 @@ const SEARCH_RESULTS: SearchResult[] = [
     id: "SETU-OR-0210",
     title: "Solar pump for drinking water in tribal school",
     place: "Koraput district, Odisha",
-    budget: "\u20B97,80,000",
+    budget: "₹7,80,000",
     status: "healed",
     description: "Solar-powered borewell pump now functional, 600 students served",
     lat: 5,
@@ -79,7 +78,7 @@ const SEARCH_RESULTS: SearchResult[] = [
     id: "SETU-MP-0156",
     title: "Anganwadi toilet construction — 8 centres",
     place: "Mandla district, Madhya Pradesh",
-    budget: "\u20B94,50,000",
+    budget: "₹4,50,000",
     status: "assessing",
     description: "8 anganwadis without toilet facilities in forest villages",
     lat: 2,
@@ -89,7 +88,7 @@ const SEARCH_RESULTS: SearchResult[] = [
     id: "SETU-BR-0092",
     title: "Mid-day meal kitchen repair for 5 schools",
     place: "Gaya district, Bihar",
-    budget: "\u20B92,80,000",
+    budget: "₹2,80,000",
     status: "in-progress",
     description: "Kitchen sheds damaged in monsoon, 2,400 meals/day affected",
     lat: 6,
@@ -99,7 +98,7 @@ const SEARCH_RESULTS: SearchResult[] = [
     id: "SETU-JH-0078",
     title: "Cycle distribution for school-going girls",
     place: "Simdega district, Jharkhand",
-    budget: "\u20B96,20,000",
+    budget: "₹6,20,000",
     status: "in-progress",
     description: "150 cycles to reduce dropout between middle and high school",
     lat: 4,
@@ -270,7 +269,7 @@ export default function SearchPage() {
             <input
               className="input"
               type="text"
-              placeholder="projects that keep girls in school in water-stressed districts\u2026"
+              placeholder="projects that keep girls in school in water-stressed districts…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               style={{
@@ -306,7 +305,6 @@ export default function SearchPage() {
                 onClick={() => toggleFacet(facet.label)}
               >
                 {facet.label}
-                {facet.hasDropdown && <ChevronDown size={14} />}
               </button>
             );
           })}

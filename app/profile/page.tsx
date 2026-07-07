@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ACTORS, type RoleKey as Role, type ActorData, type ActorItem } from "@/lib/mock-data";
 import { WOUNDS, CATEGORY_META } from "@/lib/mock-data";
+import { useRole } from "../components/RoleContext";
 import Link from "next/link";
 import s from "./profile.module.css";
 
@@ -32,6 +33,12 @@ const ShareIcon = () => (
 );
 const CloseIcon = () => (
   <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth={2}><path d="M18 6L6 18M6 6l12 12" /></svg>
+);
+const SettingsIcon = ({ c = "var(--c-white)", w = 16 }: { c?: string; w?: number }) => (
+  <svg viewBox="0 0 24 24" width={w} height={w} fill="none" stroke={c} strokeWidth={2}>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+  </svg>
 );
 const InfoSvg = () => (
   <svg viewBox="0 0 24 24" width={17} height={17} fill="none" stroke="var(--report)" strokeWidth={2.2}><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
@@ -288,6 +295,9 @@ function ProfileContent({ role, overrides, onOpenEdit }: {
               <button className={s.btnMsg} onClick={onOpenEdit}>
                 <EditIcon c="var(--c-white)" w={17} /> Edit profile
               </button>
+              <Link href="/settings" className={s.btnEdit}>
+                <SettingsIcon w={17} /> Settings
+              </Link>
               <button className={s.btnFollow} onClick={handleShare}>
                 <ShareIcon />{shared ? "Link copied" : "Share"}
               </button>
@@ -398,7 +408,7 @@ function ProfileContent({ role, overrides, onOpenEdit }: {
 
 /* ─── PAGE ─── */
 export default function ProfilePage() {
-  const [role, setRole] = useState<Role>("citizen");
+  const { role, setRole } = useRole();
   const [editOpen, setEditOpen] = useState(false);
   const [editsByRole, setEditsByRole] = useState<Partial<Record<Role, Partial<Edits>>>>({});
 

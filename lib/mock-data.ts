@@ -895,9 +895,9 @@ export const ACTORS: Record<RoleKey, ActorData> = {
     itemsTitle: "What she reported",
     filters: ["All 23", "Healed 5", "In progress 8", "Routed to gov 10"],
     items: [
-      { woundId: "SETU-MH-0001", s: "healed", right: "340", rl: "families", linked: { bg: "#0C6B5E", mono: "JS", pre: "Healed by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
+      { woundId: "SETU-MH-0001", s: "healed", right: "340", rl: "families", linked: { bg: "var(--c-p-600)", mono: "JS", pre: "Healed by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
       { woundId: "SETU-MH-0005", s: "routed", right: "61", rl: "witnesses", linked: { bg: "#3B6A93", mono: "JZ", pre: "Routed to", name: "Jalgaon Zilla Parishad", actorId: "government" } },
-      { woundId: "SETU-MH-0002", s: "in-progress", right: "44", rl: "witnesses", linked: { bg: "#0C6B5E", mono: "JS", pre: "Being fixed by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
+      { woundId: "SETU-MH-0002", s: "in-progress", right: "44", rl: "witnesses", linked: { bg: "var(--c-p-600)", mono: "JS", pre: "Being fixed by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
     ],
     about: [
       "Anjali Rao has taught at the Ward 7 government school for eleven years. She joined Setu in 2024 after watching her students arrive late, tired from fetching water before class.",
@@ -909,7 +909,7 @@ export const ACTORS: Record<RoleKey, ActorData> = {
 
   ngo: {
     id: "ngo", role: "ngo",
-    logoBg: "#0C6B5E", mono: "JS", name: "Jeevan Setu Foundation",
+    logoBg: "var(--c-p-600)", mono: "JS", name: "Jeevan Setu Foundation",
     roleLabel: "NGO · Water & Sanitation", verified: true,
     tag: "Reviving India's dead water bodies — and keeping them alive, because an abandoned filter is worse than none at all.",
     meta: [["M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z", "Jalgaon, Maharashtra"], ["M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Z M12 6v6l4 2", "Established 2016"], ["M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z", "Team of 18"]],
@@ -967,9 +967,9 @@ export const ACTORS: Record<RoleKey, ActorData> = {
     itemsTitle: "Nineteen projects funded, each one verifiable",
     filters: ["All 19", "Verified 16", "In progress 2", "Not achieved 1"],
     items: [
-      { woundId: "SETU-MH-0001", s: "healed", right: "₹7.4L", rl: "CSR spent", linked: { bg: "#0C6B5E", mono: "JS", pre: "Delivered by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
-      { woundId: "SETU-MH-0008", s: "in-progress", right: "₹31L", rl: "committed", linked: { bg: "#0C6B5E", mono: "JS", pre: "Delivered by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
-      { woundId: "SETU-MH-0009", s: "not-achieved", right: "₹9.2L", rl: "CSR spent", linked: { bg: "#0C6B5E", mono: "JS", pre: "Delivered by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
+      { woundId: "SETU-MH-0001", s: "healed", right: "₹7.4L", rl: "CSR spent", linked: { bg: "var(--c-p-600)", mono: "JS", pre: "Delivered by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
+      { woundId: "SETU-MH-0008", s: "in-progress", right: "₹31L", rl: "committed", linked: { bg: "var(--c-p-600)", mono: "JS", pre: "Delivered by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
+      { woundId: "SETU-MH-0009", s: "not-achieved", right: "₹9.2L", rl: "CSR spent", linked: { bg: "var(--c-p-600)", mono: "JS", pre: "Delivered by", name: "Jeevan Setu Foundation", actorId: "ngo" } },
     ],
     about: [
       "Aditya Infra Ltd is a listed infrastructure company with an annual CSR obligation of ₹9.4 crore under Section 135 of the Companies Act.",
