@@ -1121,3 +1121,120 @@ export function getCSREscrows(companyId: string): CSREscrow[] {
 export function getCSRCompliance(companyId: string): CSRComplianceReport[] {
   return CSR_COMPLIANCE[companyId] || [];
 }
+
+// ════════════════════════════════════════════════════════════
+// Phase 5 — Analytics Dashboard Data
+// ════════════════════════════════════════════════════════════
+
+export interface CSRSspendTrend {
+  month: string;
+  deployed: number;
+  matched: number;
+}
+
+export interface NGOscore {
+  id: string;
+  name: string;
+  initials: string;
+  logoBg: string;
+  verificationScore: number;
+  projectsCompleted: number;
+  trend: "up" | "down" | "flat";
+}
+
+export const CSR_SPEND_TRENDS: CSRSspendTrend[] = [
+  { month: "Feb", deployed: 1.2, matched: 0.8 },
+  { month: "Mar", deployed: 2.1, matched: 1.5 },
+  { month: "Apr", deployed: 1.8, matched: 1.2 },
+  { month: "May", deployed: 2.4, matched: 1.9 },
+  { month: "Jun", deployed: 3.1, matched: 2.5 },
+  { month: "Jul", deployed: 2.8, matched: 2.2 },
+];
+
+export const NGO_VERIFICATION_SCORES: NGOscore[] = [
+  { id: "ngo-jsf", name: "Jeevan Setu Foundation", initials: "JS", logoBg: "var(--c-p-600)", verificationScore: 91, projectsCompleted: 28, trend: "up" },
+  { id: "ngo-wwf", name: "Water Wells Foundation", initials: "WW", logoBg: "#2A6DB0", verificationScore: 88, projectsCompleted: 22, trend: "up" },
+  { id: "ngo-svs", name: "Sahyog Vikas Sanstha", initials: "SV", logoBg: "#2F9E5E", verificationScore: 85, projectsCompleted: 19, trend: "flat" },
+  { id: "ngo-gf", name: "Gramin Foundation", initials: "GF", logoBg: "#A9750C", verificationScore: 82, projectsCompleted: 16, trend: "up" },
+  { id: "ngo-tf", name: "Tarun Foundation", initials: "TF", logoBg: "#C25A1E", verificationScore: 76, projectsCompleted: 14, trend: "down" },
+];
+
+export const ACTIVE_WOUND_REGIONS = [
+  { region: "Maharashtra", count: 24, lat: 19.5, lng: 76.5 },
+  { region: "Uttar Pradesh", count: 18, lat: 27.0, lng: 80.5 },
+  { region: "Bihar", count: 15, lat: 25.5, lng: 85.5 },
+  { region: "Karnataka", count: 12, lat: 15.0, lng: 76.0 },
+  { region: "Rajasthan", count: 10, lat: 26.5, lng: 74.0 },
+  { region: "Delhi", count: 8, lat: 28.6, lng: 77.2 },
+  { region: "Tamil Nadu", count: 7, lat: 11.0, lng: 78.5 },
+  { region: "West Bengal", count: 6, lat: 22.5, lng: 88.0 },
+  { region: "Gujarat", count: 5, lat: 23.0, lng: 72.0 },
+  { region: "Assam", count: 4, lat: 26.2, lng: 92.5 },
+  { region: "Kerala", count: 3, lat: 10.5, lng: 76.5 },
+];
+
+export const ANALYTICS_DATA = {
+  totalWounds: PLATFORM_STATS.totalWounds,
+  healedPct: Math.round((PLATFORM_STATS.healed / WOUNDS.length) * 100),
+  csrDeployed: "₹8.2 Cr",
+  ngosActive: NGO_VERIFICATION_SCORES.length,
+  csrCompaniesEngaged: CSR_COMPANIES.length,
+  statesWithWounds: new Set(WOUNDS.map(w => w.placeId)).size,
+};
+
+// ════════════════════════════════════════════════════════════
+// Phase 5 — Funder Matching Data
+// ════════════════════════════════════════════════════════════
+
+export interface ScheduleVIICategory {
+  key: string;
+  scheduleLabel: string;
+  description: string;
+  ngoCount: number;
+  csrAligned: number;
+  totalFundingNeeded: number;
+  totalFundingAvailable: number;
+}
+
+export const SCHEDULE_VII_CATEGORIES: ScheduleVIICategory[] = [
+  { key: "water", scheduleLabel: "Drinking Water & Sanitation", description: "Water supply, sanitation, waste management", ngoCount: 8, csrAligned: 6, totalFundingNeeded: 4.2, totalFundingAvailable: 6.8 },
+  { key: "education", scheduleLabel: "Education & Livelihood", description: "School infrastructure, skill development", ngoCount: 6, csrAligned: 5, totalFundingNeeded: 3.1, totalFundingAvailable: 4.5 },
+  { key: "health", scheduleLabel: "Healthcare", description: "Public health, medical facilities", ngoCount: 5, csrAligned: 4, totalFundingNeeded: 2.8, totalFundingAvailable: 3.2 },
+  { key: "roads", scheduleLabel: "Rural Infrastructure", description: "Roads, bridges, community infrastructure", ngoCount: 4, csrAligned: 3, totalFundingNeeded: 5.1, totalFundingAvailable: 4.0 },
+  { key: "sanitation", scheduleLabel: "Drinking Water & Sanitation", description: "Sanitation facilities, waste treatment", ngoCount: 5, csrAligned: 4, totalFundingNeeded: 2.4, totalFundingAvailable: 3.6 },
+  { key: "elder", scheduleLabel: "Senior Care & Welfare", description: "Elder care, disability support", ngoCount: 3, csrAligned: 2, totalFundingNeeded: 1.6, totalFundingAvailable: 1.2 },
+];
+
+export interface FundMatch {
+  id: string;
+  ngoName: string;
+  ngoInitials: string;
+  ngoLogoBg: string;
+  woundId: string;
+  woundTitle: string;
+  category: CategoryKey;
+  scheduleCategory: string;
+  amountNeeded: number;
+  amountAvailable: number;
+  matchScore: number;
+  matchFactors: string[];
+  csrCompanyName: string;
+  csrCompanyId: string;
+  status: "new" | "proposed" | "in-discussion" | "committed";
+}
+
+export const FUNDER_MATCHES: FundMatch[] = [
+  { id: "FM-001", ngoName: "Jeevan Setu Foundation", ngoInitials: "JS", ngoLogoBg: "var(--c-p-600)", woundId: "SETU-MH-0010", woundTitle: "Lake desilting & bund repair — Nashik Road", category: "water", scheduleCategory: "Drinking Water & Sanitation", amountNeeded: 22, amountAvailable: 28, matchScore: 94, matchFactors: ["Geography match: Nashik", "Category match: Water", "Track record: 91/100 verification", "Previous partnership"], csrCompanyName: "Aditya Infra Ltd", csrCompanyId: "CSR-AIL", status: "committed" },
+  { id: "FM-002", ngoName: "Water Wells Foundation", ngoInitials: "WW", ngoLogoBg: "#2A6DB0", woundId: "SETU-UP-0002", woundTitle: "Arsenic in the hand-pump water", category: "water", scheduleCategory: "Drinking Water & Sanitation", amountNeeded: 15, amountAvailable: 20, matchScore: 87, matchFactors: ["Category match: Water", "Geography match: UP", "Track record: 88/100 verification"], csrCompanyName: "Infosys Foundation", csrCompanyId: "CSR-INFY", status: "new" },
+  { id: "FM-003", ngoName: "Sahyog Vikas Sanstha", ngoInitials: "SV", ngoLogoBg: "#2F9E5E", woundId: "SETU-BR-0001", woundTitle: "Nine deaths, one poisoned well — Buxar", category: "water", scheduleCategory: "Drinking Water & Sanitation", amountNeeded: 18, amountAvailable: 22, matchScore: 82, matchFactors: ["Category match: Water", "Urgency: High (9 deaths)", "Geography match: Bihar"], csrCompanyName: "Infosys Foundation", csrCompanyId: "CSR-INFY", status: "new" },
+  { id: "FM-004", ngoName: "Gramin Foundation", ngoInitials: "GF", ngoLogoBg: "#A9750C", woundId: "SETU-RJ-0001", woundTitle: "Water tanker arrives once a week", category: "water", scheduleCategory: "Drinking Water & Sanitation", amountNeeded: 8, amountAvailable: 12, matchScore: 78, matchFactors: ["Category match: Water", "Geography match: Rajasthan", "Track record: 82/100 verification"], csrCompanyName: "Tata CSR Foundation", csrCompanyId: "CSR-TATA", status: "proposed" },
+  { id: "FM-005", ngoName: "Tarun Foundation", ngoInitials: "TF", ngoLogoBg: "#C25A1E", woundId: "SETU-DL-0002", woundTitle: "Night shelter over capacity", category: "elder", scheduleCategory: "Senior Care & Welfare", amountNeeded: 6, amountAvailable: 8, matchScore: 72, matchFactors: ["Category match: Elder care", "Geography match: Delhi", "Need: Urgent"], csrCompanyName: "Reliance Foundation", csrCompanyId: "CSR-RIL", status: "in-discussion" },
+];
+
+export const FUNDING_REQUESTS_SUMMARY = {
+  totalNGOs: 12,
+  totalFundsNeeded: 18.4,
+  totalFundsAvailable: 22.6,
+  matchesLive: FUNDER_MATCHES.length,
+  avgMatchScore: Math.round(FUNDER_MATCHES.reduce((s, m) => s + m.matchScore, 0) / FUNDER_MATCHES.length),
+};
