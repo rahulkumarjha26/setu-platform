@@ -11,17 +11,32 @@ interface CorroborationListProps {
   count: number;
 }
 
-export function CorroborationList({ entries, woundId: _woundId, count }: CorroborationListProps) {
+export function CorroborationList({ entries, woundId, count }: CorroborationListProps) {
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [statement, setStatement] = useState("");
+  const [addedEntries, setAddedEntries] = useState<CorroborationEntry[]>([]);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const allEntries = [...addedEntries, ...entries];
 
   const canSubmit = name.trim().length > 0 && statement.trim().length >= 3;
 
   const handleSubmit = () => {
     if (!canSubmit) return;
-    // Placeholder: in real app would POST to API
+    const newEntry: CorroborationEntry = {
+      id: "new-" + Date.now(),
+      woundId,
+      name: name.trim() || "Anonymous",
+      role: role.trim() || "Witness",
+      statement: statement.trim(),
+      time: "Just now",
+      verified: false,
+    };
+    setAddedEntries((prev) => [newEntry, ...prev]);
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 2000);
     setName("");
     setRole("");
     setStatement("");
@@ -119,9 +134,17 @@ export function CorroborationList({ entries, woundId: _woundId, count }: Corrobo
         )}
       </AnimatePresence>
 
+      {/* Success feedback */}
+      {showSuccess && (
+        <div style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--st-healed-mark)", fontSize: 13, fontWeight: 500 }}>
+          <CheckCircle size={16} />
+          Corroboration submitted successfully!
+        </div>
+      )}
+
       {/* List */}
       <div className="flex flex-col" style={{ gap: 10 }}>
-        {entries.length === 0 ? (
+        {allEntries.length === 0 ? (
           <div
             style={{
               textAlign: "center",
@@ -133,7 +156,7 @@ export function CorroborationList({ entries, woundId: _woundId, count }: Corrobo
             <p className="text-caption">No corroborations yet. Be the first.</p>
           </div>
         ) : (
-          entries.map((entry, idx) => (
+          allEntries.map((entry, idx) => (
             <motion.div
               key={entry.id}
               initial={{ opacity: 0, y: 8 }}

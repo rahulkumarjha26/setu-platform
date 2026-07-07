@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronDown, ChevronUp, ArrowRight, Building2, Clock } from "lucide-react";
 import { StatusPill } from "@/app/components/StatusPill";
 import { ProofGallery } from "@/app/components/ProofGallery";
 import { VerificationEventCard } from "@/app/components/VerificationEventCard";
@@ -120,6 +120,17 @@ export default function WoundJourneyPage() {
           {/* Authority */}
           {authority && <AuthoritySection authority={authority} />}
 
+          {/* Pressure thread link for routed wounds */}
+          {wound.status === "routed" && authority && (
+            <Link
+              href={`/pressure/${wound.id}`}
+              className="btn btn-outline btn-sm"
+              style={{ textDecoration: "none", display: "inline-flex", alignSelf: "flex-start" }}
+            >
+              View pressure thread <ArrowRight size={14} />
+            </Link>
+          )}
+
           {/* Legality & Jurisdiction */}
           <div className="card" style={{ padding: 16 }}>
             <button
@@ -136,6 +147,34 @@ export default function WoundJourneyPage() {
                   Category: {catMeta.label}. The responsible body is determined by the nature of the
                   public asset and applicable state law.
                 </p>
+                {authority && (
+                  <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div className="flex items-center gap-8">
+                      <Building2 size={15} color="var(--text-3)" style={{ flexShrink: 0 }} />
+                      <div>
+                        <p className="text-caption" style={{ color: "var(--text-2)" }}>
+                          Department: <span style={{ fontWeight: 600, color: "var(--text)" }}>{authority.department}</span>
+                        </p>
+                        <p className="text-caption" style={{ color: "var(--text-3)", marginTop: 1 }}>
+                          {authority.departmentId}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-8">
+                      <Clock size={15} color="var(--text-3)" style={{ flexShrink: 0 }} />
+                      <p className="text-caption" style={{ color: "var(--text-2)" }}>
+                        SLA: <span style={{ fontWeight: 600, color: "var(--text)" }}>{authority.sla}</span>
+                        {authority.slaRemaining !== null && (
+                          <span style={{ marginLeft: 4, color: "var(--st-healed-mark)", fontWeight: 600 }}>
+                            ({authority.slaRemaining > 0
+                              ? `${authority.slaRemaining} days remaining`
+                              : `${Math.abs(authority.slaRemaining)} days overdue`})
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

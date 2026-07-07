@@ -4,13 +4,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
-  Clock,
   CheckCircle,
   ArrowUp,
   ArrowDown,
-  Search,
   Users,
-  Route,
   TrendingUp,
   AlertTriangle,
   Download,
@@ -26,11 +23,10 @@ import {
   ListChecks,
   Check,
   User,
-  MoreHorizontal,
   Minus,
-  ExternalLink,
 } from "lucide-react";
 import { StatusPill } from "../components/StatusPill";
+import { CATEGORY_META } from "@/lib/mock-data";
 
 /* ─── Mock Data ─── */
 
@@ -105,16 +101,7 @@ const WOUNDS: WoundItem[] = [
   { name: "Illegal dumping near lake", ward: "Ulsoor", category: "sanitation", days: 2, affected: 340, status: "reported", slaBreach: false },
 ];
 
-const CATEGORY_LABELS: Record<CategoryKey, string> = {
-  water: "Water",
-  sanitation: "Sanitation",
-  roads: "Roads",
-  education: "Education",
-  health: "Health",
-  elder: "Elder",
-};
-
-const CATEGORY_COLORS: Record<CategoryKey, string> = {
+const CATEGORY_COLOR: Record<CategoryKey, string> = {
   water: "var(--c-p-400)",
   sanitation: "var(--st-gov-mark)",
   roads: "var(--st-assess-mark)",
@@ -289,7 +276,7 @@ export default function GovernmentPage() {
             onChange={e => setCategoryFilter(e.target.value)}
           >
             <option value="all">All categories</option>
-            {ALL_CATEGORIES.map(c => <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>)}
+            {ALL_CATEGORIES.map(c => <option key={c} value={c}>{CATEGORY_META[c].label}</option>)}
           </select>
           <span className="text-caption text-2" style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
             {filteredWounds.length} wound{filteredWounds.length !== 1 ? "s" : ""}
@@ -326,9 +313,9 @@ export default function GovernmentPage() {
                   <td>
                     <span
                       className="text-caption"
-                      style={{ color: CATEGORY_COLORS[w.category], fontWeight: 500 }}
+                      style={{ color: CATEGORY_COLOR[w.category], fontWeight: 500 }}
                     >
-                      {CATEGORY_LABELS[w.category]}
+                      {CATEGORY_META[w.category].label}
                     </span>
                   </td>
                   <td className="cell-right">
@@ -364,7 +351,7 @@ export default function GovernmentPage() {
                       onClick={() => toggleAck(i)}
                       style={{
                         background: acknowledged.has(i) ? "var(--st-healed-wash)" : "var(--action)",
-                        color: acknowledged.has(i) ? "var(--st-healed-mark)" : "#fff",
+                        color: acknowledged.has(i) ? "var(--st-healed-mark)" : "var(--c-white)",
                         boxShadow: acknowledged.has(i) ? "none" : "var(--shadow-btn)",
                         fontSize: 12,
                         height: 30,
@@ -486,8 +473,8 @@ export default function GovernmentPage() {
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="card"
             style={{
-              background: "linear-gradient(135deg, var(--c-p-50) 0%, var(--c-p-100) 100%)",
-              border: "1px solid var(--c-p-200)",
+              background: "var(--bg-raised)",
+              border: "1px solid var(--border)",
             }}
           >
             <div className="flex items-start justify-between" style={{ flexWrap: "wrap", gap: 12 }}>
@@ -756,7 +743,7 @@ export default function GovernmentPage() {
                     padding: "12px 16px",
                     borderRadius: "var(--radius-input)",
                     background: "var(--st-failed-wash)",
-                    border: "1px solid rgba(194,90,30,0.2)",
+                    border: "1px solid var(--st-failed-wash)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
@@ -1044,8 +1031,8 @@ export default function GovernmentPage() {
           style={{
             marginBottom: 28,
             padding: "24px 28px",
-            background: "linear-gradient(135deg, var(--st-gov-wash) 0%, var(--c-p-50) 100%)",
-            border: "1px solid var(--st-gov-wash)",
+            background: "var(--bg-raised)",
+            border: "1px solid var(--border)",
             borderRadius: "var(--radius-card)",
             overflow: "hidden",
           }}
@@ -1120,7 +1107,7 @@ export default function GovernmentPage() {
                     transform: "translateY(-50%)",
                     fontSize: 9,
                     fontWeight: 700,
-                    color: "#fff",
+                    color: "var(--c-white)",
                     textShadow: "0 1px 2px rgba(0,0,0,0.2)",
                   }}
                 >

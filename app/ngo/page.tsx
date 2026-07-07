@@ -18,19 +18,12 @@ import {
   Target,
   MapPin,
   Award,
-  Star,
   ShieldCheck,
-  FileCheck,
-  Building2,
   ExternalLink,
   BookOpen,
   Download,
-  AlertTriangle,
-  Percent,
   Scale,
   Eye,
-  Layers,
-  Briefcase,
   Lightbulb,
   GraduationCap,
   FileUp,
@@ -303,7 +296,7 @@ export default function NGOPage() {
                       flexShrink: 0,
                     }}
                   >
-                    {c.ok ? <Check size={14} color="#fff" /> : <X size={14} color="#fff" />}
+                    {c.ok ? <Check size={14} color="var(--c-white)" /> : <X size={14} color="var(--c-white)" />}
                   </div>
                   <div>
                     <p className="text-label" style={{ fontWeight: 600, color: "var(--text)", fontSize: 14 }}>{c.label}</p>
@@ -477,7 +470,7 @@ export default function NGOPage() {
                     <p className="text-caption text-3" style={{ marginBottom: 10, lineHeight: 1.4 }}>
                       {card.desc}
                     </p>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "space-between", flexWrap: "wrap" }}>
                       <span className="text-mono text-caption" style={{ fontWeight: 600 }}>
                         {card.budget}
                       </span>
@@ -689,7 +682,7 @@ export default function NGOPage() {
               className="card card-compact"
               style={{ padding: "18px 20px" }}
             >
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 14, flexWrap: "wrap" }}>
                 {/* Funder avatar */}
                 <div
                   style={{
@@ -993,8 +986,8 @@ export default function NGOPage() {
           style={{
             marginBottom: 24,
             padding: "24px 28px",
-            background: "linear-gradient(135deg, var(--c-p-50) 0%, var(--st-healed-wash) 100%)",
-            border: "1px solid var(--c-p-200)",
+            background: "var(--bg-raised)",
+            border: "1px solid var(--border)",
             borderRadius: "var(--radius-card)",
             overflow: "hidden",
           }}
@@ -1013,7 +1006,7 @@ export default function NGOPage() {
                   justifyContent: "center",
                   fontSize: 18,
                   fontWeight: 700,
-                  color: "#fff",
+                  color: "var(--c-white)",
                   flexShrink: 0,
                 }}
               >
