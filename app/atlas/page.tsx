@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -38,9 +38,32 @@ export default function AtlasPage() {
 
   useEffect(() => {
     maplibregl.prewarm();
-    const iv = setInterval(() => setLiveCount((c) => c + 1), 3200);
+    const iv = setInterval(() => setLiveCount((c) => Math.min(c + 1, 9999)), 3200);
     return () => clearInterval(iv);
   }, []);
+
+  const filteredData = useMemo(() => {
+    if (metric === "need") {
+      return {
+        ...clusterData,
+        features: clusterData.features.filter((f) =>
+          ["reported", "assessing"].includes(f.properties.status)
+        ),
+      };
+    }
+    if (metric === "coverage") {
+      return {
+        ...clusterData,
+        features: clusterData.features.filter((f) =>
+          ["routed", "in-progress"].includes(f.properties.status)
+        ),
+      };
+    }
+    return {
+      ...clusterData,
+      features: clusterData.features.filter((f) => f.properties.status === "healed"),
+    };
+  }, [metric]);
 
   const rafRef = useRef<number | null>(null);
   const updateCardPos = useCallback(() => {
@@ -120,10 +143,10 @@ export default function AtlasPage() {
         <MapControls position="bottom-right" />
 
         <MapClusterLayer
-          data={clusterData}
+          data={filteredData}
           clusterMaxZoom={12}
           clusterRadius={50}
-          clusterColors={["var(--c-p-700)", "#2B857C", "#2F9E5E"]}
+          clusterColors={["var(--c-p-700)", "var(--c-p-500)", "var(--st-healed-mark)"]}
           clusterThresholds={[8, 20]}
           pointColor="var(--c-p-700)"
           pointRadius={14}
@@ -160,8 +183,8 @@ export default function AtlasPage() {
           >
             <div
               style={{
-                background: "#FCFEFD",
-                border: "1px solid #E4EBE7",
+                background: "var(--bg-raised)",
+                border: "1px solid var(--border)",
                 borderRadius: 16,
                 overflow: "hidden",
                 boxShadow: "0 12px 40px -12px rgba(14,26,22,.18), 0 2px 8px -2px rgba(14,26,22,.06)",
@@ -178,8 +201,8 @@ export default function AtlasPage() {
                     aria-label="Close"
                     style={{
                       width: 28, height: 28, borderRadius: "50%",
-                      border: "1px solid #E4EBE7", background: "transparent",
-                      color: "#6B7770", cursor: "pointer",
+                      border: "1px solid var(--border)", background: "transparent",
+                      color: "var(--text-2)", cursor: "pointer",
                       display: "flex", alignItems: "center", justifyContent: "center",
                     }}
                   >
@@ -200,15 +223,15 @@ export default function AtlasPage() {
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: 11, color: "#9AA09A",
+                    fontSize: 11, color: "var(--text-3)",
                     display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap",
                     marginBottom: 14,
                   }}
                 >
                   <span>{selectedWound.place}</span>
-                  <span style={{ width: 2, height: 2, borderRadius: "50%", background: "#E4EBE7" }} />
+                  <span style={{ width: 2, height: 2, borderRadius: "50%", background: "var(--border)" }} />
                   <span>{CATEGORY_META[selectedWound.category].label}</span>
-                  <span style={{ width: 2, height: 2, borderRadius: "50%", background: "#E4EBE7" }} />
+                  <span style={{ width: 2, height: 2, borderRadius: "50%", background: "var(--border)" }} />
                   <span>{selectedWound.corroborations} witnesses</span>
                 </div>
 
@@ -224,7 +247,7 @@ export default function AtlasPage() {
                         }}>
                           {o[0]}
                         </div>
-                        <div style={{ fontSize: 11, color: "#9AA09A", marginTop: 2 }}>{o[1]}</div>
+                        <div style={{ fontSize: 11, color: "var(--text-3)", marginTop: 2 }}>{o[1]}</div>
                       </div>
                     ))}
                   </div>
@@ -235,9 +258,9 @@ export default function AtlasPage() {
                     onClick={() => setMeToo(!meToo)}
                     style={{
                       flex: 1, height: 38, borderRadius: 9999,
-                      border: meToo ? "1px solid var(--action)" : "1px solid #E4EBE7",
-                      background: meToo ? "var(--st-active-wash)" : "#FCFEFD",
-                      color: meToo ? "var(--action)" : "#3D4A44",
+                      border: meToo ? "1px solid var(--action)" : "1px solid var(--border)",
+                      background: meToo ? "var(--st-active-wash)" : "var(--bg-raised)",
+                      color: meToo ? "var(--action)" : "var(--text)",
                       fontWeight: 600, fontSize: 13, fontFamily: "inherit",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       gap: 6, cursor: "pointer", transition: "all .15s",
@@ -249,7 +272,7 @@ export default function AtlasPage() {
                     href={`/wound/${selectedWound.id}`}
                     style={{
                       height: 38, padding: "0 16px", borderRadius: 9999,
-                      border: "none", background: "var(--action)", color: "#fff",
+                      border: "none", background: "var(--action)", color: "var(--c-white)",
                       fontWeight: 600, fontSize: 13, fontFamily: "inherit",
                       display: "flex", alignItems: "center", gap: 6,
                       cursor: "pointer", textDecoration: "none",
@@ -274,7 +297,7 @@ export default function AtlasPage() {
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
           <div style={{ width: 26, height: 26, borderRadius: "50%", background: "var(--action)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#fff" }} />
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--c-white)" }} />
           </div>
           <span className="text-serif" style={{ fontWeight: 600, fontSize: 17, color: "var(--action)" }}>सेतु</span>
         </div>
@@ -305,7 +328,7 @@ export default function AtlasPage() {
             <button key={m} onClick={() => setMetric(m)} style={{
               border: "none", background: metric === m ? "var(--action)" : "transparent",
               borderRadius: 9999, padding: "7px 14px", fontSize: 13, fontWeight: 500, fontFamily: "inherit",
-              color: metric === m ? "#fff" : "var(--text-2)", cursor: "pointer", transition: "all .15s", whiteSpace: "nowrap",
+              color: metric === m ? "var(--c-white)" : "var(--text-2)", cursor: "pointer", transition: "all .15s", whiteSpace: "nowrap",
             }}>
               {m === "need" ? "Need" : m === "coverage" ? "Coverage" : "Healed"}
             </button>
@@ -316,8 +339,9 @@ export default function AtlasPage() {
       <style jsx>{`
         .atlas-overlay { position: absolute; z-index: 10; pointer-events: none; }
         .atlas-overlay > * { pointer-events: auto; }
-        .atlas-beat { width: 8px; height: 8px; border-radius: 50%; background: #2F9E5E; animation: atlas-beat 1.8s ease-out infinite; }
+        .atlas-beat { width: 8px; height: 8px; border-radius: 50%; background: var(--st-healed-mark); animation: atlas-beat 1.8s ease-out infinite; }
         @keyframes atlas-beat { 0% { box-shadow: 0 0 0 0 rgba(47,158,94,.5); } 70% { box-shadow: 0 0 0 8px rgba(47,158,94,0); } 100% { box-shadow: 0 0 0 0 rgba(47,158,94,0); } }
+        @media (max-width: 640px) { .atlas-overlay { padding-bottom: 72px; } }
       `}</style>
     </div>
   );
