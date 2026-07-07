@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Search, ChevronDown, Plus, ArrowUp, Check } from "lucide-react";
 import { StatusPill } from "../components/StatusPill";
 import {
-  WOUNDS, STREAM_DATA, STATUS_META, CATEGORY_META,
+  WOUNDS, STREAM_DATA, STATUS_META, CATEGORY_META, PLATFORM_STATS,
   type StatusKey, type CategoryKey, type Wound as SharedWound,
 } from "@/lib/mock-data";
 
@@ -26,6 +26,14 @@ const SEED: StreamWound[] = STREAM_DATA.map(sd => {
   const w = WOUNDS.find(x => x.id === sd.woundId)!;
   return { ...w, ago: sd.ago, near: sd.near, rising: sd.rising, me: false, spine: sd.spine, comments: sd.comments };
 });
+
+/* Rail stats derived from shared mock data */
+const RAIL_STATS = {
+  openWounds: PLATFORM_STATS.reported + PLATFORM_STATS.assessing + PLATFORM_STATS.routed + PLATFORM_STATS.inProgress,
+  healedThisMonth: PLATFORM_STATS.healed,
+  totalCorroborations: WOUNDS.reduce((sum, w) => sum + w.corroborations, 0),
+  verifiedPct: Math.round((WOUNDS.filter(w => w.verifications && w.verifications.length > 0).length / WOUNDS.length) * 100),
+};
 
 const STATUS_MARK: Record<StatusKey, string> = {
   "reported": "var(--st-open-mark)", "assessing": "var(--st-assess-mark)",
@@ -319,7 +327,7 @@ export default function StreamPage() {
               return (
                 <button key={cat as string} onClick={() => handleCatToggle(cat as string)}
                   className={`stream-chip${sel ? " selected" : ""}`}>
-                  {ip ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" dangerouslySetInnerHTML={{ __html: ip as string }} /> : null}
+                  {ip ? <CatIcon path={ip as string} /> : null}
                   {label}
                 </button>
               );
@@ -386,7 +394,9 @@ export default function StreamPage() {
 
                 {/* Meta */}
                 <p style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--text-3)", marginTop: 6, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                  {w.place}
+                  <Link href={`/place/${w.placeId}`} style={{ textDecoration: "none", color: "inherit" }}>
+                    {w.place}
+                  </Link>
                   <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--border)", flexShrink: 0 }} />
                   {w.ago} ago
                 </p>
@@ -469,7 +479,12 @@ export default function StreamPage() {
               Jalgaon today
               <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, fontWeight: 500, color: "var(--st-healed)", background: "var(--st-healed-wash)", padding: "2px 8px", borderRadius: "var(--radius-pill)", textTransform: "uppercase", letterSpacing: ".04em" }}>live</span>
             </h3>
-            {[["Wounds open","84",undefined],["Healed this month","12","var(--st-healed)"],["Corroborations","1,204",undefined],["Verified","96%",undefined]].map(([label, value, color], i, arr) => (
+            {[
+              ["Wounds open", String(RAIL_STATS.openWounds), undefined],
+              ["Healed this month", String(RAIL_STATS.healedThisMonth), "var(--st-healed)"],
+              ["Corroborations", RAIL_STATS.totalCorroborations.toLocaleString(), undefined],
+              ["Verified", `${RAIL_STATS.verifiedPct}%`, undefined],
+            ].map(([label, value, color], i, arr) => (
               <div key={label as string} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "9px 0", borderBottom: i < arr.length - 1 ? "1px solid var(--border)" : "none", fontSize: 13 }}>
                 <span style={{ color: "var(--text-2)" }}>{label}</span>
                 <span style={{ fontWeight: 600, fontSize: 18, fontVariantNumeric: "tabular-nums", color: (color as string) || "var(--text)" }}>{value}</span>
@@ -520,7 +535,7 @@ export default function StreamPage() {
                 {Object.entries(CATEGORY_META).map(([key, meta]) => (
                   <button key={key} onClick={() => setComposeCat(key)}
                     className={`stream-compose-chip${composeCat === key ? " selected" : ""}`}>
-                    {meta.icon ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d={meta.icon} /></svg> : null}
+                    {meta.icon ? <CatIcon path={meta.icon} /> : null}
                     {meta.label}
                   </button>
                 ))}
@@ -557,5 +572,16 @@ function CommentInput({ onSend }: { onSend: (body: string) => void }) {
         style={{ flex: 1, height: 38, borderRadius: "var(--radius-pill)", background: "var(--bg-raised)" }} />
       <button onClick={send} style={{ height: 38, padding: "0 18px", borderRadius: "var(--radius-pill)", border: "none", background: "var(--action)", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>Send</button>
     </div>
+  );
+}
+
+/* ================================================================
+   CatIcon — renders SVG path from CATEGORY_META safely
+   ================================================================ */
+function CatIcon({ path, size = 14 }: { path: string; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d={path} />
+    </svg>
   );
 }

@@ -342,8 +342,9 @@ table.data-table tr:hover td{background:var(--bg-muted)}
 }
 
 /* Generic split: main + sidebar — collapse at 900px to match .desktop-only */
+.split-main-rail { display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start; }
 @media (max-width: 900px) {
-  .split-main-rail { grid-template-columns: 1fr !important; }
+  .split-main-rail { grid-template-columns: 1fr !important; gap: 0 !important; }
   .split-main-rail > .desktop-only { display: none !important; }
 }
 

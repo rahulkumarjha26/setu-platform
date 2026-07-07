@@ -21,8 +21,6 @@ import {
   ChevronRight,
   Target,
   LineChart,
-  Building2,
-  ExternalLink,
 } from "lucide-react";
 import { StatusPill } from "../components/StatusPill";
 import { VerificationEventCard } from "../components/VerificationEventCard";
@@ -207,7 +205,7 @@ export default function CorporatePage() {
 
   /* ─── Portfolio Tab ─── */
   const renderPortfolio = () => (
-    <div className="split-main-rail" style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 32, alignItems: "start" }}>
+    <div className="split-main-rail">
       {/* Table */}
       <div className="table-container">
         <table className="data-table">
@@ -391,7 +389,7 @@ export default function CorporatePage() {
 
   /* ─── Compliance Tab ─── */
   const renderCompliance = () => (
-    <div className="split-main-rail" style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 32, alignItems: "start" }}>
+    <div className="split-main-rail">
       <div className="flex flex-col" style={{ gap: 24 }}>
         {/* Annual Report Cards */}
         <div>
@@ -591,7 +589,7 @@ export default function CorporatePage() {
 
   /* ─── Proof Tab ─── */
   const renderProof = () => (
-    <div className="split-main-rail" style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 32, alignItems: "start" }}>
+    <div className="split-main-rail">
       <div className="flex flex-col" style={{ gap: 20 }}>
         <h3 className="text-label-up text-3" style={{ marginBottom: 0, display: "flex", alignItems: "center", gap: 6 }}>
           <ShieldCheck size={14} />
@@ -757,7 +755,7 @@ export default function CorporatePage() {
 
   /* ─── NGO Scoring Tab ─── */
   const renderScoring = () => (
-    <div className="split-main-rail" style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 32, alignItems: "start" }}>
+    <div className="split-main-rail">
       <div className="flex flex-col" style={{ gap: 20 }}>
         <h3 className="text-label-up text-3" style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <BarChart3 size={14} />
@@ -882,8 +880,8 @@ export default function CorporatePage() {
           style={{
             marginBottom: 28,
             padding: "24px 28px",
-            background: "linear-gradient(135deg, var(--c-p-50) 0%, var(--c-p-100) 100%)",
-            border: "1px solid var(--c-p-200)",
+            background: "var(--bg-raised)",
+            border: "1px solid var(--border)",
             borderRadius: "var(--radius-card)",
             overflow: "hidden",
           }}
@@ -934,7 +932,7 @@ export default function CorporatePage() {
                 borderRadius: 6,
                 background: "var(--bg-raised)",
                 overflow: "hidden",
-                border: "1px solid var(--c-p-200)",
+                border: "1px solid var(--border)",
                 position: "relative",
               }}
             >
@@ -943,7 +941,7 @@ export default function CorporatePage() {
                   height: "100%",
                   width: `${spentPct}%`,
                   borderRadius: 6,
-                  background: `linear-gradient(90deg, var(--c-p-600) 0%, var(--st-healed-mark) 100%)`,
+                  background: "var(--action)",
                   transition: "width 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
                   position: "relative",
                 }}
