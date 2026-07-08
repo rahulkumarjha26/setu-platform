@@ -10,7 +10,21 @@ import { WOUNDS, STATUS_META, CATEGORY_META, PLATFORM_STATS, type Wound, type St
 import type * as GeoJSON from "geojson";
 
 // Dynamically import the map component to split maplibre-gl into a separate chunk
-const AtlasMap = dynamic(() => import("./atlas-map"), { ssr: false });
+const AtlasMap = dynamic(() => import("./atlas-map"), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 flex items-center justify-center bg-[var(--bg)]">
+      <div
+        style={{
+          width: 26, height: 26, borderRadius: "50%",
+          border: "2px solid var(--border)", borderTopColor: "var(--action)",
+          animation: "atlas-map-spin .7s linear infinite",
+        }}
+      />
+      <style>{`@keyframes atlas-map-spin { to { transform: rotate(360deg) } }`}</style>
+    </div>
+  ),
+});
 
 /* ================================================================
    Build cluster data from shared wounds

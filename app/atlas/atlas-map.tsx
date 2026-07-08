@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import maplibregl from "maplibre-gl";
 import { Map, MapClusterLayer, MapControls } from "@/components/ui/map";
 import type * as GeoJSON from "geojson";
 import type { Wound } from "@/lib/mock-data";
@@ -31,9 +30,14 @@ export default function AtlasMap({
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    maplibregl.prewarm();
+    let cancelled = false;
+    import("maplibre-gl").then((m) => {
+      if (cancelled) return;
+      m.prewarm();
+    });
     return () => {
-      maplibregl.clearPrewarmedResources();
+      cancelled = true;
+      import("maplibre-gl").then((m) => m.clearPrewarmedResources());
     };
   }, []);
 
