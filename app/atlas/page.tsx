@@ -45,15 +45,27 @@ const STATUS_LIST: StatusKey[] = ["reported", "assessing", "routed", "in-progres
    ================================================================ */
 export default function AtlasPage() {
   const [metric, setMetric] = useState<"need" | "coverage" | "healed">("need");
+  const filteredCounts = useMemo(() => ({
+    need: clusterData.features.filter((f) =>
+      ["reported", "assessing"].includes(f.properties.status)
+    ).length,
+    coverage: clusterData.features.filter((f) =>
+      ["routed", "in-progress"].includes(f.properties.status)
+    ).length,
+    healed: clusterData.features.filter((f) =>
+      f.properties.status === "healed"
+    ).length,
+  }), []);
   const [selectedWound, setSelectedWound] = useState<Wound | null>(null);
   const [liveCount, setLiveCount] = useState(PLATFORM_STATS.liveCount);
+  const LIVE_MAX = 9999;
   const mapRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [cardPos, setCardPos] = useState<{ x: number; y: number } | null>(null);
   const [meToo, setMeToo] = useState(false);
 
   useEffect(() => {
-    const iv = setInterval(() => setLiveCount((c) => Math.min(c + 1, 9999)), 3200);
+    const iv = setInterval(() => setLiveCount((c) => Math.min(c + 1, LIVE_MAX)), 3200);
     return () => clearInterval(iv);
   }, []);
 
@@ -193,7 +205,10 @@ export default function AtlasPage() {
             style={{
               position: "absolute",
               left: Math.min(Math.max(cardPos.x - 170, 16), (containerRef.current?.clientWidth ?? 0) - 356),
-              top: Math.max(cardPos.y - 200, 90),
+              top: Math.min(
+                Math.max(cardPos.y - 200, 110),
+                (containerRef.current?.clientHeight ?? 600) - 340 - 72
+              ),
               zIndex: 20,
               width: 340,
             }}
@@ -307,7 +322,7 @@ export default function AtlasPage() {
       {/* ===== TOP BAR ===== */}
       <div className="atlas-overlay mob-px-16" style={{
         top: 0, left: 0, right: 0,
-        background: "rgba(252,251,249,.88)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+        background: "var(--c-paper)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
         borderBottom: "1px solid var(--border)", padding: "10px 24px",
         display: "flex", alignItems: "center", gap: 8,
         flexWrap: "wrap",
@@ -319,7 +334,7 @@ export default function AtlasPage() {
           <span className="text-serif" style={{ fontWeight: 600, fontSize: 17, color: "var(--action)" }}>सेतु</span>
         </div>
 
-        <Link href="/search" style={{ flex: "1 1 auto", maxWidth: 360, position: "relative", minWidth: 0, textDecoration: "none" }}>
+        <Link href="/search" className="atlas-search" style={{ flex: "1 1 auto", maxWidth: 360, position: "relative", minWidth: 0, textDecoration: "none" }}>
           <span style={{
             display: "flex", alignItems: "center", height: 38,
             border: "1px solid var(--border)", background: "var(--bg-raised)",
@@ -348,6 +363,7 @@ export default function AtlasPage() {
               color: metric === m ? "var(--c-white)" : "var(--text-2)", cursor: "pointer", transition: "all .15s", whiteSpace: "nowrap",
             }}>
               {m === "need" ? "Need" : m === "coverage" ? "Coverage" : "Healed"}
+              <span style={{ opacity: 0.6, marginLeft: 4 }}>{filteredCounts[m]}</span>
             </button>
           ))}
         </div>
@@ -357,8 +373,11 @@ export default function AtlasPage() {
         .atlas-overlay { position: absolute; z-index: 10; pointer-events: none; }
         .atlas-overlay > * { pointer-events: auto; }
         .atlas-beat { width: 8px; height: 8px; border-radius: 50%; background: var(--st-healed-mark); animation: atlas-beat 1.8s ease-out infinite; }
-        @keyframes atlas-beat { 0% { box-shadow: 0 0 0 0 rgba(47,158,94,.5); } 70% { box-shadow: 0 0 0 8px rgba(47,158,94,0); } 100% { box-shadow: 0 0 0 0 rgba(47,158,94,0); } }
-        @media (max-width: 640px) { .atlas-overlay { padding-bottom: 72px; } }
+        @keyframes atlas-beat { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--st-healed-mark) 50%, transparent); } 70% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--st-healed-mark) 0%, transparent); } 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--st-healed-mark) 0%, transparent); } }
+        @media (max-width: 640px) {
+          .atlas-search { max-width: 100% !important; flex-basis: 100% !important; }
+          .atlas-controls { bottom: 72px !important; }
+        }
       `}</style>
     </div>
   );

@@ -147,18 +147,22 @@ function Hero({ feed, role }: { feed: ReturnType<typeof getHomeFeed>; role: Role
       </div>
 
       <div style={{
-        background: "var(--bg-raised)", borderLeft: "1px solid var(--border)",
-        padding: "32px 28px", display: "flex", flexDirection: "column", gap: 24,
+        padding: "32px 28px", display: "flex", flexDirection: "column", gap: 20,
       }}>
         <div style={{ fontFamily: "Fraunces, Georgia, serif", fontWeight: 600, fontSize: 18, color: "var(--text)" }}>Your impact</div>
-        {feed.supportStats.map((s, i) => (
-          <div key={i}>
-            <div style={{ fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: 28, letterSpacing: "-.03em", fontVariantNumeric: "tabular-nums", lineHeight: 1, color: "var(--text)" }}>
-              {s.value}{s.sub || ""}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {feed.supportStats.map((s, i) => (
+            <div key={i} style={{
+              background: "var(--st-healed-wash)", borderRadius: 999,
+              padding: "8px 16px",
+            }}>
+              <span style={{ fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: 18, letterSpacing: "-.03em", fontVariantNumeric: "tabular-nums", lineHeight: 1, color: "var(--st-healed)" }}>
+                {s.value}{s.sub || ""}
+              </span>
+              <span style={{ fontSize: 11, color: "var(--st-healed)", marginLeft: 6 }}>{s.label}</span>
             </div>
-            <div style={{ fontSize: 12, color: "var(--text-2)", marginTop: 4, lineHeight: 1.35 }}>{s.label}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -422,16 +426,21 @@ export default function HomePage() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} style={{ minHeight: "100vh" }}>
       <style>{`
         @keyframes beat{0%{box-shadow:0 0 0 0 rgba(18,168,96,.5)}70%{box-shadow:0 0 0 7px rgba(18,168,96,0)}100%{box-shadow:0 0 0 0 rgba(18,168,96,0)}}
+        @media (min-width: 641px) {
+          .role-switcher { position: fixed; top: 16px; right: 20px; z-index: 50; margin-bottom: 0; }
+        }
+        @media (max-width: 900px) {
+          .live-feed-rail { position: static !important; }
+        }
       `}</style>
 
       <div className="mob-px-16" style={{ maxWidth: 1060, margin: "0 auto", padding: "40px 32px 60px", backgroundImage: "radial-gradient(60% 40% at 80% -5%,rgba(111,211,194,.10),transparent 60%)" }}>
         {/* Dev role switcher */}
-        <div className="mob-hide" style={{
-          position: "fixed", top: 16, right: 20, zIndex: 50,
+        <div className="role-switcher" style={{
           display: "flex", alignItems: "center", gap: 4,
           background: "rgba(14,26,22,.06)", backdropFilter: "blur(8px)",
           border: "1px solid rgba(14,26,22,.08)", borderRadius: 999,
-          padding: "3px 4px 3px 12px",
+          padding: "3px 4px 3px 12px", marginBottom: 20,
         }}>
           <span style={{ fontFamily: "Geist Mono, monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: ".08em", color: "#9AA09A", marginRight: 4 }}>view as</span>
           {roles.map(r => (
@@ -508,7 +517,7 @@ export default function HomePage() {
           </div>
 
           {/* Right rail */}
-          <motion.div style={{ position: "sticky", top: 24 }} initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1], delay: 0.34 }}>
+          <motion.div className="live-feed-rail" style={{ position: "sticky", top: 24 }} initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1], delay: 0.34 }}>
             <LiveFeed items={activityItems} role={role} />
           </motion.div>
         </div>

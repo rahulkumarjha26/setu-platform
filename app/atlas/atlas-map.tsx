@@ -16,6 +16,18 @@ interface AtlasMapProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
+function cssVar(name: string, fallback: string): string {
+  if (typeof document === "undefined") return fallback;
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+}
+
+const CLUSTER_COLORS: [string, string, string] = [
+  cssVar("--c-p-700", "#12564F"),
+  cssVar("--c-p-500", "#2B857C"),
+  cssVar("--st-healed-mark", "#2F9E5E"),
+];
+const POINT_COLOR = cssVar("--c-p-700", "#12564F");
+
 export default function AtlasMap({
   filteredData,
   selectedWound,
@@ -75,15 +87,15 @@ export default function AtlasMap({
       fadeDuration={200}
       className="absolute inset-0"
     >
-      <MapControls position="bottom-right" />
+      <MapControls position="bottom-right" className="atlas-controls" />
 
       <MapClusterLayer
         data={filteredData}
         clusterMaxZoom={12}
         clusterRadius={50}
-        clusterColors={["#12564F", "#2B857C", "#2F9E5E"]}
+        clusterColors={CLUSTER_COLORS}
         clusterThresholds={[8, 20]}
-        pointColor="#12564F"
+        pointColor={POINT_COLOR}
         pointRadius={14}
         onPointClick={handlePointClick}
         onClusterClick={handleClusterClick}
