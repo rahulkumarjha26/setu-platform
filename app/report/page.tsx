@@ -8,7 +8,6 @@ import {
   ChevronLeft,
   MapPin,
   ArrowRight,
-  Check,
   Droplets,
   Trash2,
   Route,

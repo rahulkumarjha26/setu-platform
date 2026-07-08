@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, RefreshCw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { type RoleKey, type StatusKey, type Wound, ACTORS, CATEGORY_META } from "@/lib/mock-data";
 import { getHomeFeed, type ActivityEvent } from "@/lib/dashboard";
 import { useReportPopup } from "../components/ReportPopupContext";
