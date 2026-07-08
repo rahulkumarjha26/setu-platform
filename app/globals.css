@@ -598,3 +598,6 @@ table.data-table tr:hover td{background:var(--bg-muted)}
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 }
+
+/* Remove default blue focus ring on mouse clicks while keeping keyboard focus visible */
+*:focus:not(:focus-visible) { outline: none; }

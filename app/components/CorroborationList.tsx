@@ -160,6 +160,7 @@ export function CorroborationList({ entries, woundId, count }: CorroborationList
             <motion.div
               role="listitem"
               key={entry.id}
+              tabIndex={0}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: idx * 0.05, ease: [0.16, 1, 0.3, 1] }}
