@@ -1,9 +1,6 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
+import type { Metadata } from "next";
 import { MapPin, CheckCircle, Building2 } from "lucide-react";
-
 
 const COVERAGE_GRID = [
   [1, 1, 1, 1, 0, 0],
@@ -46,6 +43,12 @@ function getCellOpacity(val: number) {
   return 0.12 + val * 0.72;
 }
 
+export const metadata: Metadata = {
+  title: "सेतु · SETU — A nation, counted one wound at a time",
+  description:
+    "Every pin is a real report. Every status change is verified proof. Track wounds across India on the SETU civic platform.",
+};
+
 export default function LandingPage() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -81,14 +84,19 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <motion.section
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="container"
+      <section
+        className="container anim-fade-up"
         style={{ paddingTop: 80, paddingBottom: 48 }}
       >
-        <h1 className="text-display" style={{ maxWidth: 720, color: "var(--text)", overflowWrap: "break-word" }}>
+        <h1
+          className="text-display"
+          style={{
+            maxWidth: 720,
+            color: "var(--text)",
+            overflowWrap: "break-word",
+            wordBreak: "break-word",
+          }}
+        >
           A nation, counted
           <br />
           one wound at a time.
@@ -119,28 +127,22 @@ export default function LandingPage() {
           >
             Report a wound
           </Link>
+          <Link
+            href="/onboarding"
+            className="btn btn-ghost mob-w-full"
+            style={{ height: 46, padding: "0 26px", fontSize: 15 }}
+          >
+            Get started &rarr;
+          </Link>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: {},
-          visible: { transition: { staggerChildren: 0.12 } },
-        }}
-        className="container mob-flex-col"
+      <section
+        className="container stagger"
         style={{ paddingTop: 32, paddingBottom: 48, display: "flex", gap: 64, flexWrap: "wrap" }}
       >
         {STATS.map((stat) => (
-          <motion.div
-            key={stat.label}
-            variants={{
-              hidden: { opacity: 0, y: 16 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
-            }}
-            style={{ minWidth: 180 }}
-          >
+          <div key={stat.label} style={{ minWidth: 180 }}>
             <span className="text-label-up text-2" style={{ marginBottom: 8, display: "block" }}>
               {stat.label}
             </span>
@@ -148,16 +150,13 @@ export default function LandingPage() {
               <stat.icon size={18} color={stat.color} />
               <span className="text-number">{stat.value}</span>
             </div>
-          </motion.div>
+          </div>
         ))}
-      </motion.section>
+      </section>
 
-      <motion.section
-        initial={{ opacity: 0, y: 32 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="container"
-        style={{ paddingBottom: 64, flex: 1 }}
+      <section
+        className="container anim-fade-up"
+        style={{ paddingBottom: 64, flex: 1, animationDelay: "0.3s" }}
       >
         <div
           style={{
@@ -231,7 +230,7 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
       <footer
         className="mob-px-16"
