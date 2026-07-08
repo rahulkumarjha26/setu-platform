@@ -4,11 +4,13 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import maplibregl from "maplibre-gl";
-import { Map, MapClusterLayer, MapControls } from "@/components/ui/map";
+import dynamic from "next/dynamic";
 import { StatusPill } from "../components/StatusPill";
 import { WOUNDS, STATUS_META, CATEGORY_META, PLATFORM_STATS, type Wound, type StatusKey } from "@/lib/mock-data";
 import type * as GeoJSON from "geojson";
+
+// Dynamically import the map component to split maplibre-gl into a separate chunk
+const AtlasMap = dynamic(() => import("./atlas-map"), { ssr: false });
 
 /* ================================================================
    Build cluster data from shared wounds
@@ -37,7 +39,6 @@ export default function AtlasPage() {
   const [meToo, setMeToo] = useState(false);
 
   useEffect(() => {
-    maplibregl.prewarm();
     const iv = setInterval(() => setLiveCount((c) => Math.min(c + 1, 9999)), 3200);
     return () => clearInterval(iv);
   }, []);
@@ -100,6 +101,10 @@ export default function AtlasPage() {
     };
   }, [selectedWound, updateCardPos]);
 
+  const handleMapReady = useCallback((map: any) => {
+    mapRef.current = map;
+  }, []);
+
   const handlePointClick = (feature: GeoJSON.Feature<GeoJSON.Point>) => {
     const id = (feature.properties as any).woundId;
     const wound = WOUNDS.find((w) => w.id === id);
@@ -117,6 +122,21 @@ export default function AtlasPage() {
       }
     }
   };
+
+  const handleClusterClick = useCallback(
+    (_id: number, coords: [number, number]) => {
+      if (mapRef.current) {
+        mapRef.current.flyTo({
+          center: coords,
+          zoom: Math.min(mapRef.current.getZoom() + 3, 14),
+          speed: 1.2,
+          easing: (t: number) => t * (2 - t),
+          essential: true,
+        });
+      }
+    },
+    [],
+  );
 
   const handleCloseCard = () => {
     setSelectedWound(null);
@@ -137,40 +157,16 @@ export default function AtlasPage() {
 
   return (
     <div ref={containerRef} style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden" }}>
-      <Map
-        ref={mapRef}
-        center={[78.96, 22.59]}
-        zoom={4.5}
-        theme="light"
-        styles={{ light: "https://tiles.openfreemap.org/styles/positron" }}
-        localIdeographFontFamily="sans-serif"
-        fadeDuration={200}
-        className="absolute inset-0"
-      >
-        <MapControls position="bottom-right" />
-
-        <MapClusterLayer
-          data={filteredData}
-          clusterMaxZoom={12}
-          clusterRadius={50}
-          clusterColors={["#12564F", "#2B857C", "#2F9E5E"]}
-          clusterThresholds={[8, 20]}
-          pointColor="#12564F"
-          pointRadius={14}
-          onPointClick={handlePointClick}
-          onClusterClick={(_id, coords) => {
-            if (mapRef.current) {
-              mapRef.current.flyTo({
-                center: coords,
-                zoom: Math.min(mapRef.current.getZoom() + 3, 14),
-                speed: 1.2,
-                easing: (t: number) => t * (2 - t),
-                essential: true,
-              });
-            }
-          }}
-        />
-      </Map>
+      <AtlasMap
+        filteredData={filteredData}
+        selectedWound={selectedWound}
+        selectedWoundId={selectedWound?.id ?? null}
+        onPointClick={handlePointClick}
+        onClusterClick={handleClusterClick}
+        onMapReady={handleMapReady}
+        onWoundSelect={setSelectedWound}
+        containerRef={containerRef}
+      />
 
       {/* ===== WOUND CARD — redesigned ===== */}
       <AnimatePresence>
