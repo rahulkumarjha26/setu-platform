@@ -264,6 +264,7 @@ export default function StreamPage() {
           <div className="mob-hide" style={{ flex: 1, maxWidth: 340, position: "relative", minWidth: 0 }}>
             <Search size={16} style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--text-3)", pointerEvents: "none", zIndex: 1 }} />
             <input
+              aria-label="Search wounds, places"
               placeholder="Search wounds, places…"
               style={{
                 width: "100%", height: 40, border: "1px solid var(--border)",
@@ -306,10 +307,11 @@ export default function StreamPage() {
           </div>
 
           {/* Tabs */}
-          <div style={{ display: "flex", gap: 0, borderBottom: "1px solid var(--border)", marginBottom: 18, overflowX: "auto", marginLeft: -4, paddingLeft: 4 }}>
+          <div role="tablist" style={{ display: "flex", gap: 0, borderBottom: "1px solid var(--border)", marginBottom: 18, overflowX: "auto", marginLeft: -4, paddingLeft: 4 }}>
             {([["all","All"],["near","Near me"],["rising","Rising"],["healed","Healed"],["not-achieved","Not achieved"]] as [string,string][]).map(([key, label]) => (
               <button
                 key={key}
+                role="tab"
                 onClick={() => setTab(key)}
                 className="stream-tab"
                 aria-selected={tab === key}
@@ -525,10 +527,10 @@ export default function StreamPage() {
               <p style={{ fontSize: 14, color: "var(--text-2)", marginBottom: 20 }}>Describe what's broken. Your name is never shared.</p>
 
               <label className="text-label-up" style={{ display: "block", marginBottom: 8, color: "var(--text-2)" }}>What's wrong?</label>
-              <input className="input" placeholder="e.g. Streetlight out on the school lane" value={composeTitle} onChange={e => setComposeTitle(e.target.value)} style={{ borderRadius: 12, marginBottom: 16 }} />
+              <input className="input" aria-label="What's wrong?" placeholder="e.g. Streetlight out on the school lane" value={composeTitle} onChange={e => setComposeTitle(e.target.value)} style={{ borderRadius: 12, marginBottom: 16 }} />
 
               <label className="text-label-up" style={{ display: "block", marginBottom: 8, color: "var(--text-2)" }}>Where?</label>
-              <input className="input" placeholder="Ward, landmark…" value={composePlace} onChange={e => setComposePlace(e.target.value)} style={{ borderRadius: 12, marginBottom: 16 }} />
+              <input className="input" aria-label="Where?" placeholder="Ward, landmark…" value={composePlace} onChange={e => setComposePlace(e.target.value)} style={{ borderRadius: 12, marginBottom: 16 }} />
 
               <label className="text-label-up" style={{ display: "block", marginBottom: 8, color: "var(--text-2)" }}>Category</label>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
@@ -567,7 +569,7 @@ function CommentInput({ onSend }: { onSend: (body: string) => void }) {
   const send = () => { if (!val.trim()) return; onSend(val.trim()); setVal(""); };
   return (
     <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-      <input className="input" placeholder="Add a comment…" value={val}
+      <input className="input" aria-label="Add a comment" placeholder="Add a comment…" value={val}
         onChange={e => setVal(e.target.value)} onKeyDown={e => { if (e.key === "Enter") send(); }}
         style={{ flex: 1, height: 38, borderRadius: "var(--radius-pill)", background: "var(--bg-raised)" }} />
       <button onClick={send} style={{ height: 38, padding: "0 18px", borderRadius: "var(--radius-pill)", border: "none", background: "var(--action)", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>Send</button>

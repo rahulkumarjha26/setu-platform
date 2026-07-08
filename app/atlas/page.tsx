@@ -288,6 +288,8 @@ export default function AtlasPage() {
                 <div style={{ display: "flex", gap: 8 }}>
                   <button
                     onClick={() => setMeToo(!meToo)}
+                    aria-label={meToo ? "Remove witness status" : "Add witness status"}
+                    aria-pressed={meToo}
                     style={{
                       flex: 1, height: 38, borderRadius: 9999,
                       border: meToo ? "1px solid var(--action)" : "1px solid var(--border)",
@@ -357,7 +359,10 @@ export default function AtlasPage() {
 
         <div style={{ display: "flex", gap: 3, background: "var(--bg-muted)", borderRadius: 9999, padding: 3, flexShrink: 0 }}>
           {(["need", "coverage", "healed"] as const).map((m) => (
-            <button key={m} onClick={() => setMetric(m)} style={{
+            <button key={m} onClick={() => setMetric(m)}
+              aria-label={`Show ${m} wounds`}
+              aria-pressed={metric === m}
+              style={{
               border: "none", background: metric === m ? "var(--action)" : "transparent",
               borderRadius: 9999, padding: "7px 14px", fontSize: 13, fontWeight: 500, fontFamily: "inherit",
               color: metric === m ? "var(--c-white)" : "var(--text-2)", cursor: "pointer", transition: "all .15s", whiteSpace: "nowrap",

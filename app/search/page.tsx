@@ -272,6 +272,7 @@ export default function SearchPage() {
               placeholder="projects that keep girls in school in water-stressed districts…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              aria-label="Search wounds, projects, and places"
               style={{
                 paddingLeft: 44,
                 paddingRight: 18,
@@ -316,21 +317,25 @@ export default function SearchPage() {
             {filteredResults.length} result{filteredResults.length !== 1 ? "s" : ""}
           </span>
           <div className="flex items-center gap-8">
-            <button className="btn btn-ghost btn-sm">
+            <button className="btn btn-ghost btn-sm" aria-label="Save this search">
               <Bookmark size={14} />
               <span className="desktop-only">Save this search</span>
             </button>
-            <div className="tab-group mobile-only">
+            <div className="tab-group mobile-only" role="tablist" aria-label="View toggle">
               <button
                 className="tab-item"
+                role="tab"
                 aria-selected={view === "list"}
+                aria-label="List view"
                 onClick={() => setView("list")}
               >
                 <List size={15} />
               </button>
               <button
                 className="tab-item"
+                role="tab"
                 aria-selected={view === "map"}
+                aria-label="Map view"
                 onClick={() => setView("map")}
               >
                 <MapIcon size={15} />

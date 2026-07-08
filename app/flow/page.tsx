@@ -134,6 +134,8 @@ export default function FlowPage() {
         {TABS.map(tab => (
           <button
             key={tab.id}
+            role="tab"
+            aria-selected={activeTab === tab.id}
             className={`chip${activeTab === tab.id ? " selected" : ""}`}
             onClick={() => setActiveTab(tab.id)}
           >

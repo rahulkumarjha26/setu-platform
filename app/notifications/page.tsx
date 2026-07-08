@@ -209,7 +209,7 @@ export default function NotificationsPage() {
                 Stay close to what matters.
               </p>
             </div>
-            <button className="btn btn-ghost btn-sm">
+            <button className="btn btn-ghost btn-sm" aria-label="Mark all notifications as read">
               <CheckCheck size={15} />
               Mark all read
             </button>

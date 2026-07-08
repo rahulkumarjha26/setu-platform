@@ -140,6 +140,7 @@ export default function ReportPage() {
             {step === 1 && (
               <>
                 <motion.button
+                  aria-label={isRecording ? "Release to stop recording" : "Hold to record description"}
                   animate={{
                     scale: isRecording ? [1, 1.06, 1] : 1,
                     boxShadow: isRecording
@@ -179,6 +180,7 @@ export default function ReportPage() {
                   </span>
                   <input
                     className="input"
+                    aria-label="Describe the wound"
                     placeholder="Describe the wound..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -288,12 +290,12 @@ export default function ReportPage() {
                   <p className="text-caption text-2">Tap to add photo</p>
                 </div>
 
-                <div className="tab-group" style={{ marginTop: 4 }}>
-                  <button className="tab-item" aria-selected="true">
+                <div className="tab-group" role="tablist" style={{ marginTop: 4 }}>
+                  <button className="tab-item" role="tab" aria-selected="true">
                     Before
                   </button>
-                  <button className="tab-item">During</button>
-                  <button className="tab-item">After</button>
+                  <button className="tab-item" role="tab">During</button>
+                  <button className="tab-item" role="tab">After</button>
                 </div>
 
                 <button className="btn btn-text text-2" style={{ fontSize: 13 }}>

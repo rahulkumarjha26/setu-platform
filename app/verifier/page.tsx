@@ -235,10 +235,11 @@ export default function VerifierPage() {
             {/* Before / During / After Tabs */}
             {view === "capture" && (
               <>
-                <div className="tab-group" style={{ margin: "0 auto 16px" }}>
+                <div className="tab-group" role="tablist" style={{ margin: "0 auto 16px" }}>
                   {(["before", "during", "after"] as const).map((t) => (
                     <button
                       key={t}
+                      role="tab"
                       className="tab-item"
                       aria-selected={captureTab === t}
                       onClick={() => setCaptureTab(t)}
@@ -253,6 +254,7 @@ export default function VerifierPage() {
                   <button
                     onClick={handleCapture}
                     disabled={photoCount >= 3}
+                    aria-label={photoCount >= 3 ? "Maximum photos taken" : "Take photo"}
                     style={{
                       width: 72,
                       height: 72,

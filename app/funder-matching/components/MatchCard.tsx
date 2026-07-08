@@ -286,10 +286,10 @@ export default function MatchCard({ match }: { match: FundMatch }) {
         }}
       >
         <div style={{ display: "flex", gap: 8 }}>
-          <button className="btn btn-primary btn-sm" type="button">
+          <button className="btn btn-primary btn-sm" type="button" aria-label="Propose this match">
             Propose match
           </button>
-          <button className="btn btn-ghost btn-sm" type="button">
+          <button className="btn btn-ghost btn-sm" type="button" aria-label="View NGO profile">
             View NGO
           </button>
         </div>

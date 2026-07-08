@@ -180,7 +180,7 @@ function ProgressRing({ pct, size = 44, stroke = 4, color = "var(--action)" }: {
 
 /* ─── Tab Config ─── */
 
-const SUB_NAV = [
+const SUB_NAV: { id: string; label: string; icon: React.ElementType }[] = [
   { id: "queue", label: "Wound Queue", icon: ListChecks },
   { id: "remediation", label: "Remediation", icon: Target },
   { id: "sla", label: "SLA Dashboard", icon: ShieldAlert },
@@ -240,6 +240,7 @@ export default function GovernmentPage() {
         <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
           <select
             className="input"
+            aria-label="Filter by status"
             style={{ width: "auto", minWidth: 120, height: 34, fontSize: 13, padding: "0 12px", cursor: "pointer" }}
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
@@ -253,6 +254,7 @@ export default function GovernmentPage() {
           </select>
           <select
             className="input"
+            aria-label="Filter by ward"
             style={{ width: "auto", minWidth: 120, height: 34, fontSize: 13, padding: "0 12px", cursor: "pointer" }}
             value={wardFilter}
             onChange={e => setWardFilter(e.target.value)}
@@ -262,6 +264,7 @@ export default function GovernmentPage() {
           </select>
           <select
             className="input"
+            aria-label="Filter by category"
             style={{ width: "auto", minWidth: 120, height: 34, fontSize: 13, padding: "0 12px", cursor: "pointer" }}
             value={categoryFilter}
             onChange={e => setCategoryFilter(e.target.value)}
@@ -1177,6 +1180,8 @@ export default function GovernmentPage() {
           {SUB_NAV.map((item) => (
             <button
               key={item.id}
+              role="tab"
+              aria-selected={activeNav === item.id}
               className={`chip${activeNav === item.id ? " selected" : ""}`}
               onClick={() => setActiveNav(item.id)}
             >

@@ -321,7 +321,7 @@ function ProfileContent({ role, overrides, onOpenEdit }: {
 
       <div className={s.tabs}>
         {a.tabs.map((t, i) => (
-          <button key={i} className={tab === i ? s.tabOn : s.tab} onClick={() => setTab(i)}>
+          <button key={i} className={tab === i ? s.tabOn : s.tab} onClick={() => setTab(i)} role="tab" aria-selected={tab === i}>
             {t}{i === 1 ? <span className={s.tabCount}>{a.items.length}</span> : null}
           </button>
         ))}
@@ -372,7 +372,7 @@ function ProfileContent({ role, overrides, onOpenEdit }: {
           <h2 className={s.secH} style={{ marginBottom: 28 }}>{a.itemsTitle}</h2>
           <div className={s.filterRow}>
             {a.filters.map((f, i) => (
-              <button key={i} className={filterIdx === i ? s.fchipOn : s.fchip} onClick={() => setFilterIdx(i)}>{f}</button>
+              <button key={i} className={filterIdx === i ? s.fchipOn : s.fchip} onClick={() => setFilterIdx(i)} aria-label={`Filter by ${f}`} aria-pressed={filterIdx === i}>{f}</button>
             ))}
           </div>
           {a.items.map((item, i) => (
@@ -425,7 +425,7 @@ export default function ProfilePage() {
       <div className={s.roleSwitcher}>
         <span className={s.roleSwitcherLabel}>view as</span>
         {roles.map(r => (
-          <button key={r} className={role === r ? s.roleSwitcherOn : s.roleSwitcherOff} onClick={() => setRole(r)}>
+          <button key={r} className={role === r ? s.roleSwitcherOn : s.roleSwitcherOff} onClick={() => setRole(r)} aria-label={`Switch to ${roleLabels[r]} view`} aria-pressed={role === r}>
             {roleLabels[r]}
           </button>
         ))}

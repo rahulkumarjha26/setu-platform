@@ -746,11 +746,11 @@ export default function NGOPage() {
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-end", flexShrink: 0 }}>
-                  <button className="btn btn-primary btn-sm" style={{ gap: 6 }}>
+                  <button className="btn btn-primary btn-sm" style={{ gap: 6 }} aria-label="Apply for funding">
                     <FileText size={13} />
                     Apply
                   </button>
-                  <button className="btn btn-ghost btn-sm" style={{ gap: 4 }}>
+                  <button className="btn btn-ghost btn-sm" style={{ gap: 4 }} aria-label="View funder details">
                     View <ExternalLink size={11} />
                   </button>
                 </div>
@@ -1122,6 +1122,8 @@ export default function NGOPage() {
           {SUB_NAV.map((item) => (
             <button
               key={item.id}
+              role="tab"
+              aria-selected={activeNav === item.id}
               className={`chip${activeNav === item.id ? " selected" : ""}`}
               onClick={() => setActiveNav(item.id)}
             >

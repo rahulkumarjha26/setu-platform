@@ -315,6 +315,7 @@ export default function PressurePage() {
                 </span>
                 <input
                   type="text"
+                  aria-label="Reference number"
                   placeholder="BBMP-SWD-..."
                   style={{
                     border: "none",
@@ -326,7 +327,7 @@ export default function PressurePage() {
                     width: 130,
                   }}
                 />
-                <button className="btn btn-ghost btn-sm" style={{ padding: "0 6px" }}>
+                <button className="btn btn-ghost btn-sm" aria-label="Copy reference number" style={{ padding: "0 6px" }}>
                   <Copy size={14} />
                 </button>
               </div>

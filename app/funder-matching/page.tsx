@@ -98,6 +98,8 @@ export default function FunderMatchingPage() {
                   <button
                     key={f.key}
                     type="button"
+                    role="tab"
+                    aria-selected={activeFilter === f.key}
                     className={`chip${activeFilter === f.key ? " selected" : ""}`}
                     onClick={() => setActiveFilter(f.key)}
                   >

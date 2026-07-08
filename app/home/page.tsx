@@ -444,7 +444,7 @@ export default function HomePage() {
         }}>
           <span style={{ fontFamily: "Geist Mono, monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: ".08em", color: "#9AA09A", marginRight: 4 }}>view as</span>
           {roles.map(r => (
-            <button key={r.key} onClick={() => setRole(r.key)} style={{
+            <button key={r.key} onClick={() => setRole(r.key)} aria-label={`Switch to ${r.label} view`} aria-pressed={role === r.key} style={{
               height: 26, padding: "0 11px", borderRadius: 999,
               fontSize: 11.5, fontWeight: 500, fontFamily: "inherit",
               color: role === r.key ? "#fff" : "#6B7770",

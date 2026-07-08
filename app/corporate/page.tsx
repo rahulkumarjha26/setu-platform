@@ -1048,6 +1048,8 @@ export default function CorporatePage() {
           {SUB_NAV.map((item) => (
             <button
               key={item.id}
+              role="tab"
+              aria-selected={activeNav === item.id}
               className={`chip${activeNav === item.id ? " selected" : ""}`}
               onClick={() => setActiveNav(item.id)}
             >

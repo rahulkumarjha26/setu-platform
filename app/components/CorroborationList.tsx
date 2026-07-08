@@ -143,7 +143,7 @@ export function CorroborationList({ entries, woundId, count }: CorroborationList
       )}
 
       {/* List */}
-      <div className="flex flex-col" style={{ gap: 10 }}>
+      <div className="flex flex-col" style={{ gap: 10 }} role="list" aria-label="Corroboration entries">
         {allEntries.length === 0 ? (
           <div
             style={{
@@ -158,6 +158,7 @@ export function CorroborationList({ entries, woundId, count }: CorroborationList
         ) : (
           allEntries.map((entry, idx) => (
             <motion.div
+              role="listitem"
               key={entry.id}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}

@@ -61,6 +61,9 @@ export default function SettingsPage() {
                 {section.rows.map((row, i) => {
                   const RowContent = (
                     <div
+                      role="button"
+                      tabIndex={0}
+                      aria-label={row.label}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -92,6 +95,7 @@ export default function SettingsPage() {
                       {row.href ? (
                         <Link
                           href={row.href}
+                          aria-label={row.label}
                           style={{ textDecoration: "none", color: "inherit", display: "block" }}
                         >
                           {RowContent}
@@ -110,6 +114,7 @@ export default function SettingsPage() {
           <div style={{ padding: "0 4px" }}>
             <button
               className="btn btn-ghost"
+              aria-label="Sign out of your account"
               style={{
                 width: "100%",
                 justifyContent: "flex-start",
